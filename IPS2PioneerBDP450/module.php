@@ -13,6 +13,36 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->RegisterTimer("DataUpdate", 0, 'I2BDP_Get_DataUpdate($_IPS["TARGET"]);');
 		$this->RegisterPropertyBoolean("RC_Data", false);
 	}
+	
+	public function GetConfigurationForm() { 
+		$arrayStatus = array(); 
+		$arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
+		$arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
+		$arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
+		$arrayStatus[] = array("code" => 200, "icon" => "error", "caption" => "Instanz ist fehlerhaft"); 
+		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
+		
+		$arrayElements = array(); 
+		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
+ 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+				
+		$arrayElements[] = array("type" => "Label", "label" => "Zyklus Daten-Update in Sekunden (0 -> aus, 1 sek -> Minimum)");
+		$arrayElements[] = array("type" => "IntervalBox", "name" => "DataUpdate", "caption" => "s");
+		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+		$arrayElements[] = array("name" => "RC_Data", "type" => "CheckBox",  "caption" => "Virtuelle Fernbedienung erstellen"); 
+		
+		/*
+		{ "type": "Label", "label": "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!" },
+       		{ "type": "Button", "label": "On", "onClick": "I2BDP_PowerOn($id);"},
+        	{ "type": "Button", "label": "Off", "onClick": "I2BDP_PowerOff($id);"},
+        	{ "type": "Button", "label": "Open", "onClick": "I2BDP_Open($id);"},
+		{ "type": "Button", "label": "Close", "onClick": "I2BDP_Close($id);"} 
+		*/
+		
+		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
+ 	} 
+	
 	public function ApplyChanges()
 	{
 		//Never delete this line!
