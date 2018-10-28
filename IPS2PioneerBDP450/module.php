@@ -66,13 +66,13 @@ class IPS2PioneerBDP450 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 7, "Searching", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 8, "Forward/reverse scanning", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 9, "Forward/reverse slow play", "Information", -1);
-		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 10, "unknown", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 10, "unbekannt", "Information", -1);
 		
 		$this->RegisterProfileInteger("IPS2PioneerBDP450.Information", "Information", "", "", 0, 4, 1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 0, "Bluray", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 1, "DVD", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 2, "CD", "Information", -1);
-		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 3, "unknown", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 3, "unbekannt", "Information", -1);
 		
 		$this->RegisterProfileInteger("IPS2PioneerBDP450.Application", "Information", "", "", 0, 4, 1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 0, "BDMV", "Information", -1);
@@ -81,7 +81,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 3, "DVD VR", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 4, "CD-DA", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 5, "DTS-CD", "Information", -1);
-		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 6, "unknown", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 6, "unbekannt", "Information", -1);
 		
 		$this->RegisterProfileInteger("IPS2PioneerBDP450.DiscLoaded", "Information", "", "", 0, 4, 1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.DiscLoaded", 0, "Nein", "Information", -1);
@@ -105,7 +105,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		//$this->RegisterVariableString("StatusRequest", "StatusRequest", "", 50);
 		//$this->DisableAction("StatusRequest");
 		$this->RegisterVariableInteger("Track", "Track", "", 60);
-		$this->RegisterVariableString("DiscLoaded", "DiscLoaded", "", 70);
+		$this->RegisterVariableInteger("DiscLoaded", "DiscLoaded", "IPS2PioneerBDP450.DiscLoaded", 70);
 		$this->RegisterVariableInteger("Application", "Application", "IPS2PioneerBDP450.Application", 80);
 		$this->RegisterVariableInteger("Information", "Information", "IPS2PioneerBDP450.Information", 90);
 		
@@ -267,7 +267,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						SetValueString($this->GetIDForIdent("Time"), "--:--:--");
 						//SetValueString($this->GetIDForIdent("StatusRequest"), "");
 						SetValueInteger($this->GetIDForIdent("Track"), 0);
-						SetValueString($this->GetIDForIdent("DiscLoaded"), "");
+						SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
 						SetValueInteger($this->GetIDForIdent("Application"), 6);
 						SetValueInteger($this->GetIDForIdent("Information"), 11);
 					}
@@ -290,15 +290,15 @@ class IPS2PioneerBDP450 extends IPSModule
 				break;
 			case "?D":
 				If (substr($Message, 0, 1) == "x") {
-					SetValueString($this->GetIDForIdent("DiscLoaded"), "Unknown");
+					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
 					$this->SetBuffer("TimeTrigger", "false");
 				}
 				elseif (substr($Message, 0, 1) == "0") {
-					SetValueString($this->GetIDForIdent("DiscLoaded"), "None");
+					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 0);
 					$this->SetBuffer("TimeTrigger", "false");
 				}
 				elseif (substr($Message, 0, 1) == "1") {
-					SetValueString($this->GetIDForIdent("DiscLoaded"), "Yes");
+					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 1);
 					// Abfrage des Mediums
 					If (substr($Message, 1, 1) == "x") {
 						SetValueString($this->GetIDForIdent("Information"),"No Disc");
@@ -318,7 +318,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					}
 					//IPS_LogMessage("IPS2PioneerBDP450","Information: ".$this->GetBuffer("Information"));
 					
-					If ( (int)$this->GetBuffer("Information") <> 3) {
+					If ( intval($this->GetBuffer("Information")) <> 3) {
 						// Abfrage des Chapters
 						$this->ClientSocket("?C".chr(13));
 						$this->ResponseWait();
@@ -326,14 +326,14 @@ class IPS2PioneerBDP450 extends IPSModule
 				}
 				break;
 			case "?C":
-				SetValueInteger($this->GetIDForIdent("Chapter"), (int)$Message);
+				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Message));
 				// Titel/Track Nummer
 				$this->ClientSocket("?R".chr(13));
 				$this->ResponseWait();
 				break;
 			
 			case "?R":
-				SetValueInteger($this->GetIDForIdent("Track"), (int)$Message);
+				SetValueInteger($this->GetIDForIdent("Track"), intval($Message));
 					// Abfrage der Zeit
 					$this->SetBuffer("TimeTrigger", "true");
 					//$this->ClientSocket("?T".chr(13));
@@ -653,6 +653,7 @@ class IPS2PioneerBDP450 extends IPSModule
 			default:
 			    throw new Exception("Invalid Ident");
 	    	}
+		$this->Get_DataUpdate();
 	}
 	
 	public function Get_DataUpdate()
@@ -690,6 +691,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("PN".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -697,6 +699,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("PF".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -704,6 +707,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("OP".chr(13));
+			$this->Get_DataUpdate();
 		}
 	}
 	
@@ -711,6 +715,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("CO".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -718,6 +723,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("99RJ".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -725,6 +731,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("PL".chr(13));
+			$this->Get_DataUpdate();
 		}
 	}
 	
@@ -732,6 +739,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("ST".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -739,6 +747,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("SF".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -746,6 +755,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("SR".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -753,6 +763,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("NS".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -760,6 +771,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("NF".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -767,6 +779,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$this->ClientSocket("NR".chr(13));
+			$this->Get_DataUpdate();
 		}	
 	}
 	
@@ -792,47 +805,6 @@ class IPS2PioneerBDP450 extends IPSModule
 		}
 	return $result;
 	}
-	/*
-	private function GetApplication(Int $ApplicationNumber)
-	{
-		// substr($data, 2, 1)
-		$Application = array(0 => "BDMV", 1 => "BDAV", 2 => "DVD-Video", 3 => "DVD VR", 4 => "CD-DA", 5 => "DTS-CD");
-		If (array_key_exists($ApplicationNumber, $Application)) {
-			$ApplicationText = $Application[$ApplicationNumber];
-		}
-		else {
-			$ApplicationText = "unknown";
-		}
-	return $ApplicationText;
-	}
-	
-	private function GetInformation(Int $InformationNumber)
-	{
-		// substr($data, 1, 1)
-		$Information = array(0 => "Bluray", 1 => "DVD", 2 => "CD");
-		If (array_key_exists($InformationNumber, $Information)) {
-			$InformationText = $Information[$InformationNumber];
-		}
-		else {
-			$InformationText = "no Disc";
-		}
-	return $InformationText;
-	}
-	
-	private function GetModus(Int $ModusNumber)
-	{
-		// substr($data, 1, 1)
-		$Modus = array(0 => "Tray opening completed", 1 => "Tray closing completed", 2 => "Disc Information loading", 3 => "Tray opening", 4 => "Play", 5 => "Still",
-			      6 => "Pause", 7 => "Searching", 8 => "Forward/reverse scanning", 9 => "Forward/reverse slow play");
-		If (array_key_exists($ModusNumber, $Modus)) {
-			$ModusText = $Modus[$ModusNumber];
-		}
-		else {
-			$ModusText = "unknown";
-		}
-	return $ModusText;
-	}
-	*/
 	
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
 	{
