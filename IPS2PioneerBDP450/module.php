@@ -291,7 +291,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						$this->SetBuffer("TimeTrigger", "false");
 					}
 					else {
-						SetValueInteger($this->GetIDForIdent("Information"), intval(substr($Message, 1, 1));
+						SetValueInteger($this->GetIDForIdent("Information"), intval(substr($Message, 1, 1)));
 						$this->SetBuffer("Information", (int)substr($Message, 1, 1));
 					}
 					// Abfrage der Anwendung
