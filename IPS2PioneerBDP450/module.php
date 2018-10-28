@@ -262,7 +262,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						// Gerät ist ausgeschaltet
 						$this->SetBuffer("TimeTrigger", "false");
 						SetValueBoolean($this->GetIDForIdent("Power"), false);
-						SetValueInteger($this->GetIDForIdent("Modus"), 3);
+						SetValueInteger($this->GetIDForIdent("Modus"), 10);
 						SetValueInteger($this->GetIDForIdent("Chapter"), 0);
 						SetValueString($this->GetIDForIdent("Time"), "--:--:--");
 						//SetValueString($this->GetIDForIdent("StatusRequest"), "");
