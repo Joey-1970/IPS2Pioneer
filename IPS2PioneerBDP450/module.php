@@ -55,7 +55,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->SetBuffer("TriggerCounter", 0);
 		
 		// Profile anlegen
-		$this->RegisterProfileInteger("IPS2PioneerBDP450.Modus", "Information", "", "", 0, 3, 1);
+		$this->RegisterProfileInteger("IPS2PioneerBDP450.Modus", "Information", "", "", 0, 11, 1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 0, "Tray opening completed", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 1, "Tray closing completed", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 2, "Disc Information loading", "Information", -1);
@@ -66,7 +66,13 @@ class IPS2PioneerBDP450 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 7, "Searching", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 8, "Forward/reverse scanning", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 9, "Forward/reverse slow play", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 10, "unknown", "Information", -1);
 		
+		$this->RegisterProfileInteger("IPS2PioneerBDP450.Information", "Information", "", "", 0, 4, 1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 0, "Bluray", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 1, "DVD", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 2, "CD", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 3, "unknown", "Information", -1);
 		
 		$this->RegisterVariableString("PlayerModel", "PlayerModel", "", 5);
 		$this->RegisterVariableString("PlayerFirmware", "PlayerFirmware", "", 7);
@@ -86,7 +92,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->RegisterVariableInteger("Track", "Track", "", 60);
 		$this->RegisterVariableString("DiscLoaded", "DiscLoaded", "", 70);
 		$this->RegisterVariableString("Application", "Application", "", 80);
-		$this->RegisterVariableString("Information", "Information", "", 90);
+		$this->RegisterVariableInteger("Information", "Information", "IPS2PioneerBDP450.Information", 90);
 		
 		If ($this->ReadPropertyBoolean("RC_Data") == true) {
 			$this->RegisterVariableBoolean("rc_POWER", "POWER", "~Switch", 500);
@@ -241,14 +247,14 @@ class IPS2PioneerBDP450 extends IPSModule
 						// Gerät ist ausgeschaltet
 						$this->SetBuffer("TimeTrigger", "false");
 						SetValueBoolean($this->GetIDForIdent("Power"), false);
-						SetValueString($this->GetIDForIdent("Modus"), "");
+						SetValueInteger($this->GetIDForIdent("Modus"), 3);
 						SetValueInteger($this->GetIDForIdent("Chapter"), 0);
 						SetValueString($this->GetIDForIdent("Time"), "--:--:--");
 						//SetValueString($this->GetIDForIdent("StatusRequest"), "");
 						SetValueInteger($this->GetIDForIdent("Track"), 0);
 						SetValueString($this->GetIDForIdent("DiscLoaded"), "");
 						SetValueString($this->GetIDForIdent("Application"), "");
-						SetValueString($this->GetIDForIdent("Information"), "");
+						SetValueInteger($this->GetIDForIdent("Information"), 11);
 					}
 				}
 				else {
@@ -260,7 +266,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						$this->ResponseWait();
 					}
 					else {
-						SetValueInteger($this->GetIDForIdent("Modus"), (int)substr($Message, 1, 2));
+						SetValueInteger($this->GetIDForIdent("Modus"), intval(substr($Message, 1, 2)));
 						// Prüfen ob eine Disk im Laufwerk ist
 						$this->ClientSocket("?D".chr(13));
 						$this->ResponseWait();
@@ -285,7 +291,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						$this->SetBuffer("TimeTrigger", "false");
 					}
 					else {
-						SetValueString($this->GetIDForIdent("Information"), $this->GetInformation((int)substr($Message, 1, 1)));
+						SetValueInteger($this->GetIDForIdent("Information"), intval(substr($Message, 1, 1));
 						$this->SetBuffer("Information", (int)substr($Message, 1, 1));
 					}
 					// Abfrage der Anwendung
@@ -784,7 +790,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		}
 	return $ApplicationText;
 	}
-	
+	/*
 	private function GetInformation(Int $InformationNumber)
 	{
 		// substr($data, 1, 1)
@@ -797,7 +803,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		}
 	return $InformationText;
 	}
-	/*
+	
 	private function GetModus(Int $ModusNumber)
 	{
 		// substr($data, 1, 1)
