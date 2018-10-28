@@ -82,6 +82,11 @@ class IPS2PioneerBDP450 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 4, "CD-DA", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 5, "DTS-CD", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 6, "unknown", "Information", -1);
+		
+		$this->RegisterProfileInteger("IPS2PioneerBDP450.DiscLoaded", "Information", "", "", 0, 4, 1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.DiscLoaded", 0, "Nein", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.DiscLoaded", 1, "Ja", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.DiscLoaded", 2, "unbekannt", "Information", -1);
 	
 		
 		$this->RegisterVariableString("PlayerModel", "PlayerModel", "", 5);
