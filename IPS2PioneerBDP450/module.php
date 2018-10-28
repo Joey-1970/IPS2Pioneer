@@ -77,6 +77,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->RegisterVariableInteger("Modus", "Modus", "IPS2PioneerBDP450.Modus", 20);
 		$this->RegisterVariableInteger("Chapter", "Chapter", "", 30);
 		
+		
 		//$this->RegisterVariableInteger("Time", "Time", "~UnixTimestampTime", 40);
 		$this->RegisterVariableString("Time", "Time", "", 40);
 
@@ -259,7 +260,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						$this->ResponseWait();
 					}
 					else {
-						SetValueString($this->GetIDForIdent("Modus"), $this->GetModus((int)substr($Message, 1, 2)));
+						SetValueInteger($this->GetIDForIdent("Modus"), (int)substr($Message, 1, 2));
 						// Prüfen ob eine Disk im Laufwerk ist
 						$this->ClientSocket("?D".chr(13));
 						$this->ResponseWait();
@@ -796,7 +797,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		}
 	return $InformationText;
 	}
-	
+	/*
 	private function GetModus(Int $ModusNumber)
 	{
 		// substr($data, 1, 1)
@@ -810,6 +811,24 @@ class IPS2PioneerBDP450 extends IPSModule
 		}
 	return $ModusText;
 	}
+	*/
+	
+	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
+	{
+	        if (!IPS_VariableProfileExists($Name))
+	        {
+	            IPS_CreateVariableProfile($Name, 1);
+	        }
+	        else
+	        {
+	            $profile = IPS_GetVariableProfile($Name);
+	            if ($profile['ProfileType'] != 1)
+	                throw new Exception("Variable profile type does not match for profile " . $Name);
+	        }
+	        IPS_SetVariableProfileIcon($Name, $Icon);
+	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);    
+	}    
 	
 	private function GetParentID()
 	{
