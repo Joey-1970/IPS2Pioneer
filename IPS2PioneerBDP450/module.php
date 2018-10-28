@@ -54,31 +54,38 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->SetBuffer("TimeTrigger", "false");
 		$this->SetBuffer("TriggerCounter", 0);
 		
+		// Profile anlegen
+		$this->RegisterProfileInteger("IPS2PioneerBDP450.Modus", "Information", "", "", 0, 3, 1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 0, "Tray opening completed", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 1, "Tray closing completed", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 2, "Disc Information loading", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 3, "Tray opening", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 4, "Play", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 5, "Still", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 6, "Pause", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 7, "Searching", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 8, "Forward/reverse scanning", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Modus", 9, "Forward/reverse slow play", "Information", -1);
+		
+		
 		$this->RegisterVariableString("PlayerModel", "PlayerModel", "", 5);
-		$this->DisableAction("PlayerModel");
 		$this->RegisterVariableString("PlayerFirmware", "PlayerFirmware", "", 7);
-		$this->DisableAction("PlayerFirmware");
 		
 		$this->RegisterVariableBoolean("Power", "Power", "~Switch", 10);
 		$this->EnableAction("Power");
-		$this->RegisterVariableString("Modus", "Modus", "", 20);
-		$this->DisableAction("Modus");
+		
+		$this->RegisterVariableInteger("Modus", "Modus", "IPS2PioneerBDP450.Modus", 20);
 		$this->RegisterVariableInteger("Chapter", "Chapter", "", 30);
-		$this->DisableAction("Chapter");
 		
 		//$this->RegisterVariableInteger("Time", "Time", "~UnixTimestampTime", 40);
 		$this->RegisterVariableString("Time", "Time", "", 40);
-		$this->DisableAction("Time");
+
 		//$this->RegisterVariableString("StatusRequest", "StatusRequest", "", 50);
 		//$this->DisableAction("StatusRequest");
 		$this->RegisterVariableInteger("Track", "Track", "", 60);
-		$this->DisableAction("Track");
 		$this->RegisterVariableString("DiscLoaded", "DiscLoaded", "", 70);
-		$this->DisableAction("DiscLoaded");
 		$this->RegisterVariableString("Application", "Application", "", 80);
-		$this->DisableAction("Application");
 		$this->RegisterVariableString("Information", "Information", "", 90);
-		$this->DisableAction("Information");
 		
 		If ($this->ReadPropertyBoolean("RC_Data") == true) {
 			$this->RegisterVariableBoolean("rc_POWER", "POWER", "~Switch", 500);
