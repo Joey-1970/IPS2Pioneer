@@ -74,6 +74,16 @@ class IPS2PioneerBDP450 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 2, "CD", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 3, "unknown", "Information", -1);
 		
+		$this->RegisterProfileInteger("IPS2PioneerBDP450.Application", "Information", "", "", 0, 4, 1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 0, "BDMV", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 1, "BDAV", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 2, "DVD-Video", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 3, "DVD VR", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 4, "CD-DA", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 5, "DTS-CD", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 6, "unknown", "Information", -1);
+	
+		
 		$this->RegisterVariableString("PlayerModel", "PlayerModel", "", 5);
 		$this->RegisterVariableString("PlayerFirmware", "PlayerFirmware", "", 7);
 		
@@ -91,7 +101,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		//$this->DisableAction("StatusRequest");
 		$this->RegisterVariableInteger("Track", "Track", "", 60);
 		$this->RegisterVariableString("DiscLoaded", "DiscLoaded", "", 70);
-		$this->RegisterVariableString("Application", "Application", "", 80);
+		$this->RegisterVariableInteger("Application", "Application", "IPS2PioneerBDP450.Application", 80);
 		$this->RegisterVariableInteger("Information", "Information", "IPS2PioneerBDP450.Information", 90);
 		
 		If ($this->ReadPropertyBoolean("RC_Data") == true) {
@@ -253,7 +263,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						//SetValueString($this->GetIDForIdent("StatusRequest"), "");
 						SetValueInteger($this->GetIDForIdent("Track"), 0);
 						SetValueString($this->GetIDForIdent("DiscLoaded"), "");
-						SetValueString($this->GetIDForIdent("Application"), "");
+						SetValueInteger($this->GetIDForIdent("Application"), 6);
 						SetValueInteger($this->GetIDForIdent("Information"), 11);
 					}
 				}
@@ -296,10 +306,10 @@ class IPS2PioneerBDP450 extends IPSModule
 					}
 					// Abfrage der Anwendung
 					If (substr($Message, 2, 1) == "x") {
-						SetValueString($this->GetIDForIdent("Application"),"Unknown");
+						SetValueInteger($this->GetIDForIdent("Application"), 6);
 					}
 					else {
-						SetValueString($this->GetIDForIdent("Application"), $this->GetApplication((int)substr($Message, 2, 1)));
+						SetValueInteger($this->GetIDForIdent("Application"), intval(substr($Message, 2, 1)));
 					}
 					//IPS_LogMessage("IPS2PioneerBDP450","Information: ".$this->GetBuffer("Information"));
 					
@@ -777,7 +787,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		}
 	return $result;
 	}
-	
+	/*
 	private function GetApplication(Int $ApplicationNumber)
 	{
 		// substr($data, 2, 1)
@@ -790,7 +800,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		}
 	return $ApplicationText;
 	}
-	/*
+	
 	private function GetInformation(Int $InformationNumber)
 	{
 		// substr($data, 1, 1)
