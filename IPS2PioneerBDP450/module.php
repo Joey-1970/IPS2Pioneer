@@ -51,7 +51,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->DisableAction("Information");
 		
 		If ($this->ReadPropertyBoolean("RC_Data") == true) {
-			$this->RegisterVariableBoolean("rc_POWER ", "POWER ", "~Switch", 500);
+			$this->RegisterVariableBoolean("rc_POWER ", "POWER", "~Switch", 500);
 			$this->EnableAction("rc_power");
 			$this->RegisterVariableBoolean("rc_CONTINUED", "CONTINUED", "~Switch", 505);
 			$this->EnableAction("rc_CONTINUED");
