@@ -356,6 +356,11 @@ class IPS2PioneerBDP450 extends IPSModule
 	public function RequestAction($Ident, $Value) 
 	{
   		switch($Ident) {
+			case "Power":
+			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
+					$this->ClientSocket("/A181AFBC/RU".chr(13));			
+				}
+				break;
 			case "rc_POWER":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 					$this->ClientSocket("/A181AFBC/RU".chr(13));				
