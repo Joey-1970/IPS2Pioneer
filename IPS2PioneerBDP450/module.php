@@ -213,6 +213,16 @@ class IPS2PioneerBDP450 extends IPSModule
 			$this->EnableAction("rc_NET_FLIX");
 		}
 		
+		SetValueBoolean($this->GetIDForIdent("Power"), false);
+		SetValueInteger($this->GetIDForIdent("Modus"), 10);
+		SetValueInteger($this->GetIDForIdent("Chapter"), 0);
+		$Time = date('H:i:s', mktime(0, 0, 0, 0, 0, 0));
+		SetValueInteger($this->GetIDForIdent("Time"), $Time);
+		SetValueInteger($this->GetIDForIdent("Track"), 0);
+		SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
+		SetValueInteger($this->GetIDForIdent("Application"), 6);
+		SetValueInteger($this->GetIDForIdent("Information"), 11);
+		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
@@ -224,6 +234,16 @@ class IPS2PioneerBDP450 extends IPSModule
 				}
 				If (IPS_GetName($ParentID) == "Client Socket") {
 		                	IPS_SetName($ParentID, "IPS2PioneerBDP450");
+				}
+				if(IPS_HasChanges($ParentID))
+				{
+				    	$Result = @IPS_ApplyChanges($ParentID);
+					If ($Result) {
+						$this->SendDebug("ApplyChanges", "Einrichtung des Client Socket erfolgreich", 0);
+					}
+					else {
+						$this->SendDebug("ApplyChanges", "Einrichtung des Client Socket nicht erfolgreich!", 0);
+					}
 				}
 			}
 			
