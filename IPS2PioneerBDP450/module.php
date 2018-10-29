@@ -261,7 +261,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						SetValueBoolean($this->GetIDForIdent("Power"), false);
 						SetValueInteger($this->GetIDForIdent("Modus"), 10);
 						SetValueInteger($this->GetIDForIdent("Chapter"), 0);
-						$Time = gmdate('H:i:s', mktime(0, 0, 0, 0, 0, 0));
+						$Time = date('H:i:s', mktime(0, 0, 0, 0, 0, 0));
 						SetValueInteger($this->GetIDForIdent("Time"), $Time);
 						//SetValueString($this->GetIDForIdent("StatusRequest"), "");
 						SetValueInteger($this->GetIDForIdent("Track"), 0);
@@ -360,7 +360,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				$Hour = intval(substr($Message, 0, 2));
 				$Minute = intval(substr($Message, 2, 2));
 				$Second = intval(substr($Message, 4, 2));
-				$Time = gmdate('H:i:s', mktime($Hour, $Minute, $Second, 0, 0, 0));
+				$Time = date('H:i:s', mktime($Hour, $Minute, $Second, 0, 0, 0));
 				SetValueInteger($this->GetIDForIdent("Time"), $Time);
 				break;
 			case "?V":
