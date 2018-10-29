@@ -271,6 +271,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		$Message = trim($Message, "\x00..\x1F");
 		$LastCommand = trim($this->GetBuffer("LastCommand"), "\x00..\x1F");
 		//IPS_LogMessage("IPS2PioneerBDP450","LastCommand: ".$this->GetBuffer("LastCommand")."Client Response: ".$Message);
+		$this->SendDebug("ReceiveData", "LastCommand: ".$this->GetBuffer("LastCommand")."Client Response: ".$Message, 0);
 		
 		switch($LastCommand) {
 			case "?P":
