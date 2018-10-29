@@ -97,10 +97,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		
 		$this->RegisterVariableInteger("Modus", "Modus", "IPS2PioneerBDP450.Modus", 20);
 		$this->RegisterVariableInteger("Chapter", "Chapter", "", 30);
-		
-		
-		//$this->RegisterVariableInteger("Time", "Time", "~UnixTimestampTime", 40);
-		$this->RegisterVariableString("Time", "Time", "", 40);
+		$this->RegisterVariableInteger("Time", "Time", "~UnixTimestampTime", 40);
 
 		//$this->RegisterVariableString("StatusRequest", "StatusRequest", "", 50);
 		//$this->DisableAction("StatusRequest");
@@ -264,7 +261,8 @@ class IPS2PioneerBDP450 extends IPSModule
 						SetValueBoolean($this->GetIDForIdent("Power"), false);
 						SetValueInteger($this->GetIDForIdent("Modus"), 10);
 						SetValueInteger($this->GetIDForIdent("Chapter"), 0);
-						SetValueString($this->GetIDForIdent("Time"), "--:--:--");
+						$Time = gmdate('H:i:s', mktime(0, 0, 0, 0, 0, 0));
+						SetValueInteger($this->GetIDForIdent("Time"), $Time);
 						//SetValueString($this->GetIDForIdent("StatusRequest"), "");
 						SetValueInteger($this->GetIDForIdent("Track"), 0);
 						SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
@@ -359,7 +357,11 @@ class IPS2PioneerBDP450 extends IPSModule
 			case "?T":
 				$Message = str_pad((string)$Message, 6 ,'0', STR_PAD_LEFT);
 				//$this->SetBuffer("TimeTrigger", "true");
-				SetValueString($this->GetIDForIdent("Time"), substr($Message, 0, 2).":".substr($Message, 2, 2).":".substr($Message, 4, 2));
+				$Hour = intval(substr($Message, 0, 2));
+				$Minute = intval(substr($Message, 2, 2));
+				$Second = intval(substr($Message, 4, 2));
+				$Time = gmdate('H:i:s', mktime($Hour, $Minute, $Second, 0, 0, 0));
+				SetValueInteger($this->GetIDForIdent("Time"), $Time);
 				break;
 			case "?V":
 				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
