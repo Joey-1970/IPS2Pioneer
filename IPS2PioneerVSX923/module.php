@@ -103,7 +103,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				SetValueBoolean($this->GetIDForIdent("Power"), false);
 				break;
 			case preg_match('/FN.*/', $Message) ? $Message : !$Message:
-				$Device = intval(substr("abcdef", -2));
+				$Device = intval(substr($Message, -2));
 				$this->SendDebug("ReceiveData", "Eingang: ".$Device, 0);
 				break;
 		}
