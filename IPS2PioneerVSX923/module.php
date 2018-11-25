@@ -47,7 +47,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Input", "Input", "", 30);
 		$this->EnableAction("Input");
 		
-		
+		$this->RegisterVariableInteger("Volume", "Volume", "", 40);
+		$this->EnableAction("Volume");
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
@@ -106,6 +107,9 @@ class IPS2PioneerVSX923 extends IPSModule
 			case preg_match('/FN.*/', $Message) ? $Message : !$Message:
 				SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
 				break;
+			case preg_match('/VOL.*/', $Message) ? $Message : !$Message:
+				SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -3)));
+				break;
 		}
 	}
 	
@@ -130,7 +134,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F");
+			$MessageArray = array("?P", "?F", "?V");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
