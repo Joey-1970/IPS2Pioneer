@@ -97,10 +97,10 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		switch($Message) {
 			case "PWR0":
-				SetValueInteger($this->GetIDForIdent("Power"), true);
+				SetValueBoolean($this->GetIDForIdent("Power"), true);
 				break;
 			case "PWR1":
-				SetValueInteger($this->GetIDForIdent("Power"), false);
+				SetValueBoolean($this->GetIDForIdent("Power"), false);
 				break;
 		}
 	}
