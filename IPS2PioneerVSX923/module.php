@@ -102,6 +102,10 @@ class IPS2PioneerVSX923 extends IPSModule
 			case "PWR1":
 				SetValueBoolean($this->GetIDForIdent("Power"), false);
 				break;
+			case preg_match('/FN.*/', $Message) ? $Message : !$Message:
+				$Device = intval(substr("abcdef", -2));
+				$this->SendDebug("ReceiveData", "Eingang: ".$Device, 0);
+				break;
 		}
 	}
 	
