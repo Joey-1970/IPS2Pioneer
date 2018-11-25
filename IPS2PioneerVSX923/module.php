@@ -90,10 +90,19 @@ class IPS2PioneerVSX923 extends IPSModule
 	    	SetValueInteger($this->GetIDForIdent("LastKeepAlive"), time() );
 		$Data = json_decode($JSONString);
 		$Message = utf8_decode($Data->Buffer);
+		// Entfernen der Steuerzeichen
+		$Message = trim($Message, "\x00..\x1F");
 		
 		$this->SendDebug("ReceiveData", $Message, 0);
 		
-		
+		switch($Message) {
+			case "PWR0":
+				SetValueInteger($this->GetIDForIdent("Power"), true);
+				break;
+			case "PWR1":
+				SetValueInteger($this->GetIDForIdent("Power"), false);
+				break;
+		}
 	}
 	
 	public function RequestAction($Ident, $Value) 
