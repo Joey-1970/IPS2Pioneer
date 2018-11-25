@@ -76,7 +76,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				
 				$this->SetStatus(102);
 				// Erste Abfrage der Daten
-				$This->GetData();
+				$this->GetData();
 			}
 			else {
 				$this->SetStatus(104);
