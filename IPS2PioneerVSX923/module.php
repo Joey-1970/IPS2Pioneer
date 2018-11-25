@@ -52,6 +52,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterVariableString("Display", "Display", "", 50);
 		
+		$this->RegisterVariableBoolean("Mute", "Mute", "~Switch", 60);
+		$this->EnableAction("Mute");
+		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
