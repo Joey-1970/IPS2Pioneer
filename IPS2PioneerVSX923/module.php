@@ -44,7 +44,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableBoolean("Power", "Power", "~Switch", 20);
 		$this->EnableAction("Power");
 		
-		
+		$this->RegisterVariableInteger("Input", "Input", "", 30);
+		$this->EnableAction("Input");
 		
 		
 		
@@ -103,8 +104,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				SetValueBoolean($this->GetIDForIdent("Power"), false);
 				break;
 			case preg_match('/FN.*/', $Message) ? $Message : !$Message:
-				$Device = intval(substr($Message, -2));
-				$this->SendDebug("ReceiveData", "Eingang: ".$Device, 0);
+				SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
 				break;
 		}
 	}
