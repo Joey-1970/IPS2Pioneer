@@ -108,7 +108,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
 				break;
 			case preg_match('/VOL.*/', $Message) ? $Message : !$Message:
-				SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -3)));
+				SetValueInteger($this->GetIDForIdent("Volume"), intval(substr($Message, -3)));
 				break;
 		}
 	}
