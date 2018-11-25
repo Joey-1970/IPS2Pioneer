@@ -38,9 +38,10 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		// Profile anlegen
 		
+		$this->RegisterVariableInteger("LastKeepAlive", "Letztes Keep Alive", "~UnixTimestamp", 10);
+		$this->DisableAction("LastKeepAlive");
 		
-		
-		$this->RegisterVariableBoolean("Power", "Power", "~Switch", 10);
+		$this->RegisterVariableBoolean("Power", "Power", "~Switch", 20);
 		$this->EnableAction("Power");
 		
 		
@@ -86,7 +87,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function ReceiveData($JSONString) {
  	    	//IPS_SemaphoreLeave("Communication");
 		// Empfangene Daten vom I/O
-	    	$this->SetBuffer("LastResponseTimestamp", time());
+	    	SetValueInteger($this->GetIDForIdent("LastKeepAlive"), time() );
 		$Data = json_decode($JSONString);
 		$Message = utf8_decode($Data->Buffer);
 		
