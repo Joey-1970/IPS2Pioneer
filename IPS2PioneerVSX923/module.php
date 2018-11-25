@@ -109,6 +109,12 @@ class IPS2PioneerVSX923 extends IPSModule
 			case "PWR1":
 				SetValueBoolean($this->GetIDForIdent("Power"), false);
 				break;
+			case "MUT0":
+				SetValueBoolean($this->GetIDForIdent("Mute"), true);
+				break;
+			case "MUT1":
+				SetValueBoolean($this->GetIDForIdent("Mute"), false);
+				break;
 			case preg_match('/FN.*/', $Message) ? $Message : !$Message:
 				SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
 				break;
@@ -154,7 +160,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
