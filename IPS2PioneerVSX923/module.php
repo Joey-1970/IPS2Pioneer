@@ -50,6 +50,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Volume", "Volume", "", 40);
 		$this->EnableAction("Volume");
 		
+		$this->RegisterVariableString("Display", "Display", "", 50);
+		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
@@ -110,6 +112,19 @@ class IPS2PioneerVSX923 extends IPSModule
 			case preg_match('/VOL.*/', $Message) ? $Message : !$Message:
 				SetValueInteger($this->GetIDForIdent("Volume"), intval(substr($Message, -3)));
 				break;
+			case preg_match('/FL.*/', $Message) ? $Message : !$Message:
+				$Result = "";
+				$Message = substr($Message, 2);
+				$MessageArray = str_split($Message, 2);
+				for ($i = 0; $i <= count($MessageArray) - 1; $i++) {
+					$Sign = chr(hexdec($MessageArray[$i]));
+					$Result = $Result.$Sign;
+				}
+				$Result = trim($Result, "\x00..\x1F");
+				SetValueString($this->GetIDForIdent("Display"), $Result);
+				break;	
+				
+				
 		}
 	}
 	
