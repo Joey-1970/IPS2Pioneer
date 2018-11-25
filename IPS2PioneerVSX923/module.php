@@ -117,10 +117,12 @@ class IPS2PioneerVSX923 extends IPSModule
 				$Message = substr($Message, 2);
 				$MessageArray = str_split($Message, 2);
 				for ($i = 0; $i <= count($MessageArray) - 1; $i++) {
-					$Sign = chr(hexdec($MessageArray[$i]));
-					$Result = $Result.$Sign;
+					If ($MessageArray[$i] <> 0x02) {
+						$Sign = chr(hexdec($MessageArray[$i]));
+						$Result = $Result.$Sign;
+					}
 				}
-				$Result = trim($Result, "\x00..\x1F");
+				$Result = trim($Result, " \t\n\r\0\x0B");
 				SetValueString($this->GetIDForIdent("Display"), $Result);
 				break;	
 				
