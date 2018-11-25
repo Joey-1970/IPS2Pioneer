@@ -76,7 +76,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				
 				$this->SetStatus(102);
 				// Erste Abfrage der Daten
-				
+				$This->GetData();
 			}
 			else {
 				$this->SetStatus(104);
@@ -126,7 +126,18 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 	}
 	
-	
+	private function GetData()
+	{
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->SendDebug("GetData", "Ausfuehrung", 0);
+			$MessageArray = array("?P", "?F");
+			foreach ($MessageArray as $Value) {
+				$Message = $Value.chr(13);
+				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
+				IPS_Sleep(100);
+			}
+		}
+	}
 	
 	
 	
