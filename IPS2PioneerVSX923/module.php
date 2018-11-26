@@ -39,9 +39,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		// Profile anlegen
 		$this->RegisterProfileFloat("IPS2Pioneer.dB", "Melody", "", " dB", -80, 12, 0.5, 1);
 		
-		$this->RegisterProfileInteger("IPS2Pioneer.Volume", "Shutter", "", "", 0, 1, 1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 0, "+", "HollowArrowUp", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 1, "-", "HollowArrowDown", -1);
+		$this->RegisterProfileInteger("IPS2Pioneer.Volume", "Shutter", "", "", 0, 1, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 0, "+", "Shutter", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 1, "-", "Shutter", -1);
 		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("LastKeepAlive", "Letztes Keep Alive", "~UnixTimestamp", 10);
