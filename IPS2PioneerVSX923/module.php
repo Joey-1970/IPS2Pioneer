@@ -9,6 +9,7 @@ class IPS2PioneerVSX923 extends IPSModule
            	$this->RequireParent("{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}");
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
+		$this->RegisterPropertyString("InputDevices", "");
 		
 	}
 	
@@ -24,6 +25,18 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
  		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+		
+		$arraySort = array();
+		$arraySort = array("column" => "DeviceTyp", "direction" => "ascending");
+		$arrayColumns = array();
+		$arrayColumns[] = array("label" => "Pioneer Nr.", "name" => "PioneerNr", "width" => "120px", "add" => "");
+		$arrayColumns[] = array("label" => "Pioneer Name", "name" => "PioneerName", "width" => "60px", "add" => "");
+		$arrayColumns[] = array("label" => "Aktiv", "name" => "Activ", "width" => "60px", "add" => "");
+		$arrayColumns[] = array("label" => "Eigener Name", "name" => "MyName", "width" => "70px", "add" => "");
+		
+		$arrayValues[0] = array("PioneerNr" => 25, "PioneerName" => "BD");
+		
+		$arrayElements[] = array("type" => "List", "name" => "InputDevices", "caption" => "Geräte", "rowCount" => 28, "add" => false, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
 				
 		
 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
