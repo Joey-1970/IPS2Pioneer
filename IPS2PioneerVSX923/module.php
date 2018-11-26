@@ -171,6 +171,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					}
 					break;
 				case "VolumeUpDown":
+					SetValueInteger($this->GetIDForIdent("VolumeUpDown"), $Value);
 					If ($Value == 0) {
 						$this->SetData("VU");
 					}
