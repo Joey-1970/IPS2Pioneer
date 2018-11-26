@@ -39,6 +39,10 @@ class IPS2PioneerVSX923 extends IPSModule
 		// Profile anlegen
 		$this->RegisterProfileFloat("IPS2Pioneer.dB", "Melody", "", " dB", -80, 12, 0.5, 1);
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.Volume", "Shutter", "", "", 0, 1, 1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 0, "+", "HollowArrowUp", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 1, "-", "HollowArrowDown", -1);
+		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("LastKeepAlive", "Letztes Keep Alive", "~UnixTimestamp", 10);
 		$this->DisableAction("LastKeepAlive");
@@ -52,9 +56,12 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableFloat("Volume", "Volume", "IPS2Pioneer.dB", 40);
 		$this->EnableAction("Volume");
 		
-		$this->RegisterVariableString("Display", "Display", "", 50);
+		$this->RegisterVariableInteger("VolumeUpDown", "VolumeUpDown", "IPS2Pioneer.Volume", 50);
+		$this->EnableAction("VolumeUpDown");
 		
-		$this->RegisterVariableBoolean("Mute", "Mute", "~Switch", 60);
+		$this->RegisterVariableString("Display", "Display", "", 60);
+		
+		$this->RegisterVariableBoolean("Mute", "Mute", "~Switch", 70);
 		$this->EnableAction("Mute");
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
