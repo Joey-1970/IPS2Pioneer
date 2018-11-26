@@ -144,10 +144,24 @@ class IPS2PioneerVSX923 extends IPSModule
   		switch($Ident) {
 			case "Power":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFBC/RU".chr(13));			
+					If (GetValueBoolean($this->GetIDForIdent("Power")) == true) {
+						$this->SetData("PF");
+					}
+					else {
+						$this->SetData("PO");
+					}
 				}
 				break;
-			
+			case "Mute":
+			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
+					If (GetValueBoolean($this->GetIDForIdent("Mute")) == true) {
+						$this->SetData("MF");
+					}
+					else {
+						$this->SetData("MO");
+					}
+				}
+				break;
 			
 			
 			default:
@@ -169,7 +183,13 @@ class IPS2PioneerVSX923 extends IPSModule
 		}
 	}
 	
-	
+	private function SetData(String $Message)
+	{
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$Message = $Message.chr(13);
+			$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($message))));
+		}
+	}
 	
 	public function PowerOn()
 	{
