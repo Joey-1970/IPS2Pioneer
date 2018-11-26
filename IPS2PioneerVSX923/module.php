@@ -29,8 +29,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arraySort = array();
 		$arraySort = array("column" => "DeviceTyp", "direction" => "ascending");
 		$arrayColumns = array();
-		$arrayColumns[] = array("label" => "Pioneer Nr.", "name" => "PioneerNr", "width" => "80px", "add" => "");
-		$arrayColumns[] = array("label" => "Pioneer Name", "name" => "PioneerName", "width" => "120px", "add" => "");
+		$arrayColumns[] = array("label" => "Pioneer Nr.", "name" => "PioneerNr", "width" => "80px", "save" => true);
+		$arrayColumns[] = array("label" => "Pioneer Name", "name" => "PioneerName", "width" => "120px", "save" => true);
 		$arrayColumns[] = array("label" => "Aktiv", "name" => "Activ", "width" => "60px", "add" => "", "edit" => array("type" => "CheckBox", "name" => "Activ", "caption" => "Aktiv"));
 		
 		$arrayColumns[] = array("label" => "Eigener Name", "name" => "MyName", "width" => "120px", "add" => "", "edit" => array("type" => "ValidationTextBox", "name" => "MyName", "caption" => "Mein Name"));
