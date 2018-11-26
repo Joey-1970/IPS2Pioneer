@@ -172,10 +172,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				break;
 			case "VolumeUpDown":
 				If ($Value == 0) {
-					$this->SetData("MF");
+					$this->SetData("VU");
 				}
 				elseIf ($Value == 1) {
-					$this->SetData("MO");
+					$this->SetData("VD");
 				}
 				break;
 			
