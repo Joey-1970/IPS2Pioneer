@@ -37,7 +37,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		
 		// Profile anlegen
+		$this->RegisterProfileFloat("IPS2Pioneer.dB", "Melody", "", " dB", -80, 12, 0.5, 1);
 		
+		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("LastKeepAlive", "Letztes Keep Alive", "~UnixTimestamp", 10);
 		$this->DisableAction("LastKeepAlive");
 		
@@ -47,7 +49,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Input", "Input", "", 30);
 		$this->EnableAction("Input");
 		
-		$this->RegisterVariableInteger("Volume", "Volume", "", 40);
+		$this->RegisterVariableFloat("Volume", "Volume", "IPS2Pioneer.dB", 40);
 		$this->EnableAction("Volume");
 		
 		$this->RegisterVariableString("Display", "Display", "", 50);
@@ -119,7 +121,9 @@ class IPS2PioneerVSX923 extends IPSModule
 				SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
 				break;
 			case preg_match('/VOL.*/', $Message) ? $Message : !$Message:
-				SetValueInteger($this->GetIDForIdent("Volume"), intval(substr($Message, -3)));
+				$Volume = intval(substr($Message, -3));
+				$Volume = ($Volume - 161) / 2;
+				SetValueFloat($this->GetIDForIdent("Volume"), $Volume);
 				break;
 			case preg_match('/FL.*/', $Message) ? $Message : !$Message:
 				$Result = "";
@@ -252,6 +256,24 @@ class IPS2PioneerVSX923 extends IPSModule
 	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
 	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);    
 	}    
+	
+	private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
+	{
+	        if (!IPS_VariableProfileExists($Name))
+	        {
+	            IPS_CreateVariableProfile($Name, 2);
+	        }
+	        else
+	        {
+	            $profile = IPS_GetVariableProfile($Name);
+	            if ($profile['ProfileType'] != 2)
+	                throw new Exception("Variable profile type does not match for profile " . $Name);
+	        }
+	        IPS_SetVariableProfileIcon($Name, $Icon);
+	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
+	        IPS_SetVariableProfileDigits($Name, $Digits);
+	}
 	
 	private function GetParentID()
 	{
