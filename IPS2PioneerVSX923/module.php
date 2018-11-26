@@ -56,7 +56,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableFloat("Volume", "Volume", "IPS2Pioneer.dB", 40);
 		$this->EnableAction("Volume");
 		
-		$this->RegisterVariableInteger("VolumeUpDown", "VolumeUpDown", "IPS2Pioneer.Volume", 50);
+		$this->RegisterVariableInteger("VolumeUpDown", "Volume", "IPS2Pioneer.Volume", 50);
 		$this->EnableAction("VolumeUpDown");
 		
 		$this->RegisterVariableString("Display", "Display", "", 60);
@@ -152,28 +152,32 @@ class IPS2PioneerVSX923 extends IPSModule
 	
 	public function RequestAction($Ident, $Value) 
 	{
-  		switch($Ident) {
+  		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
+		switch($Ident) {
 			case "Power":
-			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					If (GetValueBoolean($this->GetIDForIdent("Power")) == true) {
-						$this->SetData("PF");
-					}
-					else {
-						$this->SetData("PO");
-					}
+				If (GetValueBoolean($this->GetIDForIdent("Power")) == true) {
+					$this->SetData("PF");
+				}
+				else {
+					$this->SetData("PO");
 				}
 				break;
 			case "Mute":
-			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					If (GetValueBoolean($this->GetIDForIdent("Mute")) == true) {
-						$this->SetData("MF");
-					}
-					else {
-						$this->SetData("MO");
-					}
+				If (GetValueBoolean($this->GetIDForIdent("Mute")) == true) {
+					$this->SetData("MF");
+				}
+				else {
+					$this->SetData("MO");
 				}
 				break;
-			
+			case "VolumeUpDown":
+				If ($Value == 0) {
+					$this->SetData("MF");
+				}
+				elseIf ($Value == 1) {
+					$this->SetData("MO");
+				}
+				break;
 			
 			default:
 			    throw new Exception("Invalid Ident");
