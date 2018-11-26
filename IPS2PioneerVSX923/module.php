@@ -170,6 +170,11 @@ class IPS2PioneerVSX923 extends IPSModule
 						$this->SetData("MO");
 					}
 					break;
+				case "Volume":
+					$Volume = ($Value * 2) + 161 
+					$Volume = str_pad($Volume, 3, '0', STR_PAD_LEFT);
+					$this->SetData($Volume."VL");
+					break;
 				case "VolumeUpDown":
 					SetValueInteger($this->GetIDForIdent("VolumeUpDown"), $Value);
 					If ($Value == 0) {
