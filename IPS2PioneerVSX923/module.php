@@ -35,7 +35,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$arrayColumns[] = array("label" => "Eigener Name", "name" => "MyName", "width" => "120px", "add" => "", "edit" => array("type" => "ValidationTextBox", "name" => "MyName", "caption" => "Mein Name"));
 		
-		$arrayValues b=m array();
+		$arrayValues = array();
 		$arrayValues[] = array("PioneerNr" => 25, "PioneerName" => "BD", "Activ" => true, "MyName" => "BD");
 		$arrayValues[] = array("PioneerNr" => 04, "PioneerName" => "DVD", "Activ" => true, "MyName" => "DVD");
 		$arrayValues[] = array("PioneerNr" => 05, "PioneerName" => "TV/SAT", "Activ" => true, "MyName" => "TV/SAT");
