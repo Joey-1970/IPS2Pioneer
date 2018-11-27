@@ -85,7 +85,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$InputDeviceArray = $this->ReadPropertyString("InputDevices");
 		$Data = json_decode($InputDeviceArray);
 		
-		foreach ($InputDeviceArray as $Value) {
+		foreach ($Data as $Value) {
 			If ($Data->Activ == true) {
 				$PioneerNr = $Data->PioneerNr;
 				$MyName = $Data->MyName;
