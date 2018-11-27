@@ -90,7 +90,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Input", "Input", "", 30);
 		$this->EnableAction("Input");
 		
-		$this->RegisterVariableInteger("InputChange", "Input", "", 35);
+		$this->RegisterVariableInteger("InputChange", "Input", "IPS2Pioneer.Input", 35);
 		$this->EnableAction("InputChange");
 		
 		$this->RegisterVariableFloat("Volume", "Volume", "IPS2Pioneer.dB", 40);
