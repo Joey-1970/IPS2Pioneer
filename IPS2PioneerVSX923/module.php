@@ -76,6 +76,10 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 0, "+", "Shutter", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 1, "-", "Shutter", -1);
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.Input", "Repeat", "", "", 0, 1, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 0, "<", "Repeat", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 1, ">", "Repeat", -1);
+		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("LastKeepAlive", "Letztes Keep Alive", "~UnixTimestamp", 10);
 		$this->DisableAction("LastKeepAlive");
@@ -85,6 +89,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterVariableInteger("Input", "Input", "", 30);
 		$this->EnableAction("Input");
+		
+		$this->RegisterVariableInteger("InputChange", "Input", "", 35);
+		$this->EnableAction("InputChange");
 		
 		$this->RegisterVariableFloat("Volume", "Volume", "IPS2Pioneer.dB", 40);
 		$this->EnableAction("Volume");
@@ -215,6 +222,15 @@ class IPS2PioneerVSX923 extends IPSModule
 					}
 					elseIf ($Value == 1) {
 						$this->SetData("VD");
+					}
+					break;
+				case "InputChange":
+					SetValueInteger($this->GetIDForIdent("InputChange"), $Value);
+					If ($Value == 0) {
+						$this->SetData("FU");
+					}
+					elseIf ($Value == 1) {
+						$this->SetData("FD");
 					}
 					break;
 
