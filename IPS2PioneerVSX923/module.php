@@ -35,7 +35,29 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$arrayColumns[] = array("label" => "Eigener Name", "name" => "MyName", "width" => "120px", "add" => "", "edit" => array("type" => "ValidationTextBox", "name" => "MyName", "caption" => "Mein Name"));
 		
-		$arrayValues[0] = array("PioneerNr" => 25, "PioneerName" => "BD");
+		$arrayValues b=m array();
+		$arrayValues[] = array("PioneerNr" => 25, "PioneerName" => "BD", "Activ" => true, "MyName" => "BD");
+		$arrayValues[] = array("PioneerNr" => 04, "PioneerName" => "DVD", "Activ" => true, "MyName" => "DVD");
+		$arrayValues[] = array("PioneerNr" => 05, "PioneerName" => "TV/SAT", "Activ" => true, "MyName" => "TV/SAT");
+		$arrayValues[] = array("PioneerNr" => 15, "PioneerName" => "DVR/BDR", "Activ" => true, "MyName" => "DVR/BDR");
+		$arrayValues[] = array("PioneerNr" => 10, "PioneerName" => "VIDEO 1(VIDEO)", "Activ" => true, "MyName" => "VIDEO 1(VIDEO)");
+		$arrayValues[] = array("PioneerNr" => 14, "PioneerName" => "VIDEO 2", "Activ" => true, "MyName" => "VIDEO 2");
+		$arrayValues[] = array("PioneerNr" => 19, "PioneerName" => "HDMI 1", "Activ" => true, "MyName" => "HDMI 1");
+		$arrayValues[] = array("PioneerNr" => 20, "PioneerName" => "HDMI 2", "Activ" => true, "MyName" => "HDMI 2");
+		$arrayValues[] = array("PioneerNr" => 21, "PioneerName" => "HDMI 3", "Activ" => true, "MyName" => "HDMI 3");
+		$arrayValues[] = array("PioneerNr" => 22, "PioneerName" => "HDMI 4", "Activ" => true, "MyName" => "HDMI 4");
+		$arrayValues[] = array("PioneerNr" => 23, "PioneerName" => "HDMI 5", "Activ" => true, "MyName" => "HDMI 5");
+		$arrayValues[] = array("PioneerNr" => 24, "PioneerName" => "HDMI 6", "Activ" => true, "MyName" => "HDMI 6");
+		$arrayValues[] = array("PioneerNr" => 26, "PioneerName" => "HOME MEDIA GALLERY", "Activ" => true, "MyName" => "HOME MEDIA GALLERY");
+		$arrayValues[] = array("PioneerNr" => 17, "PioneerName" => "iPod/USB", "Activ" => true, "MyName" => "iPod/USB");
+		$arrayValues[] = array("PioneerNr" => 1, "PioneerName" => "CD", "Activ" => true, "MyName" => "CD");
+		$arrayValues[] = array("PioneerNr" => 3, "PioneerName" => "CD-R/TAPE", "Activ" => true, "MyName" => "CD-R/TAPE");
+		$arrayValues[] = array("PioneerNr" => 2, "PioneerName" => "TUNER", "Activ" => true, "MyName" => "TUNER");
+		$arrayValues[] = array("PioneerNr" => 0, "PioneerName" => "PHONO", "Activ" => true, "MyName" => "PHONO");
+		$arrayValues[] = array("PioneerNr" => 12, "PioneerName" => "MULTI CH IN", "Activ" => true, "MyName" => "MULTI CH IN");
+		$arrayValues[] = array("PioneerNr" => 33, "PioneerName" => "ADAPTER PORT", "Activ" => true, "MyName" => "ADAPTER PORT");
+		$arrayValues[] = array("PioneerNr" => 27, "PioneerName" => "SIRIUS", "Activ" => true, "MyName" => "SIRIUS");
+		$arrayValues[] = array("PioneerNr" => 31, "PioneerName" => "HDMI (cyclic)", "Activ" => true, "MyName" => "HDMI (cyclic)");
 		
 		$arrayElements[] = array("type" => "List", "name" => "InputDevices", "caption" => "Geräte", "rowCount" => 28, "add" => false, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
 				
