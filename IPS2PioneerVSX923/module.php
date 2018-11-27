@@ -26,8 +26,6 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
  		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		
-		$arraySort = array();
-		//$arraySort = array("column" => "DeviceTyp", "direction" => "ascending");
 		$arrayColumns = array();
 		$arrayColumns[] = array("label" => "Pioneer Nr.", "name" => "PioneerNr", "width" => "120px", "save" => true);
 		$arrayColumns[] = array("label" => "Pioneer Name", "name" => "PioneerName", "width" => "240px", "save" => true);
@@ -58,7 +56,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayValues[] = array("PioneerNr" => 27, "PioneerName" => "SIRIUS", "Activ" => true, "MyName" => "SIRIUS");
 		$arrayValues[] = array("PioneerNr" => 31, "PioneerName" => "HDMI (cyclic)", "Activ" => true, "MyName" => "HDMI (cyclic)");
 		
-		$arrayElements[] = array("type" => "List", "name" => "InputDevices", "caption" => "Geräte", "rowCount" => 15, "add" => false, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
+		$arrayElements[] = array("type" => "List", "name" => "InputDevices", "caption" => "Geräte", "rowCount" => 15, "add" => false, "delete" => false, "columns" => $arrayColumns, "values" => $arrayValues);
 				
 		
 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
