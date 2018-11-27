@@ -85,11 +85,17 @@ class IPS2PioneerVSX923 extends IPSModule
 		$InputDeviceArray = $this->ReadPropertyString("InputDevices");
 		$Data = json_decode($InputDeviceArray);
 		
-		foreach ($Data as $Value) {
-			If ($Data["Activ"] == true) {
-				$PioneerNr = $Data["PioneerNr"];
-				$MyName = $Data["MyName"];
+		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect", "Repeat", "", "", 0, Count($Data), 0);
+		
+		for ($i = 0; $i <= count($Data) - 1; $i++) {
+			If ($Data[$i]["Activ"] == true) {
+				$MyName = $Data[$i]["MyName"];
+				$PioneerNr = $Data[$i]["PioneerNr"];
 				$this->SendDebug("ApplyChanges", "Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
+				IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect", $PioneerNr, $MyName, "Repeat", -1);
+			}
+			else {
+				IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect", $PioneerNr, "", "", -1);
 			}
 		}
 		
@@ -101,7 +107,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableBoolean("Power", "Power", "~Switch", 20);
 		$this->EnableAction("Power");
 		
-		$this->RegisterVariableInteger("Input", "Input", "", 30);
+		$this->RegisterVariableInteger("Input", "Input", "IPS2Pioneer.InputSelect", 30);
 		$this->EnableAction("Input");
 		
 		$this->RegisterVariableInteger("InputChange", "Input", "IPS2Pioneer.Input", 35);
