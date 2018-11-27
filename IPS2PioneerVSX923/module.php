@@ -227,10 +227,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				case "InputChange":
 					SetValueInteger($this->GetIDForIdent("InputChange"), $Value);
 					If ($Value == 0) {
-						$this->SetData("FU");
+						$this->SetData("FD");
 					}
 					elseIf ($Value == 1) {
-						$this->SetData("FD");
+						$this->SetData("FU");
 					}
 					break;
 
