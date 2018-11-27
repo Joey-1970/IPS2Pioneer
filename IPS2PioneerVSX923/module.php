@@ -83,7 +83,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 1, ">", "Repeat", -1);
 		
 		$InputDeviceArray = $this->ReadPropertyString("InputDevices");
-		$Data = json_decode($InputDeviceArray);
+		$Data = json_decode($InputDeviceArray, true);
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect", "Repeat", "", "", 0, Count($Data), 0);
 		
