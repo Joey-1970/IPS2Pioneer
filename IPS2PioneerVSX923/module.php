@@ -92,10 +92,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				$MyName = $Data[$i]["MyName"];
 				$PioneerNr = $Data[$i]["PioneerNr"];
 				$this->SendDebug("ApplyChanges", "Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
-				IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect", $PioneerNr, $MyName, "Repeat", -1);
+				IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect", intval($PioneerNr), $MyName, "Repeat", -1);
 			}
 			else {
-				@IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect", $PioneerNr, "", "", -1);
+				@IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect", intval($PioneerNr), "", "", -1);
 			}
 		}
 		
