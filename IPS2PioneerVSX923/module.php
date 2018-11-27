@@ -27,10 +27,10 @@ class IPS2PioneerVSX923 extends IPSModule
  		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		
 		$arraySort = array();
-		$arraySort = array("column" => "DeviceTyp", "direction" => "ascending");
+		//$arraySort = array("column" => "DeviceTyp", "direction" => "ascending");
 		$arrayColumns = array();
-		$arrayColumns[] = array("label" => "Pioneer Nr.", "name" => "PioneerNr", "width" => "80px", "save" => true);
-		$arrayColumns[] = array("label" => "Pioneer Name", "name" => "PioneerName", "width" => "120px", "save" => true);
+		$arrayColumns[] = array("label" => "Pioneer Nr.", "name" => "PioneerNr", "width" => "120px", "save" => true);
+		$arrayColumns[] = array("label" => "Pioneer Name", "name" => "PioneerName", "width" => "160px", "save" => true);
 		$arrayColumns[] = array("label" => "Aktiv", "name" => "Activ", "width" => "60px", "add" => "", "edit" => array("type" => "CheckBox", "name" => "Activ", "caption" => "Aktiv"));
 		
 		$arrayColumns[] = array("label" => "Eigener Name", "name" => "MyName", "width" => "120px", "add" => "", "edit" => array("type" => "ValidationTextBox", "name" => "MyName", "caption" => "Mein Name"));
@@ -59,7 +59,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayValues[] = array("PioneerNr" => 27, "PioneerName" => "SIRIUS", "Activ" => true, "MyName" => "SIRIUS");
 		$arrayValues[] = array("PioneerNr" => 31, "PioneerName" => "HDMI (cyclic)", "Activ" => true, "MyName" => "HDMI (cyclic)");
 		
-		$arrayElements[] = array("type" => "List", "name" => "InputDevices", "caption" => "Geräte", "rowCount" => 28, "add" => false, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
+		$arrayElements[] = array("type" => "List", "name" => "InputDevices", "caption" => "Geräte", "rowCount" => 15, "add" => false, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
 				
 		
 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
