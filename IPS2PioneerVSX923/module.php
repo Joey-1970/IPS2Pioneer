@@ -83,7 +83,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 1, ">", "Repeat", -1);
 		
 		$InputDeviceArray = $this->ReadPropertyString("InputDevices");
-		$InputDeviceArray = json_decode($InputDeviceArray);
+		$Data = json_decode($InputDeviceArray);
+		
 		foreach ($InputDeviceArray as $Value) {
 			If ($Data->Activ == true) {
 				$PioneerNr = $Data->PioneerNr;
@@ -91,6 +92,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				$this->SendDebug("ApplyChanges", "Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
 			}
 		}
+		
 		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("LastKeepAlive", "Letztes Keep Alive", "~UnixTimestamp", 10);
