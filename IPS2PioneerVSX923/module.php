@@ -45,6 +45,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayValues[] = array("PioneerNr" => 22, "PioneerName" => "HDMI 4", "Activ" => true, "MyName" => "HDMI 4");
 		$arrayValues[] = array("PioneerNr" => 23, "PioneerName" => "HDMI 5", "Activ" => true, "MyName" => "HDMI 5");
 		$arrayValues[] = array("PioneerNr" => 24, "PioneerName" => "HDMI 6", "Activ" => true, "MyName" => "HDMI 6");
+		$arrayValues[] = array("PioneerNr" => 34, "PioneerName" => "HDMI 7", "Activ" => true, "MyName" => "HDMI 7");
 		$arrayValues[] = array("PioneerNr" => 26, "PioneerName" => "HOME MEDIA GALLERY", "Activ" => true, "MyName" => "HOME MEDIA GALLERY");
 		$arrayValues[] = array("PioneerNr" => 17, "PioneerName" => "iPod/USB", "Activ" => true, "MyName" => "iPod/USB");
 		$arrayValues[] = array("PioneerNr" => 1, "PioneerName" => "CD", "Activ" => true, "MyName" => "CD");
