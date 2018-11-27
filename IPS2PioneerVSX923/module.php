@@ -56,6 +56,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayValues[] = array("PioneerNr" => 33, "PioneerName" => "ADAPTER PORT", "Activ" => true, "MyName" => "ADAPTER PORT");
 		$arrayValues[] = array("PioneerNr" => 27, "PioneerName" => "SIRIUS", "Activ" => true, "MyName" => "SIRIUS");
 		$arrayValues[] = array("PioneerNr" => 31, "PioneerName" => "HDMI (cyclic)", "Activ" => true, "MyName" => "HDMI (cyclic)");
+		$arrayValues[] = array("PioneerNr" => 48, "PioneerName" => "MHL", "Activ" => true, "MyName" => "MHL");
 		
 		$arrayElements[] = array("type" => "List", "name" => "InputDevices", "caption" => "Geräte", "rowCount" => 15, "add" => false, "delete" => false, "columns" => $arrayColumns, "values" => $arrayValues);
 				
@@ -80,6 +81,16 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterProfileInteger("IPS2Pioneer.Input", "Repeat", "", "", 0, 1, 0);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 0, "<", "Repeat", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 1, ">", "Repeat", -1);
+		
+		$InputDeviceArray = $this->ReadPropertyString("InputDevices");
+		$InputDeviceArray = json_decode($InputDeviceArray);
+		foreach ($InputDeviceArray as $Value) {
+			If ($Data->Activ == true) {
+				$PioneerNr = $Data->PioneerNr;
+				$MyName = $Data->MyName;
+				$this->SendDebug("ApplyChanges", "Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
+			}
+		}
 		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("LastKeepAlive", "Letztes Keep Alive", "~UnixTimestamp", 10);
