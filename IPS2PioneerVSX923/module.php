@@ -85,7 +85,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$InputDeviceArray = $this->ReadPropertyString("InputDevices");
 		$Data = json_decode($InputDeviceArray, true);
 		
-		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect", "Repeat", "", "", 0, Count($Data), 0);
+		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect_".$this->InstanceID, "Repeat", "", "", 0, Count($Data), 0);
 		
 		for ($i = 0; $i <= count($Data) - 1; $i++) {
 			$MyName = $Data[$i]["MyName"];
@@ -94,11 +94,11 @@ class IPS2PioneerVSX923 extends IPSModule
 			
 			If ($Activ == true) {
 				$this->SendDebug("ApplyChanges", "Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
-				IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect", intval($PioneerNr), $MyName, "Repeat", -1);
+				IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, intval($PioneerNr), $MyName, "Repeat", -1);
 			}
 			elseIf ($Activ == false) {
 				//$this->SendDebug("ApplyChanges", "Nicht: Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
-				$Result = @IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect", intval($PioneerNr), "", "", -1);
+				$Result = @IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, intval($PioneerNr), "", "", -1);
 			}
 		}
 		
@@ -110,7 +110,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableBoolean("Power", "Power", "~Switch", 20);
 		$this->EnableAction("Power");
 		
-		$this->RegisterVariableInteger("Input", "Input", "IPS2Pioneer.InputSelect", 30);
+		$this->RegisterVariableInteger("Input", "Input", "IPS2Pioneer.InputSelect_".$this->InstanceID, 30);
 		$this->EnableAction("Input");
 		
 		$this->RegisterVariableInteger("InputChange", "Input", "IPS2Pioneer.Input", 35);
@@ -256,6 +256,11 @@ class IPS2PioneerVSX923 extends IPSModule
 						$this->SetData("FU");
 					}
 					break;
+				case "Input":
+					SetValueInteger($this->GetIDForIdent("Input"), $Value);
+					$Input = str_pad($Value, 2, '0', STR_PAD_LEFT);
+					$this->SetData($Input."FN");
+					break;
 
 				default:
 				    throw new Exception("Invalid Ident");
@@ -288,16 +293,14 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function PowerOn()
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("PN".chr(13));
-			$this->Get_DataUpdate();
+			$this->SetData("PO");
 		}	
 	}
 	
 	public function PowerOff()
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("PF".chr(13));
-			$this->Get_DataUpdate();
+			$this->SetData("PF");
 		}	
 	}
 	
