@@ -298,8 +298,8 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case "Speakers":
 					SetValueInteger($this->GetIDForIdent("Speakers"), $Value);
-					$Speaker = str_pad($Value, 1, '0', STR_PAD_LEFT);
-					$this->SetData($Speaker."FN");
+					$Speaker = intval($Value);
+					$this->SetData("FN".$Speaker);
 					break;
 				default:
 				    throw new Exception("Invalid Ident");
