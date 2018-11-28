@@ -22,6 +22,13 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 0, "<", "Repeat", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 1, ">", "Repeat", -1);
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.Speaker", "Speaker", "", "", 0, 5, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 0, "Speaker off", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 1, "Speaker A on", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 2, "Speaker B on", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 3, "Speaker A+B on", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 9, "Speaker (cyclic)", "Speaker", -1);
+		
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
 	}
@@ -136,6 +143,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableBoolean("Mute", "Mute", "~Switch", 100);
 		$this->EnableAction("Mute");
 		
+		$this->RegisterVariableInteger("Speakers", "Speakers", "IPS2Pioneer.Speaker", 110);
+		$this->EnableAction("Speakers");
+		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
@@ -226,6 +236,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				$ListenningMode = intval(substr($Message, -4));
 				SetValueInteger($this->GetIDForIdent("ListeningModeSet"), $ListenningMode);
 				break;	
+			case preg_match('/SPK.*/', $Message) ? $Message : !$Message:
+				$Speaker = intval(substr($Message, -1));
+				SetValueInteger($this->GetIDForIdent("Speakers"), $Speaker);
+				break;	
 		}
 	}
 	
@@ -282,6 +296,11 @@ class IPS2PioneerVSX923 extends IPSModule
 					$ListeningMode = str_pad($Value, 4, '0', STR_PAD_LEFT);
 					$this->SetData($ListeningMode."SR");
 					break;
+				case "Speakers":
+					SetValueInteger($this->GetIDForIdent("Speakers"), $Value);
+					$Speaker = str_pad($Value, 1, '0', STR_PAD_LEFT);
+					$this->SetData($Speaker."FN");
+					break;
 				default:
 				    throw new Exception("Invalid Ident");
 			}
@@ -293,7 +312,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
