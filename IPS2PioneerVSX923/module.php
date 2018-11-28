@@ -11,6 +11,19 @@ class IPS2PioneerVSX923 extends IPSModule
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
 		$this->RegisterPropertyString("InputDevices", "");
 		
+		// Profile anlegen
+		$this->RegisterProfileFloat("IPS2Pioneer.dB", "Melody", "", " dB", -80, 12, 0.5, 1);
+		
+		$this->RegisterProfileInteger("IPS2Pioneer.Volume", "Shutter", "", "", 0, 1, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 0, "+", "Shutter", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 1, "-", "Shutter", -1);
+		
+		$this->RegisterProfileInteger("IPS2Pioneer.Input", "Repeat", "", "", 0, 1, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 0, "<", "Repeat", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 1, ">", "Repeat", -1);
+		
+		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
+		$this->SetListeningMode();
 	}
 	
 	public function GetConfigurationForm() { 
@@ -72,19 +85,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		
 		// Profile anlegen
-		$this->RegisterProfileFloat("IPS2Pioneer.dB", "Melody", "", " dB", -80, 12, 0.5, 1);
-		
-		$this->RegisterProfileInteger("IPS2Pioneer.Volume", "Shutter", "", "", 0, 1, 0);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 0, "+", "Shutter", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 1, "-", "Shutter", -1);
-		
-		$this->RegisterProfileInteger("IPS2Pioneer.Input", "Repeat", "", "", 0, 1, 0);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 0, "<", "Repeat", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 1, ">", "Repeat", -1);
-		
 		$InputDeviceArray = $this->ReadPropertyString("InputDevices");
 		$Data = json_decode($InputDeviceArray, true);
-		
 		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect_".$this->InstanceID, "Repeat", "", "", 0, Count($Data), 0);
 		
 		for ($i = 0; $i <= count($Data) - 1; $i++) {
@@ -103,6 +105,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		}
 		
 		
+		
+		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("LastKeepAlive", "Letztes Keep Alive", "~UnixTimestamp", 10);
 		$this->DisableAction("LastKeepAlive");
@@ -113,20 +117,23 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Input", "Input", "IPS2Pioneer.InputSelect_".$this->InstanceID, 30);
 		$this->EnableAction("Input");
 		
-		$this->RegisterVariableInteger("InputChange", "Input", "IPS2Pioneer.Input", 35);
+		$this->RegisterVariableInteger("InputChange", "Input", "IPS2Pioneer.Input", 40);
 		$this->EnableAction("InputChange");
 		
-		$this->RegisterVariableFloat("Volume", "Volume", "IPS2Pioneer.dB", 40);
+		$this->RegisterVariableFloat("Volume", "Volume", "IPS2Pioneer.dB", 50);
 		$this->EnableAction("Volume");
 		
-		$this->RegisterVariableInteger("VolumeUpDown", "Volume", "IPS2Pioneer.Volume", 50);
+		$this->RegisterVariableInteger("VolumeUpDown", "Volume", "IPS2Pioneer.Volume", 60);
 		$this->EnableAction("VolumeUpDown");
 		
-		$this->RegisterVariableString("Display", "Display", "", 60);
+		$this->RegisterVariableString("Display", "Display", "", 70);
 		
-		$this->RegisterVariableString("ListeningMode", "Listening Mode", "", 70);
+		$this->RegisterVariableString("ListeningMode", "Listening Mode", "", 80);
 		
-		$this->RegisterVariableBoolean("Mute", "Mute", "~Switch", 80);
+		$this->RegisterVariableInteger("ListeningModeSet", "Listening Mode", "IPS2Pioneer.ListeningModeSet", 90);
+		$this->EnableAction("ListeningModeSet");
+		
+		$this->RegisterVariableBoolean("Mute", "Mute", "~Switch", 100);
 		$this->EnableAction("Mute");
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
@@ -215,7 +222,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				$ModeText = $this->GetListeningMode($Mode);
 				SetValueString($this->GetIDForIdent("ListeningMode"), $ModeText);
 				break;
-				
+			case preg_match('/SR.*/', $Message) ? $Message : !$Message:
+				$ListenningMode = intval(substr($Message, -4));
+				SetValueInteger($this->GetIDForIdent("ListeningModeSet"), $ListenningMode);
+				break;	
 		}
 	}
 	
@@ -267,7 +277,11 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Input = str_pad($Value, 2, '0', STR_PAD_LEFT);
 					$this->SetData($Input."FN");
 					break;
-
+				case "ListeningModeSet":
+					SetValueInteger($this->GetIDForIdent("ListeningModeSet"), $Value);
+					$ListeningMode = str_pad($Value, 4, '0', STR_PAD_LEFT);
+					$this->SetData($ListeningMode."SR");
+					break;
 				default:
 				    throw new Exception("Invalid Ident");
 			}
@@ -279,7 +293,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
@@ -372,7 +386,14 @@ class IPS2PioneerVSX923 extends IPSModule
 	return $ListingModeText;
 	}
 	
-	
+	private function SetListeningMode()
+	{
+		$Mode = array(1 => "STEREO (cyclic)");
+		foreach ($Mode as $Key => $Value) {
+			IPS_SetVariableProfileAssociation("IPS2Pioneer.ListeningModeSet", $Key, $Value, "Melody", -1);
+		}
+	return $ListingModeText;
+	}
 	
 	
 	
