@@ -124,7 +124,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterVariableString("Display", "Display", "", 60);
 		
-		$this->RegisterVariableString("ListeningMode", "ListeningMode", "", 70);
+		$this->RegisterVariableString("ListeningMode", "Listening Mode", "", 70);
 		
 		$this->RegisterVariableBoolean("Mute", "Mute", "~Switch", 80);
 		$this->EnableAction("Mute");
@@ -210,7 +210,11 @@ class IPS2PioneerVSX923 extends IPSModule
 				$Result = trim($Result, " \t\n\r\0\x0B");
 				SetValueString($this->GetIDForIdent("Display"), $Result);
 				break;	
-				
+			case preg_match('/LM.*/', $Message) ? $Message : !$Message:
+				$Mode = substr($Message, -4);
+				$ModeText = $this->GetListeningMode($Mode);
+				SetValueString($this->GetIDForIdent("ListeningMode"), $ModeText);
+				break;
 				
 		}
 	}
@@ -275,7 +279,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
