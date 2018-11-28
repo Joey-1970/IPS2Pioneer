@@ -411,7 +411,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		foreach ($Mode as $Key => $Value) {
 			IPS_SetVariableProfileAssociation("IPS2Pioneer.ListeningModeSet", $Key, $Value, "Melody", -1);
 		}
-	return $ListingModeText;
+	return;
 	}
 	
 	
