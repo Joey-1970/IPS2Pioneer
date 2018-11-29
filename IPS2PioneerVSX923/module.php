@@ -358,7 +358,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	private function GetCover(String $URL)
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			$Content = file_get_contents("http://".$URL);
+			$Content = file_get_contents($URL);
 			IPS_SetMediaContent($this->GetIDForIdent("Screenshot_".$this->InstanceID), base64_encode($Content));  //Bild Base64 codieren und ablegen
 			IPS_SendMediaEvent($this->GetIDForIdent("Screenshot_".$this->InstanceID)); //aktualisieren
 		}
