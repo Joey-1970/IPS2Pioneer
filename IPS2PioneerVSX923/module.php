@@ -88,7 +88,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		//Never delete this line!
 		parent::ApplyChanges();
-		$this->RegisterMediaObject("Screenshot_".$this->InstanceID, "Screenshot_".$this->InstanceID, 1, $this->InstanceID, 1000, true, "Screenshot.jpg");
+		$this->RegisterMediaObject("Cover", "Screenshot_".$this->InstanceID, 1, $this->InstanceID, 1000, true, "Screenshot.jpg");
 
 		
 		
@@ -338,7 +338,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
