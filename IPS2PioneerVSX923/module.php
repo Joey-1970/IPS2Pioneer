@@ -545,22 +545,26 @@ class IPS2PioneerVSX923 extends IPSModule
 	        IPS_SetVariableProfileDigits($Name, $Digits);
 	}
 	
-	private function RegisterMediaObject($Name, $Typ, $Parent, $Position, $Cached, $Filename)
-    	{
-       		if (!IPS_MediaExists($this->GetIDForIdent($Name))) {
-		     // Image im MedienPool anlegen
-		    $MediaID = IPS_CreateMedia($Typ); 
-		    // Medienobjekt einsortieren unter Kategorie $catid
-		    IPS_SetParent($MediaID, $Parent);
-		    IPS_SetIdent ($MediaID, $Name);
-		    IPS_SetName($MediaID, $Name);
-		    IPS_SetPosition($MediaID, $Position);
-                    IPS_SetMediaCached($MediaID, $Cached);
-		    $ImageFile = IPS_GetKernelDir()."media".DIRECTORY_SEPARATOR.$Filename;  // Image-Datei
-            		IPS_SetMediaFile($MediaID, $ImageFile, false);    // Image im MedienPool mit Image-Datei verbinden
-        	}  
-    	return;
-    	}  
+	private function RegisterMediaObject($Name, $Ident, $Typ, $Parent, $Position, $Cached, $Filename)
+	{
+		$MediaID = @$this->GetIDForIdent($Ident);
+		if($MediaID === false) {
+		    	$MediaID = 0;
+		}
+		
+		if ($MediaID == 0) {
+			 // Image im MedienPool anlegen
+			$MediaID = IPS_CreateMedia($Typ); 
+			// Medienobjekt einsortieren unter Kategorie $catid
+			IPS_SetParent($MediaID, $Parent);
+			IPS_SetIdent($MediaID, $Ident);
+			IPS_SetName($MediaID, $Name);
+			IPS_SetPosition($MediaID, $Position);
+                    	IPS_SetMediaCached($MediaID, $Cached);
+			$ImageFile = IPS_GetKernelDir()."media".DIRECTORY_SEPARATOR.$Filename;  // Image-Datei
+			IPS_SetMediaFile($MediaID, $ImageFile, false);    // Image im MedienPool mit Image-Datei verbinden
+		}  
+	}     
 	
 	private function GetParentID()
 	{
