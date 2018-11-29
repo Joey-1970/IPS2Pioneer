@@ -262,6 +262,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				$Treble = intval(substr($Message, -2));
 				SetValueInteger($this->GetIDForIdent("Treble"), $Treble);
 				break;	
+			case preg_match('/GIC.*/', $Message) ? $Message : !$Message:
+				preg_match('/"([^"]*)"/is', $Message, $Result);
+				$this->GetCover($Result[1]);
+				break;	
 		}
 	}
 	
@@ -351,7 +355,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		}
 	}
 	
-	private function GetCover(string $URL)
+	private function GetCover(String $URL)
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$Content = file_get_contents("http://".$URL");
