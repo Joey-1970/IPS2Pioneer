@@ -146,6 +146,15 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Speakers", "Speakers", "IPS2Pioneer.Speaker", 110);
 		$this->EnableAction("Speakers");
 		
+		$this->RegisterVariableInteger("ToneByPass", "ToneByPass", "", 120);
+		$this->EnableAction("ToneByPass");
+		
+		$this->RegisterVariableInteger("Bass", "Bass", "", 130);
+		$this->EnableAction("Bass");
+		
+		$this->RegisterVariableInteger("Treble", "Treble", "", 140);
+		$this->EnableAction("Treble");
+		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
@@ -240,6 +249,18 @@ class IPS2PioneerVSX923 extends IPSModule
 				$Speaker = intval(substr($Message, -1));
 				SetValueInteger($this->GetIDForIdent("Speakers"), $Speaker);
 				break;	
+			case preg_match('/TO.*/', $Message) ? $Message : !$Message:
+				$ToneByPass = intval(substr($Message, -1));
+				SetValueInteger($this->GetIDForIdent("ToneByPass"), $ToneByPass);
+				break;	
+			case preg_match('/BA.*/', $Message) ? $Message : !$Message:
+				$Bass = intval(substr($Message, -2));
+				SetValueInteger($this->GetIDForIdent("Bass"), $Bass);
+				break;	
+			case preg_match('/TR.*/', $Message) ? $Message : !$Message:
+				$Treble = intval(substr($Message, -2));
+				SetValueInteger($this->GetIDForIdent("Treble"), $Treble);
+				break;	
 		}
 	}
 	
@@ -312,7 +333,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
