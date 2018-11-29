@@ -88,7 +88,8 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		//Never delete this line!
 		parent::ApplyChanges();
-		
+		$this->RegisterMediaObject("Screenshot_".$this->InstanceID, "Screenshot_".$this->InstanceID, 1, $this->InstanceID, 1000, true, "Screenshot.jpg");
+
 		
 		
 		// Profile anlegen
@@ -350,6 +351,15 @@ class IPS2PioneerVSX923 extends IPSModule
 		}
 	}
 	
+	private function GetCover(string $URL)
+	{
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$Content = file_get_contents("http://".$URL");
+			IPS_SetMediaContent($this->GetIDForIdent("Screenshot_".$this->InstanceID), base64_encode($Content));  //Bild Base64 codieren und ablegen
+			IPS_SendMediaEvent($this->GetIDForIdent("Screenshot_".$this->InstanceID)); //aktualisieren
+		}
+	} 
+	
 	public function PowerOn()
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
@@ -530,6 +540,23 @@ class IPS2PioneerVSX923 extends IPSModule
 	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
 	        IPS_SetVariableProfileDigits($Name, $Digits);
 	}
+	
+	private function RegisterMediaObject($Name, $Typ, $Parent, $Position, $Cached, $Filename)
+    	{
+       		if (!IPS_MediaExists($this->GetIDForIdent($Name))) {
+		     // Image im MedienPool anlegen
+		    $MediaID = IPS_CreateMedia($Typ); 
+		    // Medienobjekt einsortieren unter Kategorie $catid
+		    IPS_SetParent($MediaID, $Parent);
+		    IPS_SetIdent ($MediaID, $Name);
+		    IPS_SetName($MediaID, $Name);
+		    IPS_SetPosition($MediaID, $Position);
+                    IPS_SetMediaCached($MediaID, $Cached);
+		    $ImageFile = IPS_GetKernelDir()."media".DIRECTORY_SEPARATOR.$Filename;  // Image-Datei
+            		IPS_SetMediaFile($MediaID, $ImageFile, false);    // Image im MedienPool mit Image-Datei verbinden
+        	}  
+    	return;
+    	}  
 	
 	private function GetParentID()
 	{
