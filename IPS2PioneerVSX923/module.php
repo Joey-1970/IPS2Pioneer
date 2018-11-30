@@ -367,6 +367,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
 				IPS_Sleep(100);
 			}
+			set_include_path(__DIR__.'/../imgs');
+			$Content = file_get_contents(__DIR__ .'/../imgs/Pioneer.jpg');
+			IPS_SetMediaContent($this->GetIDForIdent("Cover_".$this->InstanceID), base64_encode($Content));  //Bild Base64 codieren und ablegen
+			IPS_SendMediaEvent($this->GetIDForIdent("Cover_".$this->InstanceID)); //aktualisieren
 		}
 	}
 	
