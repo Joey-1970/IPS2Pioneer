@@ -204,13 +204,15 @@ class IPS2PioneerVSX923 extends IPSModule
 		$Data = json_decode($JSONString);
 		$Message = utf8_decode($Data->Buffer);
 		
+		// Entfernen der Steuerzeichen
+		$Message = trim($Message, "\x00..\x1F");
+		
 		$MessageParts = explode(chr(13), $Message);
 		If (count($MessageParts) > 1) {
 			$this->SendDebug("ReceiveData", "Messageparts: ".count($MessageParts), 0);
 		}
 		
-		// Entfernen der Steuerzeichen
-		$Message = trim($Message, "\x00..\x1F");
+		
 		
 		$this->SendDebug("ReceiveData", $Message, 0);
 		
