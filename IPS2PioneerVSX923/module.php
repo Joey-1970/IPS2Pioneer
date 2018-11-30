@@ -22,12 +22,15 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 0, "<", "Repeat", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 1, ">", "Repeat", -1);
 		
-		$this->RegisterProfileInteger("IPS2Pioneer.Speaker", "Speaker", "", "", 0, 5, 0);
+		$this->RegisterProfileInteger("IPS2Pioneer.Speaker", "Speaker", "", "", 0, 3, 0);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 0, "Speaker off", "Speaker", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 1, "Speaker A on", "Speaker", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 2, "Speaker B on", "Speaker", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 3, "Speaker A+B on", "Speaker", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 9, "Speaker (cyclic)", "Speaker", -1);
+		
+		$this->RegisterProfileInteger("IPS2Pioneer.Tone", "Music", "", "", 0, 1, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Tone", 0, "ByPass", "Music", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Tone", 1, "On", "Music", -1);
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
@@ -147,8 +150,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Speakers", "Speakers", "IPS2Pioneer.Speaker", 110);
 		$this->EnableAction("Speakers");
 		
-		$this->RegisterVariableInteger("ToneByPass", "ToneByPass", "", 120);
-		$this->EnableAction("ToneByPass");
+		$this->RegisterVariableInteger("Tone", "Tone", "IPS2Pioneer.Tone", 120);
+		$this->EnableAction("Tone");
 		
 		$this->RegisterVariableInteger("Bass", "Bass", "", 130);
 		$this->EnableAction("Bass");
@@ -252,7 +255,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				break;	
 			case preg_match('/TO.*/', $Message) ? $Message : !$Message:
 				$ToneByPass = intval(substr($Message, -1));
-				SetValueInteger($this->GetIDForIdent("ToneByPass"), $ToneByPass);
+				SetValueInteger($this->GetIDForIdent("Tone"), $ToneByPass);
 				break;	
 			case preg_match('/BA.*/', $Message) ? $Message : !$Message:
 				$Bass = intval(substr($Message, -2));
