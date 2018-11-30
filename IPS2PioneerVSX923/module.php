@@ -276,11 +276,11 @@ class IPS2PioneerVSX923 extends IPSModule
 				SetValueInteger($this->GetIDForIdent("Tone"), $ToneByPass);
 				break;	
 			case preg_match('/BA.*/', $Message) ? $Message : !$Message:
-				$Bass = intval(substr($Message, -2));
+				$Bass = intval(substr($Message, -2)) - 6;
 				SetValueInteger($this->GetIDForIdent("Bass"), $Bass);
 				break;	
 			case preg_match('/TR.*/', $Message) ? $Message : !$Message:
-				$Treble = intval(substr($Message, -2));
+				$Treble = intval(substr($Message, -2)) - 6;
 				SetValueInteger($this->GetIDForIdent("Treble"), $Treble);
 				break;	
 			case preg_match('/GIC.*/', $Message) ? $Message : !$Message:
