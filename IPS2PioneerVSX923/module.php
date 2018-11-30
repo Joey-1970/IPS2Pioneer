@@ -203,6 +203,12 @@ class IPS2PioneerVSX923 extends IPSModule
 	    	SetValueInteger($this->GetIDForIdent("LastKeepAlive"), time() );
 		$Data = json_decode($JSONString);
 		$Message = utf8_decode($Data->Buffer);
+		
+		$MessageParts = explode(chr(13), $Message);
+		If (count($MessageParts) > 1) {
+			$this->SendDebug("ReceiveData", "Messageparts: ".count($MessageParts), 0);
+		}
+		
 		// Entfernen der Steuerzeichen
 		$Message = trim($Message, "\x00..\x1F");
 		
