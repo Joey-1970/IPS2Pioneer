@@ -14,6 +14,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		// Profile anlegen
 		$this->RegisterProfileFloat("IPS2Pioneer.dB", "Melody", "", " dB", -80, 12, 0.5, 1);
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.BassTreble", "Music", "", " dB", -6, 6, 1);
+		
 		$this->RegisterProfileInteger("IPS2Pioneer.Volume", "Shutter", "", "", 0, 1, 0);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 0, "+", "Shutter", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Volume", 1, "-", "Shutter", -1);
@@ -153,10 +155,10 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Tone", "Tone", "IPS2Pioneer.Tone", 120);
 		$this->EnableAction("Tone");
 		
-		$this->RegisterVariableInteger("Bass", "Bass", "", 130);
+		$this->RegisterVariableInteger("Bass", "Bass", "IPS2Pioneer.BassTreble", 130);
 		$this->EnableAction("Bass");
 		
-		$this->RegisterVariableInteger("Treble", "Treble", "", 140);
+		$this->RegisterVariableInteger("Treble", "Treble", "IPS2Pioneer.BassTreble", 140);
 		$this->EnableAction("Treble");
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
