@@ -209,6 +209,21 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->SendDebug("ReceiveData", $Message, 0);
 		
 		switch($Message) {
+			case "E02":
+				$this->SendDebug("ReceiveData", "E02: NOT AVAILABLE NOW", 0);
+				break;
+			case "E03":
+				$this->SendDebug("ReceiveData", "E03: INVALID COMMAND", 0);
+				break;
+			case "E04":
+				$this->SendDebug("ReceiveData", "E04: COMMAND ERROR", 0);
+				break;
+			case "E06":
+				$this->SendDebug("ReceiveData", "E06: PARAMETER ERROR", 0);
+				break;
+			case "B00":
+				$this->SendDebug("ReceiveData", "B00: BUSY", 0);
+				break;
 			case "PWR0":
 				SetValueBoolean($this->GetIDForIdent("Power"), true);
 				break;
@@ -377,6 +392,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	private function SetData(String $Message)
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->SendDebug("SetData", "Message: ".$Message, 0);
 			$Message = $Message.chr(13);
 			$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
 		}
