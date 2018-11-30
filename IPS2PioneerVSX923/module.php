@@ -346,24 +346,24 @@ class IPS2PioneerVSX923 extends IPSModule
 				case "Speakers":
 					SetValueInteger($this->GetIDForIdent("Speakers"), $Value);
 					$Speaker = intval($Value);
-					$this->SetData("FN".$Speaker);
+					$this->SetData($Speaker."SPK");
 					break;
 				case "Tone":
 					SetValueInteger($this->GetIDForIdent("Tone"), $Value);
 					$Tone = intval($Value);
-					$this->SetData("TO".$Tone);
+					$this->SetData($Tone."TO");
 					break;
 				case "Bass":
 					SetValueInteger($this->GetIDForIdent("Bass"), $Value);
 					$Bass = intval($Value) + 6;
 					$Bass = str_pad($Bass, 2, '0', STR_PAD_LEFT);
-					$this->SetData("BA".$Bass);
+					$this->SetData($Bass."BA");
 					break;
 				case "Treble":
 					SetValueInteger($this->GetIDForIdent("Treble"), $Value);
 					$Treble = intval($Value) + 6;
 					$Treble = str_pad($Treble, 2, '0', STR_PAD_LEFT);
-					$this->SetData("TR".$Treble);
+					$this->SetData($Treble."TR");
 					break;
 				default:
 				    throw new Exception("Invalid Ident");
