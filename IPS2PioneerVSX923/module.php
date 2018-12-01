@@ -212,89 +212,91 @@ class IPS2PioneerVSX923 extends IPSModule
 			$this->SendDebug("ReceiveData", "Messageparts: ".count($MessageParts), 0);
 		}
 		
+		foreach ($MessageParts as $Message) {
+			// Entfernen der Steuerzeichen
+			$Message = trim($Message, "\x00..\x1F");
+			$this->SendDebug("ReceiveData", $Message, 0);
 		
-		
-		$this->SendDebug("ReceiveData", $Message, 0);
-		
-		switch($Message) {
-			case "E02":
-				$this->SendDebug("ReceiveData", "E02: NOT AVAILABLE NOW", 0);
-				break;
-			case "E03":
-				$this->SendDebug("ReceiveData", "E03: INVALID COMMAND", 0);
-				break;
-			case "E04":
-				$this->SendDebug("ReceiveData", "E04: COMMAND ERROR", 0);
-				break;
-			case "E06":
-				$this->SendDebug("ReceiveData", "E06: PARAMETER ERROR", 0);
-				break;
-			case "B00":
-				$this->SendDebug("ReceiveData", "B00: BUSY", 0);
-				break;
-			case "PWR0":
-				SetValueBoolean($this->GetIDForIdent("Power"), true);
-				break;
-			case "PWR1":
-				SetValueBoolean($this->GetIDForIdent("Power"), false);
-				break;
-			case "MUT0":
-				SetValueBoolean($this->GetIDForIdent("Mute"), true);
-				break;
-			case "MUT1":
-				SetValueBoolean($this->GetIDForIdent("Mute"), false);
-				break;
-			case preg_match('/FN.*/', $Message) ? $Message : !$Message:
-				SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
-				break;
-			case preg_match('/VOL.*/', $Message) ? $Message : !$Message:
-				$Volume = intval(substr($Message, -3));
-				$Volume = ($Volume - 161) / 2;
-				SetValueFloat($this->GetIDForIdent("Volume"), $Volume);
-				break;
-			case preg_match('/FL.*/', $Message) ? $Message : !$Message:
-				$Result = "";
-				$Message = substr($Message, 2);
-				$MessageArray = str_split($Message, 2);
-				for ($i = 0; $i <= count($MessageArray) - 1; $i++) {
-					If ($MessageArray[$i] <> 0x02) {
-						$Sign = chr(hexdec($MessageArray[$i]));
-						$Result = $Result.$Sign;
+			switch($Message) {
+				case "E02":
+					$this->SendDebug("ReceiveData", "E02: NOT AVAILABLE NOW", 0);
+					break;
+				case "E03":
+					$this->SendDebug("ReceiveData", "E03: INVALID COMMAND", 0);
+					break;
+				case "E04":
+					$this->SendDebug("ReceiveData", "E04: COMMAND ERROR", 0);
+					break;
+				case "E06":
+					$this->SendDebug("ReceiveData", "E06: PARAMETER ERROR", 0);
+					break;
+				case "B00":
+					$this->SendDebug("ReceiveData", "B00: BUSY", 0);
+					break;
+				case "PWR0":
+					SetValueBoolean($this->GetIDForIdent("Power"), true);
+					break;
+				case "PWR1":
+					SetValueBoolean($this->GetIDForIdent("Power"), false);
+					break;
+				case "MUT0":
+					SetValueBoolean($this->GetIDForIdent("Mute"), true);
+					break;
+				case "MUT1":
+					SetValueBoolean($this->GetIDForIdent("Mute"), false);
+					break;
+				case preg_match('/FN.*/', $Message) ? $Message : !$Message:
+					SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
+					break;
+				case preg_match('/VOL.*/', $Message) ? $Message : !$Message:
+					$Volume = intval(substr($Message, -3));
+						$Volume = ($Volume - 161) / 2;
+						SetValueFloat($this->GetIDForIdent("Volume"), $Volume);
+						break;
+				case preg_match('/FL.*/', $Message) ? $Message : !$Message:
+					$Result = "";
+					$Message = substr($Message, 2);
+					$MessageArray = str_split($Message, 2);
+					for ($i = 0; $i <= count($MessageArray) - 1; $i++) {
+						If ($MessageArray[$i] <> 0x02) {
+							$Sign = chr(hexdec($MessageArray[$i]));
+							$Result = $Result.$Sign;
+						}
 					}
-				}
-				$Result = trim($Result, " \t\n\r\0\x0B");
-				SetValueString($this->GetIDForIdent("Display"), $Result);
-				break;	
-			case preg_match('/LM.*/', $Message) ? $Message : !$Message:
-				$Mode = substr($Message, -4);
-				$ModeText = $this->GetListeningMode($Mode);
-				SetValueString($this->GetIDForIdent("ListeningMode"), $ModeText);
-				break;
-			case preg_match('/SR.*/', $Message) ? $Message : !$Message:
-				$ListenningMode = intval(substr($Message, -4));
-				SetValueInteger($this->GetIDForIdent("ListeningModeSet"), $ListenningMode);
-				break;	
-			case preg_match('/SPK.*/', $Message) ? $Message : !$Message:
-				$Speaker = intval(substr($Message, -1));
-				SetValueInteger($this->GetIDForIdent("Speakers"), $Speaker);
-				break;	
-			case preg_match('/TO.*/', $Message) ? $Message : !$Message:
-				$ToneByPass = intval(substr($Message, -1));
-				// Eventuell sperren von Bass und Treble???
-				SetValueInteger($this->GetIDForIdent("Tone"), $ToneByPass);
-				break;	
-			case preg_match('/BA.*/', $Message) ? $Message : !$Message:
-				$Bass = intval(substr($Message, -2)) - 6;
-				SetValueInteger($this->GetIDForIdent("Bass"), $Bass);
-				break;	
-			case preg_match('/TR.*/', $Message) ? $Message : !$Message:
-				$Treble = intval(substr($Message, -2)) - 6;
-				SetValueInteger($this->GetIDForIdent("Treble"), $Treble);
-				break;	
-			case preg_match('/GIC.*/', $Message) ? $Message : !$Message:
-				preg_match('/"([^"]*)"/is', $Message, $Result);
-				$this->GetCover($Result[1]);
-				break;	
+					$Result = trim($Result, " \t\n\r\0\x0B");
+					SetValueString($this->GetIDForIdent("Display"), $Result);
+					break;	
+				case preg_match('/LM.*/', $Message) ? $Message : !$Message:
+					$Mode = substr($Message, -4);
+					$ModeText = $this->GetListeningMode($Mode);
+					SetValueString($this->GetIDForIdent("ListeningMode"), $ModeText);
+					break;
+				case preg_match('/SR.*/', $Message) ? $Message : !$Message:
+					$ListenningMode = intval(substr($Message, -4));
+					SetValueInteger($this->GetIDForIdent("ListeningModeSet"), $ListenningMode);
+					break;	
+				case preg_match('/SPK.*/', $Message) ? $Message : !$Message:
+					$Speaker = intval(substr($Message, -1));
+					SetValueInteger($this->GetIDForIdent("Speakers"), $Speaker);
+					break;	
+				case preg_match('/TO.*/', $Message) ? $Message : !$Message:
+					$ToneByPass = intval(substr($Message, -1));
+					// Eventuell sperren von Bass und Treble???
+					SetValueInteger($this->GetIDForIdent("Tone"), $ToneByPass);
+					break;	
+				case preg_match('/BA.*/', $Message) ? $Message : !$Message:
+					$Bass = intval(substr($Message, -2)) - 6;
+					SetValueInteger($this->GetIDForIdent("Bass"), $Bass);
+					break;	
+				case preg_match('/TR.*/', $Message) ? $Message : !$Message:
+					$Treble = intval(substr($Message, -2)) - 6;
+					SetValueInteger($this->GetIDForIdent("Treble"), $Treble);
+					break;	
+				case preg_match('/GIC.*/', $Message) ? $Message : !$Message:
+					preg_match('/"([^"]*)"/is', $Message, $Result);
+					$this->GetCover($Result[1]);
+					break;	
+			}
 		}
 	}
 	
