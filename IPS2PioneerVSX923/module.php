@@ -36,6 +36,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
+		
+		$MetadataArray = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
+		$this->SetBuffer("Metadata", serialize($MetadataArray));
 	}
 	
 	public function GetConfigurationForm() { 
@@ -161,6 +164,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Treble", "Treble", "IPS2Pioneer.BassTreble", 140);
 		$this->EnableAction("Treble");
 		
+		$this->RegisterVariableString("Metadata", "Metadata", "~TextBox", 150);
+		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
@@ -189,6 +194,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				
 				$this->SetStatus(102);
 				// Erste Abfrage der Daten
+				$this->SetMetadata();
 				$this->GetData();
 			}
 			else {
@@ -295,6 +301,17 @@ class IPS2PioneerVSX923 extends IPSModule
 				case preg_match('/GIC.*/', $Message) ? $Message : !$Message:
 					preg_match('/"([^"]*)"/is', $Message, $Result);
 					$this->GetCover($Result[1]);
+					break;	
+				case preg_match('/GEH.*/', $Message) ? $Message : !$Message:
+					$MetadataArray = unserialize($this->SetBuffer("Metadata"));
+					$Line = intval(substr($Message, 3, 2));
+					$FocusInformation = intval(substr($Message, 5, 1));
+					$DataType = intval(substr($Message, 6, 2));
+					preg_match('/"([^"]*)"/is', $Message, $Result);
+					$Text = $Result[1];
+					$MetadataArray[$Line] = $Text;
+					$this->SetBuffer("Metadata", serialize($MetadataArray));
+					$this->SetMetadata();
 					break;	
 			}
 		}
@@ -419,6 +436,17 @@ class IPS2PioneerVSX923 extends IPSModule
 
 			IPS_SetMediaContent($this->GetIDForIdent("Cover_".$this->InstanceID), base64_encode($Content));  //Bild Base64 codieren und ablegen
 			IPS_SendMediaEvent($this->GetIDForIdent("Cover_".$this->InstanceID)); //aktualisieren
+		}
+	} 
+	
+	private function SetMetadata()
+	{
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$MetadataArray = unserialize($this->SetBuffer("Metadata"));
+			for ($i = 1; $i <= 8; $i++) {
+				$Value = $Value.$MetadataArray[$i].chr(13);
+			}
+			SetValueString($this->GetIDForIdent("Metadata"), $Value);
 		}
 	} 
 	
