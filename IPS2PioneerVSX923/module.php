@@ -303,7 +303,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					$this->GetCover($Result[1]);
 					break;	
 				case preg_match('/GEH.*/', $Message) ? $Message : !$Message:
-					$MetadataArray = unserialize($this->SetBuffer("Metadata"));
+					$MetadataArray = unserialize($this->GetBuffer("Metadata"));
 					$Line = intval(substr($Message, 3, 2));
 					$FocusInformation = intval(substr($Message, 5, 1));
 					$DataType = intval(substr($Message, 6, 2));
