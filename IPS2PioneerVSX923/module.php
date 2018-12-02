@@ -442,7 +442,8 @@ class IPS2PioneerVSX923 extends IPSModule
 	private function SetMetadata()
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			$MetadataArray = unserialize($this->SetBuffer("Metadata"));
+			$MetadataArray = unserialize($this->GetBuffer("Metadata"));
+			$Value = "";
 			for ($i = 1; $i <= 8; $i++) {
 				$Value = $Value.$MetadataArray[$i].chr(13);
 			}
