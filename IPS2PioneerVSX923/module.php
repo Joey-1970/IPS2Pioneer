@@ -166,6 +166,15 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterVariableString("Metadata", "Metadata", "~TextBox", 150);
 		
+		$this->RegisterVariableBoolean("Zone_2", "Zone_2", "~Switch", 160);
+		$this->EnableAction("Zone_2");
+		
+		$this->RegisterVariableBoolean("Zone_3", "Zone_3", "~Switch", 170);
+		$this->EnableAction("Zone_3");
+		
+		$this->RegisterVariableBoolean("Zone_4", "Zone_4", "~Switch", 180);
+		$this->EnableAction("Zone_4");
+		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
@@ -312,7 +321,25 @@ class IPS2PioneerVSX923 extends IPSModule
 					$MetadataArray[$Line] = $Text;
 					$this->SetBuffer("Metadata", serialize($MetadataArray));
 					$this->SetMetadata();
-					break;	
+					break;
+				case "APR0":
+					SetValueBoolean($this->GetIDForIdent("Zone_2"), true);
+					break;
+				case "APR1":
+					SetValueBoolean($this->GetIDForIdent("Zone_2"), false);
+					break;
+				case "BPR0":
+					SetValueBoolean($this->GetIDForIdent("Zone_3"), true);
+					break;
+				case "BPR1":
+					SetValueBoolean($this->GetIDForIdent("Zone_3"), false);
+					break;
+				case "EPR0":
+					SetValueBoolean($this->GetIDForIdent("Zone_4"), true);
+					break;
+				case "EPR1":
+					SetValueBoolean($this->GetIDForIdent("Zone_4"), false);
+					break;
 			}
 		}
 	}
@@ -392,6 +419,33 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Treble = str_pad($Treble, 2, '0', STR_PAD_LEFT);
 					$this->SetData($Treble."TR");
 					break;
+				case "Zone_2":
+					SetValueBoolean($this->GetIDForIdent("Zone_2"), $Value);
+					If ($Value == true) {
+						$this->SetData("APO");
+					}
+					else {
+						$this->SetData("APF");
+					}
+					break;
+				case "Zone_3":
+					SetValueBoolean($this->GetIDForIdent("Zone_3"), $Value);
+					If ($Value == true) {
+						$this->SetData("BPO");
+					}
+					else {
+						$this->SetData("BPF");
+					}
+					break;
+				case "Zone_4":
+					SetValueBoolean($this->GetIDForIdent("Zone_4"), $Value);
+					If ($Value == true) {
+						$this->SetData("EPO");
+					}
+					else {
+						$this->SetData("EPF");
+					}
+					break;
 				default:
 				    throw new Exception("Invalid Ident");
 			}
@@ -403,7 +457,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?EP");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
