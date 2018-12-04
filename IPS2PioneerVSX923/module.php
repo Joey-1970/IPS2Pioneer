@@ -34,6 +34,11 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Tone", 0, "ByPass", "Music", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Tone", 1, "On", "Music", -1);
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.HDMIOut", "Speaker", "", "", 0, 2, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 0, "HDMI Out All", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 1, "HDMI Out 1", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 2, "HDMI Out 2", "Speaker", -1);
+		
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
 		
@@ -175,6 +180,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableBoolean("Zone_4", "Zone_4", "~Switch", 180);
 		$this->EnableAction("Zone_4");
 		
+		$this->RegisterVariableInteger("HDMIOut", "HDMI Out", "IPS2Pioneer.HDMIOut", 190);
+		$this->EnableAction("HDMIOut");
+		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
@@ -294,6 +302,10 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Speaker = intval(substr($Message, -1));
 					SetValueInteger($this->GetIDForIdent("Speakers"), $Speaker);
 					break;	
+				case preg_match('/HO.*/', $Message) ? $Message : !$Message:
+					$HDMIOut = intval(substr($Message, -1));
+					SetValueInteger($this->GetIDForIdent("HDMIOut"), $HDMIOut);
+					break;	
 				case preg_match('/TO.*/', $Message) ? $Message : !$Message:
 					$ToneByPass = intval(substr($Message, -1));
 					// Eventuell sperren von Bass und Treble???
@@ -334,10 +346,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				case "BPR1":
 					SetValueBoolean($this->GetIDForIdent("Zone_3"), false);
 					break;
-				case "EPR0":
+				case "ZEP0":
 					SetValueBoolean($this->GetIDForIdent("Zone_4"), true);
 					break;
-				case "EPR1":
+				case "ZEP1":
 					SetValueBoolean($this->GetIDForIdent("Zone_4"), false);
 					break;
 			}
@@ -402,6 +414,11 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Speaker = intval($Value);
 					$this->SetData($Speaker."SPK");
 					break;
+				case "HDMIOut":
+					SetValueInteger($this->GetIDForIdent("HDMIOut"), $Value);
+					$HDMIOut = intval($Value);
+					$this->SetData($HDMIOut."HO");
+					break;
 				case "Tone":
 					SetValueInteger($this->GetIDForIdent("Tone"), $Value);
 					$Tone = intval($Value);
@@ -440,10 +457,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				case "Zone_4":
 					SetValueBoolean($this->GetIDForIdent("Zone_4"), $Value);
 					If ($Value == true) {
-						$this->SetData("EPO");
+						$this->SetData("ZEO");
 					}
 					else {
-						$this->SetData("EPF");
+						$this->SetData("ZEZ");
 					}
 					break;
 				default:
@@ -457,7 +474,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?EP");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?ZEP", "?HO");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
