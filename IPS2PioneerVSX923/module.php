@@ -174,11 +174,20 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableBoolean("Zone_2", "Zone_2", "~Switch", 160);
 		$this->EnableAction("Zone_2");
 		
+		$this->RegisterVariableInteger("Zone_2_Source", "Zone 2 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 165);
+		$this->EnableAction("Zone_2_Source");
+		
 		$this->RegisterVariableBoolean("Zone_3", "Zone_3", "~Switch", 170);
 		$this->EnableAction("Zone_3");
 		
+		$this->RegisterVariableInteger("Zone_3_Source", "Zone 3 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 175);
+		$this->EnableAction("Zone_3_Source");
+		
 		$this->RegisterVariableBoolean("Zone_4", "Zone_4", "~Switch", 180);
 		$this->EnableAction("Zone_4");
+		
+		$this->RegisterVariableInteger("Zone_4_Source", "Zone 4 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 185);
+		$this->EnableAction("Zone_4_Source");
 		
 		$this->RegisterVariableInteger("HDMIOut", "HDMI Out", "IPS2Pioneer.HDMIOut", 190);
 		$this->EnableAction("HDMIOut");
@@ -270,6 +279,15 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case preg_match('/FN.*/', $Message) ? $Message : !$Message:
 					SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
+					break;
+				case preg_match('/Z2F.*/', $Message) ? $Message : !$Message:
+					SetValueInteger($this->GetIDForIdent("Zone_2_Source"), intval(substr($Message, -2)));
+					break;
+				case preg_match('/Z3F.*/', $Message) ? $Message : !$Message:
+					SetValueInteger($this->GetIDForIdent("Zone_3_Source"), intval(substr($Message, -2)));
+					break;
+				case preg_match('/ZEA.*/', $Message) ? $Message : !$Message:
+					SetValueInteger($this->GetIDForIdent("Zone_4_Source"), intval(substr($Message, -2)));
 					break;
 				case preg_match('/VOL.*/', $Message) ? $Message : !$Message:
 					$Volume = intval(substr($Message, -3));
@@ -404,6 +422,21 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Input = str_pad($Value, 2, '0', STR_PAD_LEFT);
 					$this->SetData($Input."FN");
 					break;
+				case "Zone_2_Source":
+					SetValueInteger($this->GetIDForIdent("Zone_2_Source"), $Value);
+					$Zone_2_Source = str_pad($Value, 2, '0', STR_PAD_LEFT);
+					$this->SetData($Zone_2_Source."ZS");
+					break;
+				case "Zone_3_Source":
+					SetValueInteger($this->GetIDForIdent("Zone_3_Source"), $Value);
+					$Zone_3_Source = str_pad($Value, 2, '0', STR_PAD_LEFT);
+					$this->SetData($Zone_3_Source."ZT");
+					break;
+				case "Zone_4_Source":
+					SetValueInteger($this->GetIDForIdent("Zone_4_Source"), $Value);
+					$Zone_4_Source = str_pad($Value, 2, '0', STR_PAD_LEFT);
+					$this->SetData($Zone_4_Source."ZEA");
+					break;
 				case "ListeningModeSet":
 					SetValueInteger($this->GetIDForIdent("ListeningModeSet"), $Value);
 					$ListeningMode = str_pad($Value, 4, '0', STR_PAD_LEFT);
@@ -474,7 +507,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?ZEP", "?HO");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?ZEP", "?HO", "?ZS", "?ZT", "?ZEA");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
