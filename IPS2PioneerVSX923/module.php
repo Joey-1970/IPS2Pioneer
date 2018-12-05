@@ -423,11 +423,13 @@ class IPS2PioneerVSX923 extends IPSModule
 					$this->SetData($Volume."VL");
 					break;
 				case "Zone_2_Volume": 
-					$VolumeZone2 = str_pad($Value, 2, '0', STR_PAD_LEFT);
+					$VolumeZone2 = $Value + 81;
+					$VolumeZone2 = str_pad($VolumeZone2, 2, '0', STR_PAD_LEFT);
 					$this->SetData($VolumeZone2."ZV");
 					break;
 				case "Zone_3_Volume": 
-					$VolumeZone3 = str_pad($Value, 2, '0', STR_PAD_LEFT);
+					$VolumeZone3 = $Value + 81;
+					$VolumeZone3 = str_pad($VolumeZone3, 2, '0', STR_PAD_LEFT);
 					$this->SetData($VolumeZone3."YV");
 					break;
 				case "VolumeUpDown":
