@@ -14,7 +14,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		// Profile anlegen
 		$this->RegisterProfileFloat("IPS2Pioneer.dB", "Melody", "", " dB", -80, 12, 0.5, 1);
 		
-		$this->RegisterProfileFloat("IPS2Pioneer.dBZone", "Melody", "", " dB", -80, 0, 0.5, 1);
+		$this->RegisterProfileFloat("IPS2Pioneer.dBZone", "Melody", "", " dB", -80, 0, 2, 1);
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.BassTreble", "Music", "", " dB", -6, 6, 1);
 		
@@ -423,12 +423,12 @@ class IPS2PioneerVSX923 extends IPSModule
 					$this->SetData($Volume."VL");
 					break;
 				case "Zone_2_Volume": 
-					$VolumeZone2 = $Value + 81;
+					$VolumeZone2 = intval($Value + 81);
 					$VolumeZone2 = str_pad($VolumeZone2, 2, '0', STR_PAD_LEFT);
 					$this->SetData($VolumeZone2."ZV");
 					break;
 				case "Zone_3_Volume": 
-					$VolumeZone3 = $Value + 81;
+					$VolumeZone3 = intval($Value + 81);
 					$VolumeZone3 = str_pad($VolumeZone3, 2, '0', STR_PAD_LEFT);
 					$this->SetData($VolumeZone3."YV");
 					break;
