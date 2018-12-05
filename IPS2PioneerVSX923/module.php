@@ -34,10 +34,10 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Tone", 0, "ByPass", "Music", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Tone", 1, "On", "Music", -1);
 		
-		$this->RegisterProfileInteger("IPS2Pioneer.HDMIOut", "Speaker", "", "", 0, 2, 0);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 0, "HDMI Out All", "Speaker", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 1, "HDMI Out 1", "Speaker", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 2, "HDMI Out 2", "Speaker", -1);
+		$this->RegisterProfileInteger("IPS2Pioneer.HDMIOut", "TV", "", "", 0, 2, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 0, "HDMI Out All", "TV", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 1, "HDMI Out 1", "TV", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 2, "HDMI Out 2", "TV", -1);
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
