@@ -307,7 +307,16 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Volume = ($Volume - 161) / 2;
 					SetValueFloat($this->GetIDForIdent("Volume"), $Volume);
 					break;
-				
+				case preg_match('/ZV.*/', $Message) ? $Message : !$Message:
+					$VolumeZone2 = intval(substr($Message, -2));
+					$VolumeZone2 = ($VolumeZone2 - 81);
+					SetValueFloat($this->GetIDForIdent("Zone_2_Volume"), $VolumeZone2);
+					break;
+				case preg_match('/YV.*/', $Message) ? $Message : !$Message:
+					$VolumeZone3 = intval(substr($Message, -2));
+					$VolumeZone3 = ($VolumeZone3 - 81);
+					SetValueFloat($this->GetIDForIdent("Zone_3_Volume"), $VolumeZone3);
+					break;
 				case preg_match('/FL.*/', $Message) ? $Message : !$Message:
 					$Result = "";
 					$Message = substr($Message, 2);
@@ -412,6 +421,14 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Volume = ($Value * 2) + 161; 
 					$Volume = str_pad($Volume, 3, '0', STR_PAD_LEFT);
 					$this->SetData($Volume."VL");
+					break;
+				case "Zone_2_Volume": 
+					$VolumeZone2 = str_pad($Value, 2, '0', STR_PAD_LEFT);
+					$this->SetData($VolumeZone2."ZV");
+					break;
+				case "Zone_3_Volume": 
+					$VolumeZone3 = str_pad($Value, 2, '0', STR_PAD_LEFT);
+					$this->SetData($VolumeZone3."YV");
 					break;
 				case "VolumeUpDown":
 					SetValueInteger($this->GetIDForIdent("VolumeUpDown"), $Value);
