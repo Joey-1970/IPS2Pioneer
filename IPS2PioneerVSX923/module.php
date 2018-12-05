@@ -14,6 +14,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		// Profile anlegen
 		$this->RegisterProfileFloat("IPS2Pioneer.dB", "Melody", "", " dB", -80, 12, 0.5, 1);
 		
+		$this->RegisterProfileFloat("IPS2Pioneer.dBZone", "Melody", "", " dB", -80, 0, 0.5, 1);
+		
 		$this->RegisterProfileInteger("IPS2Pioneer.BassTreble", "Music", "", " dB", -6, 6, 1);
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.Volume", "Shutter", "", "", 0, 1, 0);
@@ -177,17 +179,28 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Zone_2_Source", "Zone 2 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 165);
 		$this->EnableAction("Zone_2_Source");
 		
+		$this->RegisterVariableFloat("Zone_2_Volume", "Zone 2 Volume", "IPS2Pioneer.dBZone", 168);
+		$this->EnableAction("Zone_2_Volume");
+		
 		$this->RegisterVariableBoolean("Zone_3", "Zone_3", "~Switch", 170);
 		$this->EnableAction("Zone_3");
 		
 		$this->RegisterVariableInteger("Zone_3_Source", "Zone 3 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 175);
 		$this->EnableAction("Zone_3_Source");
 		
+		$this->RegisterVariableFloat("Zone_3_Volume", "Zone 3 Volume", "IPS2Pioneer.dBZone", 178);
+		$this->EnableAction("Zone_3_Volume");
+		
 		$this->RegisterVariableBoolean("Zone_4", "Zone_4", "~Switch", 180);
 		$this->EnableAction("Zone_4");
 		
 		$this->RegisterVariableInteger("Zone_4_Source", "Zone 4 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 185);
 		$this->EnableAction("Zone_4_Source");
+		
+		/*
+		$this->RegisterVariableFloat("Zone_4_Volume", "Zone 4 Volume", "IPS2Pioneer.dB", 188);
+		$this->EnableAction("Zone_4_Volume");
+		*/
 		
 		$this->RegisterVariableInteger("HDMIOut", "HDMI Out", "IPS2Pioneer.HDMIOut", 190);
 		$this->EnableAction("HDMIOut");
@@ -291,9 +304,10 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case preg_match('/VOL.*/', $Message) ? $Message : !$Message:
 					$Volume = intval(substr($Message, -3));
-						$Volume = ($Volume - 161) / 2;
-						SetValueFloat($this->GetIDForIdent("Volume"), $Volume);
-						break;
+					$Volume = ($Volume - 161) / 2;
+					SetValueFloat($this->GetIDForIdent("Volume"), $Volume);
+					break;
+				
 				case preg_match('/FL.*/', $Message) ? $Message : !$Message:
 					$Result = "";
 					$Message = substr($Message, 2);
@@ -507,7 +521,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?ZEP", "?HO", "?ZS", "?ZT", "?ZEA");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?ZEP", "?HO", "?ZS", "?ZT", "?ZEA", "?ZV", "?YV");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
