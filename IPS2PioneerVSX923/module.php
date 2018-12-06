@@ -44,7 +44,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
 		
-		$this->RegisterProfileInteger("IPS2Pioneer.SpeakerSystem", "Melody", "", "", 0, 14, 0);
+		$this->RegisterProfileInteger("IPS2Pioneer.SpeakerSystem", "Speaker", "", "", 0, 14, 0);
 		$this->SetSpeakerSystem();
 		
 		$MetadataArray = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
@@ -732,7 +732,7 @@ class IPS2PioneerVSX923 extends IPSModule
 			      14 => "7.1ch FH/FW + ZONE2", 15 => "5.1ch Bi-Amp + ZONE2", 16 => "5.1ch + ZONE 2+3", 
 			      17 => "5.1ch + SP-B Bi-Amp", 18 => "5.1ch F+Surr Bi-Amp", 19 => "5.1ch F+C Bi-Amp");
 		foreach ($Mode as $Key => $Value) {
-			IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem", $Key, $Value, "Melody", -1);
+			IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem", $Key, $Value, "Speaker", -1);
 		}
 	return;
 	}
