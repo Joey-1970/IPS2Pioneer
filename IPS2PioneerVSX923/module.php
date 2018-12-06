@@ -44,6 +44,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.SpeakerSystem", "Melody", "", "", 0, 14, 0);
+		$this->SetSpeakerSystem();
+		
 		$MetadataArray = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
 		$this->SetBuffer("Metadata", serialize($MetadataArray));
 	}
@@ -200,6 +203,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Zone_4_Source", "Zone 4 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 610);
 		$this->EnableAction("Zone_4_Source");
 		
+		$this->RegisterVariableInteger("SpeakerSystem", "Speaker System", "IPS2Pioneer.SpeakerSystem", 700);
+		$this->EnableAction("SpeakerSystem");
 		/*
 		$this->RegisterVariableFloat("Zone_4_Volume", "Zone 4 Volume", "IPS2Pioneer.dB", 188);
 		$this->EnableAction("Zone_4_Volume");
@@ -395,6 +400,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				case "ZEP1":
 					SetValueBoolean($this->GetIDForIdent("Zone_4"), false);
 					break;
+				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
+					$SpeakerSystem = intval(substr($Message, -2));
+					SetValueInteger($this->GetIDForIdent("SpeakerSystem"), $SpeakerSystem);
+					break;	
 			}
 		}
 	}
@@ -530,6 +539,11 @@ class IPS2PioneerVSX923 extends IPSModule
 					else {
 						$this->SetData("ZEZ");
 					}
+					break;
+				case "SpeakerSystem":
+					SetValueInteger($this->GetIDForIdent("SpeakerSystem"), $Value);
+					$SpeakerSystem = str_pad($Value, 2, '0', STR_PAD_LEFT);
+					$this->SetData($SpeakerSystem."SSF");
 					break;
 				default:
 				    throw new Exception("Invalid Ident");
@@ -711,7 +725,17 @@ class IPS2PioneerVSX923 extends IPSModule
 	return;
 	}
 	
-	
+	private function SetSpeakerSystem()
+	{
+		$Mode = array(0 => "Normal(SB/FH)", 1 => "Normal(sb/FW)", 2 => "Speaker B", 3 => "Front Bi-Amp", 4 => "ZONE 2", 
+			      10 => "9.1ch FH/FW", 11 => "7.1ch + Speaker B", 12 => "7.1ch Front Bi-Amp", 13 => "7.1ch + ZONE2", 
+			      14 => "7.1ch FH/FW + ZONE2", 15 => "5.1ch Bi-Amp + ZONE2", 16 => "5.1ch + ZONE 2+3", 
+			      17 => "5.1ch + SP-B Bi-Amp", 18 => "5.1ch F+Surr Bi-Amp", 19 => "5.1ch F+C Bi-Amp");
+		foreach ($Mode as $Key => $Value) {
+			IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem", $Key, $Value, "Melody", -1);
+		}
+	return;
+	}
 	
 	private function ConnectionTest()
 	{
