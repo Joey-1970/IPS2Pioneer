@@ -162,39 +162,42 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("Speakers", "Speakers", "IPS2Pioneer.Speaker", 110);
 		$this->EnableAction("Speakers");
 		
-		$this->RegisterVariableInteger("Tone", "Tone", "IPS2Pioneer.Tone", 120);
+		$this->RegisterVariableInteger("HDMIOut", "HDMI Out", "IPS2Pioneer.HDMIOut", 120);
+		$this->EnableAction("HDMIOut");
+		
+		$this->RegisterVariableInteger("Tone", "Tone", "IPS2Pioneer.Tone", 200);
 		$this->EnableAction("Tone");
 		
-		$this->RegisterVariableInteger("Bass", "Bass", "IPS2Pioneer.BassTreble", 130);
+		$this->RegisterVariableInteger("Bass", "Bass", "IPS2Pioneer.BassTreble", 210);
 		$this->EnableAction("Bass");
 		
-		$this->RegisterVariableInteger("Treble", "Treble", "IPS2Pioneer.BassTreble", 140);
+		$this->RegisterVariableInteger("Treble", "Treble", "IPS2Pioneer.BassTreble", 220);
 		$this->EnableAction("Treble");
 		
-		$this->RegisterVariableString("Metadata", "Metadata", "~TextBox", 150);
+		$this->RegisterVariableString("Metadata", "Metadata", "~TextBox", 300);
 		
-		$this->RegisterVariableBoolean("Zone_2", "Zone_2", "~Switch", 160);
+		$this->RegisterVariableBoolean("Zone_2", "Zone_2", "~Switch", 400);
 		$this->EnableAction("Zone_2");
 		
-		$this->RegisterVariableInteger("Zone_2_Source", "Zone 2 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 165);
+		$this->RegisterVariableInteger("Zone_2_Source", "Zone 2 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 410);
 		$this->EnableAction("Zone_2_Source");
 		
-		$this->RegisterVariableFloat("Zone_2_Volume", "Zone 2 Volume", "IPS2Pioneer.dBZone", 168);
+		$this->RegisterVariableFloat("Zone_2_Volume", "Zone 2 Volume", "IPS2Pioneer.dBZone", 420);
 		$this->EnableAction("Zone_2_Volume");
 		
-		$this->RegisterVariableBoolean("Zone_3", "Zone_3", "~Switch", 170);
+		$this->RegisterVariableBoolean("Zone_3", "Zone_3", "~Switch", 500);
 		$this->EnableAction("Zone_3");
 		
-		$this->RegisterVariableInteger("Zone_3_Source", "Zone 3 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 175);
+		$this->RegisterVariableInteger("Zone_3_Source", "Zone 3 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 510);
 		$this->EnableAction("Zone_3_Source");
 		
-		$this->RegisterVariableFloat("Zone_3_Volume", "Zone 3 Volume", "IPS2Pioneer.dBZone", 178);
+		$this->RegisterVariableFloat("Zone_3_Volume", "Zone 3 Volume", "IPS2Pioneer.dBZone", 520);
 		$this->EnableAction("Zone_3_Volume");
 		
-		$this->RegisterVariableBoolean("Zone_4", "Zone_4", "~Switch", 180);
+		$this->RegisterVariableBoolean("Zone_4", "Zone_4", "~Switch", 600);
 		$this->EnableAction("Zone_4");
 		
-		$this->RegisterVariableInteger("Zone_4_Source", "Zone 4 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 185);
+		$this->RegisterVariableInteger("Zone_4_Source", "Zone 4 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 610);
 		$this->EnableAction("Zone_4_Source");
 		
 		/*
@@ -202,8 +205,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->EnableAction("Zone_4_Volume");
 		*/
 		
-		$this->RegisterVariableInteger("HDMIOut", "HDMI Out", "IPS2Pioneer.HDMIOut", 190);
-		$this->EnableAction("HDMIOut");
+		
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
@@ -540,7 +542,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?ZEP", "?HO", "?ZS", "?ZT", "?ZEA", "?ZV", "?YV");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?ZEP", "?HO", "?ZS", "?ZT", "?ZEA", "?ZV", "?YV", "?SSF");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
