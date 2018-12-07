@@ -412,11 +412,15 @@ class IPS2PioneerVSX923 extends IPSModule
 				case preg_match('/SSC.*/', $Message) ? $Message : !$Message:
 					$Devices = $this->GetBuffer("Devices");
 					$DeviceArray = unserialize($Devices);
-					$SkipUse = intval(substr($Message, -4, 2));
 					$Device = intval(substr($Message, -6, 2));
-					$DeviceArray[$Device]["Used"] = !boolval($SkipUse);
-					$this->SendDebug("SSC", "Message: ".$Device.": ".$SkipUse, 0);
-					$this->SetBuffer("Devices", serialize($DeviceArray));
+					$Info = intval(substr($Message, -4, 2));
+					
+					If ($Info == 3) {
+						$SkipUse = intval(substr($Message, -2));
+						$DeviceArray[$Device]["Used"] = !boolval($SkipUse);
+						$this->SendDebug("SSC", "Message: ".$Device.": ".$SkipUse, 0);
+						$this->SetBuffer("Devices", serialize($DeviceArray));
+					}
 					break;
 			}
 		}
