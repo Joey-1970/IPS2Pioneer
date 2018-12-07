@@ -241,6 +241,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				$this->SetStatus(102);
 				// Erste Abfrage der Daten
 				$this->SetMetadata();
+				$this->GetInputDevices();
 				$this->GetData();
 			}
 			else {
