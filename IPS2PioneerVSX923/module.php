@@ -49,6 +49,10 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$MetadataArray = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
 		$this->SetBuffer("Metadata", serialize($MetadataArray));
+		
+		$DeviceArray = array();
+		$this->SetBuffer("Devices", serialize($DeviceArray));
+		
 	}
 	
 	public function GetConfigurationForm() { 
@@ -406,9 +410,13 @@ class IPS2PioneerVSX923 extends IPSModule
 					SetValueInteger($this->GetIDForIdent("SpeakerSystem"), $SpeakerSystem);
 					break;	
 				case preg_match('/SSC.*/', $Message) ? $Message : !$Message:
+					$Devices = $this->GetBuffer("Devices");
+					$DeviceArray = unserialize($DeviceArray);
 					$SkipUse = intval(substr($Message, -2));
 					$Device = intval(substr($Message, -4, 2));
+					$DeviceArray[$Device]["Used"] = !boolval($SkipUse);
 					$this->SendDebug("SSC", "Message: ".$Device.": ".$SkipUse, 0);
+					$this->SetBuffer("Devices", serialize($DeviceArray));
 					break;
 			}
 		}
@@ -745,14 +753,20 @@ class IPS2PioneerVSX923 extends IPSModule
 	
 	private function GetInputDevices()
 	{
-		$Devices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 10 => "VIDEO 1(VIDEO)", 19 => "HDMI 1", 20 => "HDMI 2", 
+		$PioneerDevices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 10 => "VIDEO 1(VIDEO)", 19 => "HDMI 1", 20 => "HDMI 2", 
 			      21 => "HDMI 3", 22 => "HDMI 4", 23 => "HDMI 5", 24 => "HDMI 6", 34 => "HDMI 7", 38 => "INTERNET RADIO", 
 			      40 => "SiriusXM", 41 => "PANDORA", 44 => "MEDIA SERVER", 45 => "FAVORITES", 17 => "iPod/USB", 5 => "TV", 1 => "CD", 
 			      13 => "USB-DAC", 2 => "TUNER", 0 => "PHONO", 12 => "MULTI CH IN", 33 => "ADAPTER PORT");
-		foreach ($Devices as $Key => $Value) {
+		$Devices = $this->GetBuffer("Devices");
+		$DeviceArray = unserialize($DeviceArray);
+		$DeviceArray[$Device]["Used"] = !boolval($SkipUse);
+		
+		foreach ($PioneerDevices as $Key => $Value) {
+			$DeviceArray[$Key]["PioneerName"] = $Value;
 			$DeviceNumber = str_pad($Key, 2, '0', STR_PAD_LEFT);
 			$this->SetData("?SSC".$DeviceNumber."03");
 		}
+		$this->SetBuffer("Devices", serialize($DeviceArray));
 	return;
 	}
 	
