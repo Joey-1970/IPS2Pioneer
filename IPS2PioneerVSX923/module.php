@@ -418,7 +418,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					If ($Info == 3) {
 						$SkipUse = intval(substr($Message, -2));
 						$DeviceArray[$Device]["Used"] = !boolval($SkipUse);
-						$this->SendDebug("SSC", "Message: ".$Device.": ".$SkipUse, 0);
+						$this->SendDebug("SSC", "Message: ".$Device.": ".$DeviceArray[$Device]["Used"]." ".$DeviceArray[$Device]["PioneerName"], 0);
 						$this->SetBuffer("Devices", serialize($DeviceArray));
 					}
 					break;
