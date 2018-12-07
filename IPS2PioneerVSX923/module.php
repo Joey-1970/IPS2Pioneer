@@ -411,7 +411,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;	
 				case preg_match('/SSC.*/', $Message) ? $Message : !$Message:
 					$Devices = $this->GetBuffer("Devices");
-					$DeviceArray = unserialize($DeviceArray);
+					$DeviceArray = unserialize($Devices);
 					$SkipUse = intval(substr($Message, -2));
 					$Device = intval(substr($Message, -4, 2));
 					$DeviceArray[$Device]["Used"] = !boolval($SkipUse);
@@ -758,8 +758,7 @@ class IPS2PioneerVSX923 extends IPSModule
 			      40 => "SiriusXM", 41 => "PANDORA", 44 => "MEDIA SERVER", 45 => "FAVORITES", 17 => "iPod/USB", 5 => "TV", 1 => "CD", 
 			      13 => "USB-DAC", 2 => "TUNER", 0 => "PHONO", 12 => "MULTI CH IN", 33 => "ADAPTER PORT");
 		$Devices = $this->GetBuffer("Devices");
-		$DeviceArray = unserialize($DeviceArray);
-		$DeviceArray[$Device]["Used"] = !boolval($SkipUse);
+		$DeviceArray = unserialize($Devices);
 		
 		foreach ($PioneerDevices as $Key => $Value) {
 			$DeviceArray[$Key]["PioneerName"] = $Value;
