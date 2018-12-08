@@ -226,6 +226,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				// Erste Abfrage der Daten
 				$this->SetMetadata();
 				$this->GetInputDevices();
+				$this->GetInputName();
 				$this->GetData();
 			}
 			else {
@@ -704,7 +705,6 @@ class IPS2PioneerVSX923 extends IPSModule
 			$this->SetData("?SSC".$DeviceNumber."03");
 		}
 		$this->SetBuffer("Devices", serialize($DeviceArray));
-		$this->GetInputName();
 	return;
 	}
 	
