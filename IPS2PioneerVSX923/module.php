@@ -192,27 +192,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableFloat("Zone_2_Volume", "Zone 2 Volume", "IPS2Pioneer.dBZone", 420);
 		$this->EnableAction("Zone_2_Volume");
 		
-		$this->RegisterVariableBoolean("Zone_3", "Zone_3", "~Switch", 500);
-		$this->EnableAction("Zone_3");
 		
-		$this->RegisterVariableInteger("Zone_3_Source", "Zone 3 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 510);
-		$this->EnableAction("Zone_3_Source");
-		
-		$this->RegisterVariableFloat("Zone_3_Volume", "Zone 3 Volume", "IPS2Pioneer.dBZone", 520);
-		$this->EnableAction("Zone_3_Volume");
-		
-		$this->RegisterVariableBoolean("Zone_4", "Zone_4", "~Switch", 600);
-		$this->EnableAction("Zone_4");
-		
-		$this->RegisterVariableInteger("Zone_4_Source", "Zone 4 Source", "IPS2Pioneer.InputSelect_".$this->InstanceID, 610);
-		$this->EnableAction("Zone_4_Source");
-		
-		$this->RegisterVariableInteger("SpeakerSystem", "Speaker System", "IPS2Pioneer.SpeakerSystem", 700);
-		$this->EnableAction("SpeakerSystem");
-		/*
-		$this->RegisterVariableFloat("Zone_4_Volume", "Zone 4 Volume", "IPS2Pioneer.dB", 188);
-		$this->EnableAction("Zone_4_Volume");
-		*/
 		
 		
 		
@@ -308,12 +288,6 @@ class IPS2PioneerVSX923 extends IPSModule
 				case preg_match('/Z2F.*/', $Message) ? $Message : !$Message:
 					SetValueInteger($this->GetIDForIdent("Zone_2_Source"), intval(substr($Message, -2)));
 					break;
-				case preg_match('/Z3F.*/', $Message) ? $Message : !$Message:
-					SetValueInteger($this->GetIDForIdent("Zone_3_Source"), intval(substr($Message, -2)));
-					break;
-				case preg_match('/ZEA.*/', $Message) ? $Message : !$Message:
-					SetValueInteger($this->GetIDForIdent("Zone_4_Source"), intval(substr($Message, -2)));
-					break;
 				case preg_match('/VOL.*/', $Message) ? $Message : !$Message:
 					$Volume = intval(substr($Message, -3));
 					$Volume = ($Volume - 161) / 2;
@@ -323,11 +297,6 @@ class IPS2PioneerVSX923 extends IPSModule
 					$VolumeZone2 = intval(substr($Message, -2));
 					$VolumeZone2 = ($VolumeZone2 - 81);
 					SetValueFloat($this->GetIDForIdent("Zone_2_Volume"), $VolumeZone2);
-					break;
-				case preg_match('/YV.*/', $Message) ? $Message : !$Message:
-					$VolumeZone3 = intval(substr($Message, -2));
-					$VolumeZone3 = ($VolumeZone3 - 81);
-					SetValueFloat($this->GetIDForIdent("Zone_3_Volume"), $VolumeZone3);
 					break;
 				case preg_match('/FL.*/', $Message) ? $Message : !$Message:
 					$Result = "";
@@ -393,18 +362,6 @@ class IPS2PioneerVSX923 extends IPSModule
 				case "APR1":
 					SetValueBoolean($this->GetIDForIdent("Zone_2"), false);
 					break;
-				case "BPR0":
-					SetValueBoolean($this->GetIDForIdent("Zone_3"), true);
-					break;
-				case "BPR1":
-					SetValueBoolean($this->GetIDForIdent("Zone_3"), false);
-					break;
-				case "ZEP0":
-					SetValueBoolean($this->GetIDForIdent("Zone_4"), true);
-					break;
-				case "ZEP1":
-					SetValueBoolean($this->GetIDForIdent("Zone_4"), false);
-					break;
 				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
 					$SpeakerSystem = intval(substr($Message, -2));
 					SetValueInteger($this->GetIDForIdent("SpeakerSystem"), $SpeakerSystem);
@@ -456,11 +413,6 @@ class IPS2PioneerVSX923 extends IPSModule
 					$VolumeZone2 = str_pad($VolumeZone2, 2, '0', STR_PAD_LEFT);
 					$this->SetData($VolumeZone2."ZV");
 					break;
-				case "Zone_3_Volume": 
-					$VolumeZone3 = intval($Value + 81);
-					$VolumeZone3 = str_pad($VolumeZone3, 2, '0', STR_PAD_LEFT);
-					$this->SetData($VolumeZone3."YV");
-					break;
 				case "VolumeUpDown":
 					SetValueInteger($this->GetIDForIdent("VolumeUpDown"), $Value);
 					If ($Value == 0) {
@@ -488,16 +440,6 @@ class IPS2PioneerVSX923 extends IPSModule
 					SetValueInteger($this->GetIDForIdent("Zone_2_Source"), $Value);
 					$Zone_2_Source = str_pad($Value, 2, '0', STR_PAD_LEFT);
 					$this->SetData($Zone_2_Source."ZS");
-					break;
-				case "Zone_3_Source":
-					SetValueInteger($this->GetIDForIdent("Zone_3_Source"), $Value);
-					$Zone_3_Source = str_pad($Value, 2, '0', STR_PAD_LEFT);
-					$this->SetData($Zone_3_Source."ZT");
-					break;
-				case "Zone_4_Source":
-					SetValueInteger($this->GetIDForIdent("Zone_4_Source"), $Value);
-					$Zone_4_Source = str_pad($Value, 2, '0', STR_PAD_LEFT);
-					$this->SetData($Zone_4_Source."ZEA");
 					break;
 				case "ListeningModeSet":
 					SetValueInteger($this->GetIDForIdent("ListeningModeSet"), $Value);
@@ -538,24 +480,6 @@ class IPS2PioneerVSX923 extends IPSModule
 					}
 					else {
 						$this->SetData("APF");
-					}
-					break;
-				case "Zone_3":
-					SetValueBoolean($this->GetIDForIdent("Zone_3"), $Value);
-					If ($Value == true) {
-						$this->SetData("BPO");
-					}
-					else {
-						$this->SetData("BPF");
-					}
-					break;
-				case "Zone_4":
-					SetValueBoolean($this->GetIDForIdent("Zone_4"), $Value);
-					If ($Value == true) {
-						$this->SetData("ZEO");
-					}
-					else {
-						$this->SetData("ZEZ");
 					}
 					break;
 				case "SpeakerSystem":
