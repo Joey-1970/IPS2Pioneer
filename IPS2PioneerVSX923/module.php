@@ -245,9 +245,6 @@ class IPS2PioneerVSX923 extends IPSModule
 		$Message = trim($Message, "\x00..\x1F");
 		
 		$MessageParts = explode(chr(13), $Message);
-		If (count($MessageParts) > 1) {
-			$this->SendDebug("ReceiveData", "Messageparts: ".count($MessageParts), 0);
-		}
 		
 		foreach ($MessageParts as $Message) {
 			// Entfernen der Steuerzeichen
@@ -686,6 +683,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		foreach ($PioneerDevices as $Key => $Value) {
 			$DeviceArray[$Key]["PioneerName"] = $Value;
+			$DeviceArray[$Key]["Used"] = false;
+			$DeviceArray[$Key]["MyName"] = $Value;
 			$DeviceNumber = str_pad($Key, 2, '0', STR_PAD_LEFT);
 			$this->SetData("?SSC".$DeviceNumber."03");
 		}
