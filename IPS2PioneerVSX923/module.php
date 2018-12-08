@@ -677,10 +677,10 @@ class IPS2PioneerVSX923 extends IPSModule
 	
 	private function GetInputDevices()
 	{
-		$PioneerDevices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 10 => "VIDEO 1(VIDEO)", 19 => "HDMI 1", 20 => "HDMI 2", 
+		$PioneerDevices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 19 => "HDMI 1", 20 => "HDMI 2", 
 			      21 => "HDMI 3", 22 => "HDMI 4", 23 => "HDMI 5", 24 => "HDMI 6", 34 => "HDMI 7", 38 => "INTERNET RADIO", 
-			      40 => "SiriusXM", 41 => "PANDORA", 44 => "MEDIA SERVER", 45 => "FAVORITES", 17 => "iPod/USB", 5 => "TV", 1 => "CD", 
-			      13 => "USB-DAC", 2 => "TUNER", 0 => "PHONO", 12 => "MULTI CH IN", 33 => "ADAPTER PORT");
+			      44 => "MEDIA SERVER", 45 => "FAVORITES", 17 => "iPod/USB", 5 => "TV", 1 => "CD", 
+			      2 => "TUNER", 33 => "ADAPTER PORT");
 		$Devices = $this->GetBuffer("Devices");
 		$DeviceArray = unserialize($Devices);
 		
