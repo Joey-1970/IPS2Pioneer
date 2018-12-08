@@ -713,10 +713,12 @@ class IPS2PioneerVSX923 extends IPSModule
 		$Devices = $this->GetBuffer("Devices");
 		$DeviceArray = unserialize($Devices);
 		foreach ($DeviceArray as $Key => $Value) {
+			$DeviceNumber = str_pad($Key, 2, '0', STR_PAD_LEFT);
+			$this->SetData("?RGB".$DeviceNumber);
+			
 			If ($DeviceArray[$Key]["Used"] == true)
 			{
-				$DeviceNumber = str_pad($Key, 2, '0', STR_PAD_LEFT);
-				$this->SetData("?RGB".$DeviceNumber);
+				
 			}
 		}
 	}
