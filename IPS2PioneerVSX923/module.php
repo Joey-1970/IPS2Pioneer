@@ -498,13 +498,12 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?BP", "?ZEP", "?HO", "?ZS", "?ZT", "?ZEA", "?ZV", "?YV", "?SSF");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?HO", "?ZS", "?ZV", "?SSF");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
 				IPS_Sleep(100);
 			}
-			//set_include_path(__DIR__.'/../imgs');
 			$Content = file_get_contents(__DIR__ . '/../imgs/Pioneer.jpg');
 			IPS_SetMediaContent($this->GetIDForIdent("Cover_".$this->InstanceID), base64_encode($Content));  //Bild Base64 codieren und ablegen
 			IPS_SendMediaEvent($this->GetIDForIdent("Cover_".$this->InstanceID)); //aktualisieren
@@ -669,10 +668,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	
 	private function SetSpeakerSystem()
 	{
-		$Mode = array(0 => "Normal(SB/FH)", 1 => "Normal(sb/FW)", 2 => "Speaker B", 3 => "Front Bi-Amp", 4 => "ZONE 2", 
-			      10 => "9.1ch FH/FW", 11 => "7.1ch + Speaker B", 12 => "7.1ch Front Bi-Amp", 13 => "7.1ch + ZONE2", 
-			      14 => "7.1ch FH/FW + ZONE2", 15 => "5.1ch Bi-Amp + ZONE2", 16 => "5.1ch + ZONE 2+3", 
-			      17 => "5.1ch + SP-B Bi-Amp", 18 => "5.1ch F+Surr Bi-Amp", 19 => "5.1ch F+C Bi-Amp");
+		$Mode = array(0 => "Normal(SB/FH)", 1 => "Normal(sb/FW)", 2 => "Speaker B", 3 => "Front Bi-Amp", 4 => "ZONE 2");
 		foreach ($Mode as $Key => $Value) {
 			IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem", $Key, $Value, "Speaker", -1);
 		}
