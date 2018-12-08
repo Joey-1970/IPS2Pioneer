@@ -376,6 +376,21 @@ class IPS2PioneerVSX923 extends IPSModule
 						$this->SetBuffer("Devices", serialize($DeviceArray));
 					}
 					break;
+				case preg_match('/RGB.*/', $Message) ? $Message : !$Message:
+					$Devices = $this->GetBuffer("Devices");
+					$DeviceArray = unserialize($Devices);
+					/*
+					$Device = intval(substr($Message, -6, 2));
+					$Info = intval(substr($Message, -4, 2));
+					
+					If ($Info == 3) {
+						$SkipUse = intval(substr($Message, -2));
+						$DeviceArray[$Device]["Used"] = !boolval($SkipUse);
+						$this->SendDebug("SSC", "Message: ".$Device.": ".$DeviceArray[$Device]["Used"]." ".$DeviceArray[$Device]["PioneerName"], 0);
+						$this->SetBuffer("Devices", serialize($DeviceArray));
+					}
+					*/
+					break;
 			}
 		}
 	}
@@ -689,7 +704,21 @@ class IPS2PioneerVSX923 extends IPSModule
 			$this->SetData("?SSC".$DeviceNumber."03");
 		}
 		$this->SetBuffer("Devices", serialize($DeviceArray));
+		$this->GetInputName();
 	return;
+	}
+	
+	private function GetInputName()
+	{
+		$Devices = $this->GetBuffer("Devices");
+		$DeviceArray = unserialize($Devices);
+		foreach ($DeviceArray as $Key => $Value) {
+			If ($DeviceArray[$Key]["Used"] == true)
+			{
+				$DeviceNumber = str_pad($Key, 2, '0', STR_PAD_LEFT);
+				$this->SetData("?RGB".$DeviceNumber);
+			}
+		}
 	}
 	
 	private function ConnectionTest()
