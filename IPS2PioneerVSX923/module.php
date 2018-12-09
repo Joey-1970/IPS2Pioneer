@@ -688,6 +688,15 @@ class IPS2PioneerVSX923 extends IPSModule
 	return;
 	}
 	
+	private function SetZoneSources()
+	{
+		$Mode = array(4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 5 => "TV", 1 => "CD", 2 => "TUNER", 33 => "ADAPTER PORT");
+		foreach ($Mode as $Key => $Value) {
+			IPS_SetVariableProfileAssociation("IPS2Pioneer.ZoneSources", $Key, $Value, "Speaker", -1);
+		}
+	return;
+	}
+	
 	private function GetInputDevices()
 	{
 		$PioneerDevices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 19 => "HDMI 1", 20 => "HDMI 2", 
