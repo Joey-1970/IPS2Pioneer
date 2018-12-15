@@ -311,7 +311,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Message = substr($Message, 2);
 					$MessageArray = str_split($Message, 2);
 					for ($i = 0; $i <= count($MessageArray) - 1; $i++) {
-						If ($MessageArray[$i] <> 0x02) {
+						If (hexdec($MessageArray[$i]) <> 0x02) {
 							$Sign = chr(hexdec($MessageArray[$i]));
 							$Result = $Result.$Sign;
 						}
