@@ -1,6 +1,13 @@
 <?
 class IPS2PioneerVSX923 extends IPSModule
 {
+	public function Destroy() 
+	{
+		//Never delete this line!
+		parent::Destroy();
+		$this->SetTimerInterval("KeepAlive", 0);
+	}
+	
 	// Überschreibt die interne IPS_Create($id) Funktion
         public function Create() 
         {
@@ -10,6 +17,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
 		$this->RegisterPropertyString("InputDevices", "");
+		$this->RegisterTimer("KeepAlive", 0, 'I2VSX923_KeepAlive($_IPS["TARGET"]);');
 		
 		// Profile anlegen
 		$this->RegisterProfileFloat("IPS2Pioneer.dB", "Melody", "", " dB", -80, 12, 0.5, 1);
@@ -228,9 +236,11 @@ class IPS2PioneerVSX923 extends IPSModule
 				$this->GetInputDevices();
 				$this->GetInputName();
 				$this->GetData();
+				$this->SetTimerInterval("KeepAlive", 5 * 1000);
 			}
 			else {
 				$this->SetStatus(104);
+				$this->SetTimerInterval("KeepAlive", 0);
 			}	   
 		}
 	}
@@ -519,6 +529,14 @@ class IPS2PioneerVSX923 extends IPSModule
 			$this->SendDebug("SetData", "Message: ".$Message, 0);
 			$Message = $Message.chr(13);
 			$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
+		}
+	}
+	
+	public function KeepAlive()
+	{
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->SendDebug("KeepAlive", "Ausfuehrung", 0);
+			$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode("?P".chr(13)))));
 		}
 	}
 	
