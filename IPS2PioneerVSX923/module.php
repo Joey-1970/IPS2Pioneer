@@ -445,49 +445,40 @@ class IPS2PioneerVSX923 extends IPSModule
 					}
 					break;
 				case "Input":
-					SetValueInteger($this->GetIDForIdent("Input"), $Value);
 					$Input = str_pad($Value, 2, '0', STR_PAD_LEFT);
 					$this->SetData($Input."FN");
 					break;
 				case "Zone_2_Source":
-					SetValueInteger($this->GetIDForIdent("Zone_2_Source"), $Value);
 					$Zone_2_Source = str_pad($Value, 2, '0', STR_PAD_LEFT);
 					$this->SetData($Zone_2_Source."ZS");
 					break;
 				case "ListeningModeSet":
-					SetValueInteger($this->GetIDForIdent("ListeningModeSet"), $Value);
 					$ListeningMode = str_pad($Value, 4, '0', STR_PAD_LEFT);
 					$this->SetData($ListeningMode."SR");
 					break;
 				case "Speakers":
-					SetValueInteger($this->GetIDForIdent("Speakers"), $Value);
 					$Speaker = intval($Value);
 					$this->SetData($Speaker."SPK");
 					break;
 				case "HDMIOut":
-					SetValueInteger($this->GetIDForIdent("HDMIOut"), $Value);
 					$HDMIOut = intval($Value);
 					$this->SetData($HDMIOut."HO");
 					break;
 				case "Tone":
-					SetValueInteger($this->GetIDForIdent("Tone"), $Value);
 					$Tone = intval($Value);
 					$this->SetData($Tone."TO");
 					break;
 				case "Bass":
-					SetValueInteger($this->GetIDForIdent("Bass"), $Value);
 					$Bass = intval($Value) + 6;
 					$Bass = str_pad($Bass, 2, '0', STR_PAD_LEFT);
 					$this->SetData($Bass."BA");
 					break;
 				case "Treble":
-					SetValueInteger($this->GetIDForIdent("Treble"), $Value);
 					$Treble = intval($Value) + 6;
 					$Treble = str_pad($Treble, 2, '0', STR_PAD_LEFT);
 					$this->SetData($Treble."TR");
 					break;
 				case "Zone_2":
-					SetValueBoolean($this->GetIDForIdent("Zone_2"), $Value);
 					If ($Value == true) {
 						$this->SetData("APO");
 					}
@@ -496,7 +487,6 @@ class IPS2PioneerVSX923 extends IPSModule
 					}
 					break;
 				case "SpeakerSystem":
-					SetValueInteger($this->GetIDForIdent("SpeakerSystem"), $Value);
 					$SpeakerSystem = str_pad($Value, 2, '0', STR_PAD_LEFT);
 					$this->SetData($SpeakerSystem."SSF");
 					break;
