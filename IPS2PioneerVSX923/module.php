@@ -236,7 +236,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				$this->GetInputDevices();
 				$this->GetInputName();
 				$this->GetData();
-				$this->SetTimerInterval("KeepAlive", 5 * 1000);
+				$this->SetTimerInterval("KeepAlive", 5 * 60 * 1000);
 			}
 			else {
 				$this->SetStatus(104);
