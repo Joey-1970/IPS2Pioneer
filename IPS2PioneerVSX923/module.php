@@ -16,7 +16,6 @@ class IPS2PioneerVSX923 extends IPSModule
            	$this->RequireParent("{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}");
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
-		$this->RegisterPropertyString("InputDevices", "");
 		$this->RegisterTimer("KeepAlive", 0, 'I2VSX923_KeepAlive($_IPS["TARGET"]);');
 		
 		// Profile anlegen
@@ -55,95 +54,14 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterProfileInteger("IPS2Pioneer.SpeakerSystem", "Speaker", "", "", 0, 14, 0);
 		$this->SetSpeakerSystem();
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect_".$this->InstanceID, "Repeat", "", "", 0, Count($Data), 0);
+		
+		
 		$MetadataArray = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
 		$this->SetBuffer("Metadata", serialize($MetadataArray));
 		
 		$DeviceArray = array();
 		$this->SetBuffer("Devices", serialize($DeviceArray));
-		
-	}
-	
-	public function GetConfigurationForm() { 
-		$arrayStatus = array(); 
-		$arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
-		$arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
-		$arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
-		$arrayStatus[] = array("code" => 200, "icon" => "error", "caption" => "Instanz ist fehlerhaft"); 
-		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
-		
-		$arrayElements = array(); 
-		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
-		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
- 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-		
-		$arrayColumns = array();
-		$arrayColumns[] = array("label" => "Pioneer Nr.", "name" => "PioneerNr", "width" => "120px", "save" => true);
-		$arrayColumns[] = array("label" => "Pioneer Name", "name" => "PioneerName", "width" => "240px", "save" => true);
-		$arrayColumns[] = array("label" => "Aktiv", "name" => "Activ", "width" => "60px", "add" => "", "edit" => array("type" => "CheckBox", "name" => "Activ", "caption" => "Aktiv"));
-		$arrayColumns[] = array("label" => "Eigener Name", "name" => "MyName", "width" => "240px", "add" => "", "edit" => array("type" => "ValidationTextBox", "name" => "MyName", "caption" => "Mein Name"));
-		
-		$arrayValues = array();
-		$arrayValues[] = array("PioneerNr" => 25, "PioneerName" => "BD", "Activ" => true, "MyName" => "BD");
-		$arrayValues[] = array("PioneerNr" => 04, "PioneerName" => "DVD", "Activ" => true, "MyName" => "DVD");
-		$arrayValues[] = array("PioneerNr" => 05, "PioneerName" => "TV/SAT", "Activ" => true, "MyName" => "TV/SAT");
-		$arrayValues[] = array("PioneerNr" => 15, "PioneerName" => "DVR/BDR", "Activ" => true, "MyName" => "DVR/BDR");
-		$arrayValues[] = array("PioneerNr" => 10, "PioneerName" => "VIDEO 1(VIDEO)", "Activ" => true, "MyName" => "VIDEO 1(VIDEO)");
-		$arrayValues[] = array("PioneerNr" => 14, "PioneerName" => "VIDEO 2", "Activ" => true, "MyName" => "VIDEO 2");
-		$arrayValues[] = array("PioneerNr" => 19, "PioneerName" => "HDMI 1", "Activ" => true, "MyName" => "HDMI 1");
-		$arrayValues[] = array("PioneerNr" => 20, "PioneerName" => "HDMI 2", "Activ" => true, "MyName" => "HDMI 2");
-		$arrayValues[] = array("PioneerNr" => 21, "PioneerName" => "HDMI 3", "Activ" => true, "MyName" => "HDMI 3");
-		$arrayValues[] = array("PioneerNr" => 22, "PioneerName" => "HDMI 4", "Activ" => true, "MyName" => "HDMI 4");
-		$arrayValues[] = array("PioneerNr" => 23, "PioneerName" => "HDMI 5", "Activ" => true, "MyName" => "HDMI 5");
-		$arrayValues[] = array("PioneerNr" => 24, "PioneerName" => "HDMI 6", "Activ" => true, "MyName" => "HDMI 6");
-		$arrayValues[] = array("PioneerNr" => 34, "PioneerName" => "HDMI 7", "Activ" => true, "MyName" => "HDMI 7");
-		$arrayValues[] = array("PioneerNr" => 26, "PioneerName" => "HOME MEDIA GALLERY", "Activ" => true, "MyName" => "HOME MEDIA GALLERY");
-		$arrayValues[] = array("PioneerNr" => 17, "PioneerName" => "iPod/USB", "Activ" => true, "MyName" => "iPod/USB");
-		$arrayValues[] = array("PioneerNr" => 1, "PioneerName" => "CD", "Activ" => true, "MyName" => "CD");
-		$arrayValues[] = array("PioneerNr" => 3, "PioneerName" => "CD-R/TAPE", "Activ" => true, "MyName" => "CD-R/TAPE");
-		$arrayValues[] = array("PioneerNr" => 2, "PioneerName" => "TUNER", "Activ" => true, "MyName" => "TUNER");
-		$arrayValues[] = array("PioneerNr" => 0, "PioneerName" => "PHONO", "Activ" => true, "MyName" => "PHONO");
-		$arrayValues[] = array("PioneerNr" => 12, "PioneerName" => "MULTI CH IN", "Activ" => true, "MyName" => "MULTI CH IN");
-		$arrayValues[] = array("PioneerNr" => 33, "PioneerName" => "ADAPTER PORT", "Activ" => true, "MyName" => "ADAPTER PORT");
-		$arrayValues[] = array("PioneerNr" => 27, "PioneerName" => "SIRIUS", "Activ" => true, "MyName" => "SIRIUS");
-		$arrayValues[] = array("PioneerNr" => 31, "PioneerName" => "HDMI (cyclic)", "Activ" => true, "MyName" => "HDMI (cyclic)");
-		$arrayValues[] = array("PioneerNr" => 48, "PioneerName" => "MHL", "Activ" => true, "MyName" => "MHL");
-		
-		$arrayElements[] = array("type" => "List", "name" => "InputDevices", "caption" => "Geräte", "rowCount" => 15, "add" => false, "delete" => false, "columns" => $arrayColumns, "values" => $arrayValues);
-				
-		
-		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
- 	} 
-	
-	public function ApplyChanges()
-	{
-		//Never delete this line!
-		parent::ApplyChanges();
-		$this->RegisterMediaObject("Cover", "Cover_".$this->InstanceID, 1, $this->InstanceID, 1000, true, "Cover.jpg");
-
-		
-		
-		// Profile anlegen
-		$InputDeviceArray = $this->ReadPropertyString("InputDevices");
-		$Data = json_decode($InputDeviceArray, true);
-		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect_".$this->InstanceID, "Repeat", "", "", 0, Count($Data), 0);
-		/*
-		for ($i = 0; $i <= count($Data) - 1; $i++) {
-			$MyName = $Data[$i]["MyName"];
-			$PioneerNr = $Data[$i]["PioneerNr"];
-			$Activ = boolval($Data[$i]["Activ"]);
-			
-			If ($Activ == true) {
-				$this->SendDebug("ApplyChanges", "Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
-				IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, intval($PioneerNr), $MyName, "Repeat", -1);
-			}
-			elseIf ($Activ == false) {
-				//$this->SendDebug("ApplyChanges", "Nicht: Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
-				$Result = @IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, intval($PioneerNr), "", "", -1);
-			}
-		}
-		*/
-		
-		
 		
 		// Statusvariablen anlegen
 		$this->RegisterVariableInteger("LastKeepAlive", "Letztes Keep Alive", "~UnixTimestamp", 10);
@@ -201,9 +119,32 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->EnableAction("Zone_2_Volume");
 		
 		
+	}
+	
+	public function GetConfigurationForm() { 
+		$arrayStatus = array(); 
+		$arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
+		$arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
+		$arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
+		$arrayStatus[] = array("code" => 200, "icon" => "error", "caption" => "Instanz ist fehlerhaft"); 
+		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
+		
+		$arrayElements = array(); 
+		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
+ 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		
 		
 		
+		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
+ 	} 
+	
+	public function ApplyChanges()
+	{
+		//Never delete this line!
+		parent::ApplyChanges();
+		$this->RegisterMediaObject("Cover", "Cover_".$this->InstanceID, 1, $this->InstanceID, 1000, true, "Cover.jpg");
+
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
@@ -394,18 +335,16 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Device = intval(substr($Message, 0, 2));
 					$Rename = boolval(substr($Message, 2, 1));
 					$Name = substr($Message, 3);
-					If ($Info == 3) {
-						$DeviceArray[$Device]["MyName"] = $Name;
-						$this->SetBuffer("Devices", serialize($DeviceArray));
-						If ($DeviceArray[$Device]["Used"] == true) {
-							$this->SendDebug("ReceiveData", "Pioneer Nr: ".$Device." Mein Name: ".$Name , 0);
-							IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, $Device, $Name, "Repeat", -1);
-						}
-						elseIf ($DeviceArray[$Device]["Used"] == false) {
-							$Result = @IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, $Device, "", "", -1);
-						}
-					}
 					
+					$DeviceArray[$Device]["MyName"] = $Name;
+					$this->SetBuffer("Devices", serialize($DeviceArray));
+					If ($DeviceArray[$Device]["Used"] == true) {
+						$this->SendDebug("ReceiveData", "Pioneer Nr: ".$Device." Mein Name: ".$Name , 0);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, $Device, $Name, "Repeat", -1);
+					}
+					elseIf ($DeviceArray[$Device]["Used"] == false) {
+						$Result = @IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, $Device, "", "", -1);
+					}
 					break;
 			}
 		}
