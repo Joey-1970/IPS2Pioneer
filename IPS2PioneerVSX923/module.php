@@ -126,7 +126,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$InputDeviceArray = $this->ReadPropertyString("InputDevices");
 		$Data = json_decode($InputDeviceArray, true);
 		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect_".$this->InstanceID, "Repeat", "", "", 0, Count($Data), 0);
-		
+		/*
 		for ($i = 0; $i <= count($Data) - 1; $i++) {
 			$MyName = $Data[$i]["MyName"];
 			$PioneerNr = $Data[$i]["PioneerNr"];
@@ -141,7 +141,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				$Result = @IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, intval($PioneerNr), "", "", -1);
 			}
 		}
-		
+		*/
 		
 		
 		
@@ -395,10 +395,18 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Rename = boolval(substr($Message, 2, 1));
 					$Name = substr($Message, 3);
 					If ($Info == 3) {
-						$DeviceArray[$Device]["MyName"] = $Value;
+						$DeviceArray[$Device]["MyName"] = $Name;
 						$this->SetBuffer("Devices", serialize($DeviceArray));
+						If ($DeviceArray[$Device]["Used"] == true) {
+							$this->SendDebug("ApplyChanges", "Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
+							IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, $Device, $Name, "Repeat", -1);
+						}
+						elseIf ($Activ == false) {
+							//$this->SendDebug("ApplyChanges", "Nicht: Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
+							$Result = @IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, $Device, "", "", -1);
+						}
 					}
-					*/
+					
 					break;
 			}
 		}
