@@ -390,14 +390,12 @@ class IPS2PioneerVSX923 extends IPSModule
 				case preg_match('/RGB.*/', $Message) ? $Message : !$Message:
 					$Devices = $this->GetBuffer("Devices");
 					$DeviceArray = unserialize($Devices);
-					/*
-					$Device = intval(substr($Message, -6, 2));
-					$Info = intval(substr($Message, -4, 2));
-					
+					$Message = substr($Message, 3);
+					$Device = intval(substr($Message, 0, 2));
+					$Rename = boolval(substr($Message, 2, 1));
+					$Name = substr($Message, 3);
 					If ($Info == 3) {
-						$SkipUse = intval(substr($Message, -2));
-						$DeviceArray[$Device]["Used"] = !boolval($SkipUse);
-						$this->SendDebug("SSC", "Message: ".$Device.": ".$DeviceArray[$Device]["Used"]." ".$DeviceArray[$Device]["PioneerName"], 0);
+						$DeviceArray[$Device]["MyName"] = $Value;
 						$this->SetBuffer("Devices", serialize($DeviceArray));
 					}
 					*/
