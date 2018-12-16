@@ -398,11 +398,10 @@ class IPS2PioneerVSX923 extends IPSModule
 						$DeviceArray[$Device]["MyName"] = $Name;
 						$this->SetBuffer("Devices", serialize($DeviceArray));
 						If ($DeviceArray[$Device]["Used"] == true) {
-							$this->SendDebug("ApplyChanges", "Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
+							$this->SendDebug("ReceiveData", "Pioneer Nr: ".$Device." Mein Name: ".$Name , 0);
 							IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, $Device, $Name, "Repeat", -1);
 						}
 						elseIf ($Activ == false) {
-							//$this->SendDebug("ApplyChanges", "Nicht: Pioneer Nr: ".$PioneerNr." Mein Name: ".$MyName , 0);
 							$Result = @IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, $Device, "", "", -1);
 						}
 					}
