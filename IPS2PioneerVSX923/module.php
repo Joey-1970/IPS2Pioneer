@@ -313,6 +313,12 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
 					$SpeakerSystem = intval(substr($Message, -2));
+					If ($SpeakerSystem == 2) {
+						$this->EnableAction("Speakers");
+					}
+					else {
+						$this->DisableAction("Speakers");
+					}
 					SetValueInteger($this->GetIDForIdent("SpeakerSystem"), $SpeakerSystem);
 					break;	
 				case preg_match('/SSC.*/', $Message) ? $Message : !$Message:
