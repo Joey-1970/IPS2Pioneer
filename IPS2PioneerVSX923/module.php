@@ -319,6 +319,16 @@ class IPS2PioneerVSX923 extends IPSModule
 					else {
 						$this->DisableAction("Speakers");
 					}
+					If ($SpeakerSystem == 4) {
+						$this->EnableAction("Zone_2");
+						$this->EnableAction("Zone_2_Source");
+						$this->EnableAction("Zone_2_Volume");
+					}
+					else {
+						$this->DisableAction("Zone_2");
+						$this->DisableAction("Zone_2_Source");
+						$this->DisableAction("Zone_2_Volume");
+					}
 					SetValueInteger($this->GetIDForIdent("SpeakerSystem"), $SpeakerSystem);
 					break;	
 				case preg_match('/SSC.*/', $Message) ? $Message : !$Message:
