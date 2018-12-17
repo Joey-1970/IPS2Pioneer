@@ -633,7 +633,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	
 	private function SetSpeakerSystem()
 	{
-		$Mode = array(0 => "Normal(SB/FH)", 1 => "Normal(sb/FW)", 2 => "Speaker B", 3 => "Front Bi-Amp", 4 => "ZONE 2");
+		$Mode = array(0 => "Normal(SB/FH)", 1 => "Normal(SB/FW)", 2 => "Speaker B", 3 => "Front Bi-Amp", 4 => "ZONE 2");
 		foreach ($Mode as $Key => $Value) {
 			IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem", $Key, $Value, "Speaker", -1);
 		}
