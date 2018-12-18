@@ -313,11 +313,13 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
 					$SpeakerSystem = intval(substr($Message, -2));
-					If ($SpeakerSystem == 2) {
-						$this->EnableAction("Speakers");
+					If ($SpeakerSystem < 3) {
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 1, "Speaker A on", "Speaker", -1);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 2, "Speaker B on", "Speaker", -1);
 					}
 					else {
-						$this->DisableAction("Speakers");
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 1, "", "", -1);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 2, "", "", -1);
 					}
 					If ($SpeakerSystem == 4) {
 						$this->EnableAction("Zone_2");
