@@ -267,7 +267,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case preg_match('/SR.*/', $Message) ? $Message : !$Message:
 					$ListenningMode = intval(substr($Message, -4));
-					If (($ListenningMode == 9) OR ($ListenningMode == 9) OR ($ListenningMode == 153)) {
+					If (($ListenningMode == 6) OR ($ListenningMode == 9) OR ($ListenningMode == 153)) {
 						$this->EnableAction("Tone");
 						If (GetValueInteger($this->GetIDForIdent("Tone")) == 1) {
 							$this->EnableAction("Bass");
