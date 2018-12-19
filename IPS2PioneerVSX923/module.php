@@ -269,7 +269,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					$ListenningMode = intval(substr($Message, -4));
 					If (($ListenningMode == 9) OR ($ListenningMode == 9) OR ($ListenningMode == 153)) {
 						$this->EnableAction("Tone");
-						If (GetValueInteger($this->GetIDForIdent("Tone") == 1) {
+						If (GetValueInteger($this->GetIDForIdent("Tone")) == 1) {
 							$this->EnableAction("Bass");
 							$this->EnableAction("Treble");
 						}
