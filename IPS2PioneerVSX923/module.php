@@ -51,7 +51,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
 		
-		$this->RegisterProfileInteger("IPS2Pioneer.SpeakerSystem", "Speaker", "", "", 0, 14, 0);
+		$this->RegisterProfileInteger("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, "Speaker", "", "", 0, 14, 0);
 		$this->SetSpeakerSystem();
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect_".$this->InstanceID, "Repeat", "", "", 0, 45, 0);
@@ -314,12 +314,12 @@ class IPS2PioneerVSX923 extends IPSModule
 				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
 					$SpeakerSystem = intval(substr($Message, -2));
 					If ($SpeakerSystem < 3) {
-						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 1, "Speaker A on", "Speaker", -1);
-						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 2, "Speaker B on", "Speaker", -1);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 1, "Speaker A on", "Speaker", -1);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 2, "Speaker B on", "Speaker", -1);
 					}
 					else {
-						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 1, "", "", -1);
-						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 2, "", "", -1);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 1, "", "", -1);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 2, "", "", -1);
 					}
 					If ($SpeakerSystem == 4) {
 						$this->EnableAction("Zone_2");
@@ -631,7 +631,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		$Mode = array(0 => "Normal(SB/FH)", 1 => "Normal(SB/FW)", 2 => "Speaker B", 3 => "Front Bi-Amp", 4 => "ZONE 2");
 		foreach ($Mode as $Key => $Value) {
-			IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem", $Key, $Value, "Speaker", -1);
+			IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, $Key, $Value, "Speaker", -1);
 		}
 	return;
 	}
