@@ -606,43 +606,21 @@ class IPS2PioneerVSX923 extends IPSModule
 	
 	private function SetListeningMode()
 	{
-		$Mode = array(1 => "STEREO (cyclic)", 10 => "STANDARD", 9 => "STEREO (direct set)", 11 => "(2ch source)", 
+		$Mode = array(10 => "STANDARD", 9 => "STEREO (direct set)",
 			      13 => "PRO LOGIC2 MOVIE", 18 => "PRO LOGIC2x MOVIE", 14 => "PRO LOGIC2 MUSIC", 19 => "PRO LOGIC2x MUSIC", 
 			      15 => "PRO LOGIC2 GAME", 20 => "PRO LOGIC2x GAME", 31 => "PRO LOGIC2z HEIGHT", 32 => "WIDE SURROUND MOVIE", 
-			      33 => "WIDE SURROUND MUSIC", 12 => "PRO LOGIC", 16 => "Neo", 17 => "Neo", 28 => "XM HD SURROUND", 
-			      29 => "NEURAL SURROUND", 37 => "Neo", 38 => "Neo", 39 => "Neo", 40 => "NEURAL SURROUND+Neo", 
-			      41 => "NEURAL SURROUND+Neo", 42 => "NEURAL SURROUND+Neo", 21 => "(Multi ch source)", 
+			      33 => "WIDE SURROUND MUSIC", 12 => "PRO LOGIC", 16 => "Neo", 17 => "Neo", 21 => "(Multi ch source)", 
 			      22 => "(Multi ch source)+DOLBY EX", 23 => "(Multi ch source)+PRO LOGIC2x MOVIE", 
 			      24 => "(Multi ch source)+PRO LOGIC2x MUSIC", 34 => "(Multi-ch Source)+PRO LOGIC2z HEIGHT", 
 			      35 => "(Multi-ch Source)+WIDE SURROUND MOVIE", 36 => "(Multi-ch Source)+WIDE SURROUND MUSIC", 
 			      25 => "(Multi ch source)DTS-ES Neo", 26 => "(Multi ch source)DTS-ES matrix", 
 			      27 => "(Multi ch source)DTS-ES discrete", 30 => "(Multi ch source)DTS-ES 8ch discrete", 
-			      43 => "(Multi ch source)+Neo", 44 => "(Multi ch source)+Neo", 45 => "(Multi ch source)+Neo", 
 			      100 => "ADVANCED SURROUND (cyclic)", 101 => "ACTION", 103 => "DRAMA", 102 => "SCI-FI", 105 => "MONO FILM", 
 			      104 => "ENTERTAINMENT SHOW", 106 => "EXPANDED THEATER", 116 => "TV SURROUND", 118 => "ADVANCED GAME", 
 			      117 => "SPORTS", 107 => "CLASSICAL", 110 => "ROCK/POP", 109 => "UNPLUGGED", 112 => "EXTENDED STEREO", 
 			      3 => "Front Stage Surround Advance Focus", 4 => "Front Stage Surround Advance Wide", 153 => "RETRIEVER AIR", 
-			      113 => "PHONES SURROUND", 50 => "THX (cyclic)", 51 => "PROLOGIC + THX CINEMA", 52 => "PL2 MOVIE + THX CINEMA", 
-			      53 => "Neo", 54 => "PL2x MOVIE + THX CINEMA", 92 => "PL2z HEIGHT + THX CINEMA", 55 => "THX SELECT2 GAMES", 
-			      68 => "THX CINEMA (for 2ch)", 69 => "THX MUSIC (for 2ch)", 70 => "THX GAMES (for 2ch)", 
-			      71 => "PL2 MUSIC + THX MUSIC", 72 => "PL2x MUSIC + THX MUSIC", 93 => "PL2z HEIGHT + THX MUSIC", 
-			      73 => "Neo", 74 => "PL2 GAME + THX GAMES", 75 => "PL2x GAME + THX GAMES", 94 => "PL2z HEIGHT + THX GAMES", 
-			      76 => "THX ULTRA2 GAMES", 77 => "PROLOGIC + THX MUSIC", 78 => "PROLOGIC + THX GAMES", 201 => "Neo", 
-			      202 => "Neo", 203 => "Neo", 56 => "THX CINEMA (for multi ch)", 57 => "THX SURROUND EX (for multi ch)", 
-			      58 => "PL2x MOVIE + THX CINEMA (for multi ch)", 95 => "PL2z HEIGHT + THX CINEMA (for multi ch)", 
-			      59 => "ES Neo", 60 => "ES MATRIX + THX CINEMA (for multi ch)", 61 => "ES DISCRETE + THX CINEMA (for multi ch)", 
-			      67 => "ES 8ch DISCRETE + THX CINEMA (for multi ch)", 62 => "THX SELECT2 CINEMA (for multi ch)", 
-			      63 => "THX SELECT2 MUSIC (for multi ch)", 64 => "THX SELECT2 GAMES (for multi ch)", 
-			      65 => "THX ULTRA2 CINEMA (for multi ch)", 66 => "THX ULTRA2 MUSIC (for multi ch)", 
-			      79 => "THX ULTRA2 GAMES (for multi ch)", 80 => "THX MUSIC (for multi ch)", 
-			      81 => "THX GAMES (for multi ch)", 82 => "PL2x MUSIC + THX MUSIC (for multi ch)", 
-			      96 => "PL2z HEIGHT + THX MUSIC (for multi ch)", 83 => "EX + THX GAMES (for multi ch)", 
-			      97 => "PL2z HEIGHT + THX GAMES (for multi ch)", 84 => "Neo", 85 => "Neo", 
-			      86 => "ES MATRIX + THX MUSIC (for multi ch)", 87 => "ES MATRIX + THX GAMES (for multi ch)", 
-			      88 => "ES DISCRETE + THX MUSIC (for multi ch)", 89 => "ES DISCRETE + THX GAMES (for multi ch)", 
-			      90 => "ES 8CH DISCRETE + THX MUSIC (for multi ch)", 91 => "ES 8CH DISCRETE + THX GAMES (for multi ch)", 
-			      204 => "Neo", 205 => "Neo", 206 => "Neo", 5 => "AUTO SURR/STREAM DIRECT (cyclic)", 6 => "AUTO SURROUND", 
-			      151 => "Auto Level Control (A.L.C.)", 7 => "DIRECT", 8 => "PURE DIRECT", 152 => "OPTIMUM SURROUND");
+			      113 => "PHONES SURROUND", 93 => "PL2z HEIGHT + THX MUSIC", 5 => "AUTO SURR/STREAM DIRECT (cyclic)", 6 => "AUTO SURROUND", 
+			      151 => "Auto Level Control (A.L.C.)", 7 => "DIRECT", 8 => "PURE DIRECT");
 		foreach ($Mode as $Key => $Value) {
 			IPS_SetVariableProfileAssociation("IPS2Pioneer.ListeningModeSet", $Key, $Value, "Melody", -1);
 		}
