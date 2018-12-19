@@ -267,6 +267,22 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case preg_match('/SR.*/', $Message) ? $Message : !$Message:
 					$ListenningMode = intval(substr($Message, -4));
+					If (($ListenningMode == 9) OR ($ListenningMode == 9) OR ($ListenningMode == 153)) {
+						$this->EnableAction("Tone");
+						If (GetValueInteger($this->GetIDForIdent("Tone") == 1) {
+							$this->EnableAction("Bass");
+							$this->EnableAction("Treble");
+						}
+						else {
+							$this->DisableAction("Bass");
+							$this->DisableAction("Treble");
+						}
+					}
+					else {
+						$this->DisableAction("Tone");
+						$this->DisableAction("Bass");
+						$this->DisableAction("Treble");
+					}
 					SetValueInteger($this->GetIDForIdent("ListeningModeSet"), $ListenningMode);
 					break;	
 				case preg_match('/SPK.*/', $Message) ? $Message : !$Message:
@@ -279,7 +295,14 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;	
 				case preg_match('/TO.*/', $Message) ? $Message : !$Message:
 					$ToneByPass = intval(substr($Message, -1));
-					// Eventuell sperren von Bass und Treble???
+					If ($ToneByPass == 1) {
+						$this->EnableAction("Bass");
+						$this->EnableAction("Treble");
+					}
+					else {
+						$this->DisableAction("Bass");
+						$this->DisableAction("Treble");
+					}
 					SetValueInteger($this->GetIDForIdent("Tone"), $ToneByPass);
 					break;	
 				case preg_match('/BA.*/', $Message) ? $Message : !$Message:
