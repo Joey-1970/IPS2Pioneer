@@ -334,6 +334,14 @@ class IPS2PioneerVSX923 extends IPSModule
 				case "APR1":
 					SetValueBoolean($this->GetIDForIdent("Zone_2"), false);
 					break;
+				case preg_match('/PKL.*/', $Message) ? $Message : !$Message:
+					$PanelKeyLock = intval(substr($Message, -1));
+					//SetValueInteger($this->GetIDForIdent("PanelKeyLock"), $PanelKeyLock);
+					break;	
+				case preg_match('/RML.*/', $Message) ? $Message : !$Message:
+					$RemoteLock = intval(substr($Message, -1));
+					//SetValueInteger($this->GetIDForIdent("RemoteLock"), $RemoteLock);
+					break;	
 				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
 					$SpeakerSystem = intval(substr($Message, -2));
 					If ($SpeakerSystem < 3) {
@@ -496,14 +504,14 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?HO", "?ZS", "?ZV", "?SSF");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?HO", "?ZS", "?ZV", "?SSF", "?PKL", "?RML");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
 				IPS_Sleep(100);
 			}
 			$Content = file_get_contents(__DIR__ . '/../imgs/Pioneer.jpg');
-			IPS_SetMediaContent($this->GetIDForIdent("Cover_".$this->InstanceID), base64_encode($Content));  //Bild Base64 codieren und ablegen
+			IPS_SetMediaContent($this->GetIDForIdent("Cover_".$this->InstanceID), base64_encode($Content));  //Bild Base64 codieren und ablegen                                 
 			IPS_SendMediaEvent($this->GetIDForIdent("Cover_".$this->InstanceID)); //aktualisieren
 		}
 	}
