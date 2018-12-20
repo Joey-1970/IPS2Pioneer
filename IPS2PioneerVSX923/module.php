@@ -33,6 +33,15 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 0, "<", "Repeat", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Input", 1, ">", "Repeat", -1);
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.PanelKeyLock", "Lock", "", "", 0, 1, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.PanelKeyLock", 0, "LOCK OFF", "LockOpen", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.PanelKeyLock", 1, "PANEL KEY LOCK ON", "LockClosed", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.PanelKeyLock", 1, "PANEL KEY & VOLUME LOCK ON", "LockClosed", -1);
+		
+		$this->RegisterProfileInteger("IPS2Pioneer.RemoteLock", "Lock", "", "", 0, 1, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.RemoteLock", 0, "LOCK OFF", "LockOpen", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.RemoteLock", 1, "LOCK ON", "LockClosed", -1);
+		
 		$this->RegisterProfileInteger("IPS2Pioneer.Speaker", "Speaker", "", "", 0, 3, 0);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 0, "Speaker off", "Speaker", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 1, "Speaker A on", "Speaker", -1);
@@ -108,6 +117,12 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->EnableAction("Treble");
 		
 		$this->RegisterVariableString("Metadata", "Metadata", "~TextBox", 300);
+		
+		$this->RegisterVariableInteger("PanelKeyLock", "Panel Key Lock", "IPS2Pioneer.PanelKeyLock", 310);
+		$this->EnableAction("PanelKeyLock");
+		
+		$this->RegisterVariableInteger("RemoteLock", "Remote Lock", "IPS2Pioneer.RemoteLock", 320);
+		$this->EnableAction("RemoteLock");
 		
 		$this->RegisterVariableBoolean("Zone_2", "Zone_2", "~Switch", 400);
 		$this->EnableAction("Zone_2");
@@ -336,11 +351,11 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case preg_match('/PKL.*/', $Message) ? $Message : !$Message:
 					$PanelKeyLock = intval(substr($Message, -1));
-					//SetValueInteger($this->GetIDForIdent("PanelKeyLock"), $PanelKeyLock);
+					SetValueInteger($this->GetIDForIdent("PanelKeyLock"), $PanelKeyLock);
 					break;	
 				case preg_match('/RML.*/', $Message) ? $Message : !$Message:
 					$RemoteLock = intval(substr($Message, -1));
-					//SetValueInteger($this->GetIDForIdent("RemoteLock"), $RemoteLock);
+					SetValueInteger($this->GetIDForIdent("RemoteLock"), $RemoteLock);
 					break;	
 				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
 					$SpeakerSystem = intval(substr($Message, -2));
@@ -462,6 +477,14 @@ class IPS2PioneerVSX923 extends IPSModule
 				case "Speakers":
 					$Speaker = intval($Value);
 					$this->SetData($Speaker."SPK");
+					break;
+				case "PanelKeyLock":
+					$PanelKeyLock = intval($Value);
+					$this->SetData($PanelKeyLock."PKL");
+					break;
+				case "RemoteLock":
+					$RemoteLock = intval($Value);
+					$this->SetData($RemoteLock."RML");
 					break;
 				case "HDMIOut":
 					$HDMIOut = intval($Value);
