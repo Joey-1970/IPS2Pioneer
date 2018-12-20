@@ -36,7 +36,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterProfileInteger("IPS2Pioneer.PanelKeyLock", "Lock", "", "", 0, 1, 0);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.PanelKeyLock", 0, "LOCK OFF", "LockOpen", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.PanelKeyLock", 1, "PANEL KEY LOCK ON", "LockClosed", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.PanelKeyLock", 1, "PANEL KEY & VOLUME LOCK ON", "LockClosed", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.PanelKeyLock", 2, "PANEL KEY & VOLUME LOCK ON", "LockClosed", -1);
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.RemoteLock", "Lock", "", "", 0, 1, 0);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.RemoteLock", 0, "LOCK OFF", "LockOpen", -1);
