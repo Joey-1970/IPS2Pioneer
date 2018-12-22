@@ -169,6 +169,9 @@ class IPS2PioneerVSX923 extends IPSModule
 				If (IPS_GetProperty($ParentID, 'Port') <> 8102) {
 		                	IPS_SetProperty($ParentID, 'Port', 8102);
 				}
+				If (IPS_GetProperty($ParentID, 'Open') <> $this->ReadPropertyBoolean("Open")) {
+		                	IPS_SetProperty($ParentID, 'Open', $this->ReadPropertyBoolean("Open"));
+				}
 				If (IPS_GetName($ParentID) == "Client Socket") {
 		                	IPS_SetName($ParentID, "IPS2PioneerVSX923");
 				}
