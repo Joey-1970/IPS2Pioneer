@@ -57,6 +57,10 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 1, "HDMI Out 1", "TV", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.HDMIOut", 2, "HDMI Out 2", "TV", -1);
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.SelectedHDMIOut", "Music", "", "", 0, 1, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.SelectedHDMIOut", 0, "Main Zone", "Music", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.SelectedHDMIOut", 1, "HD Zone", "Music", -1);
+		
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
 		
@@ -133,7 +137,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableFloat("Zone_2_Volume", "Zone 2 Volume", "IPS2Pioneer.dBZone", 420);
 		$this->EnableAction("Zone_2_Volume");
 		
-		
+		$this->RegisterVariableInteger("SelectedHDMIOut", "Selected HDMI Out", "~IPS2Pioneer.SelectedHDMIOut", 430);
+		$this->EnableAction("SelectedHDMIOut");
 	}
 	
 	public function GetConfigurationForm() { 
@@ -248,6 +253,12 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case "MUT1":
 					SetValueBoolean($this->GetIDForIdent("Mute"), false);
+					break;
+				case "SVZ0":
+					SetValueInteger($this->GetIDForIdent("SelectedHDMIOut"), 0);
+					break;
+				case "SVZ1":
+					SetValueInteger($this->GetIDForIdent("SelectedHDMIOut"), 1);
 					break;
 				case preg_match('/FN.*/', $Message) ? $Message : !$Message:
 					SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
@@ -519,6 +530,10 @@ class IPS2PioneerVSX923 extends IPSModule
 				case "SpeakerSystem":
 					$SpeakerSystem = str_pad($Value, 2, '0', STR_PAD_LEFT);
 					$this->SetData($SpeakerSystem."SSF");
+					break;
+				case "SelectedHDMIOut":
+					$SelectedHDMIOut = intval($Value);
+					$this->SetData($SelectedHDMIOut."SVZ");
 					break;
 				default:
 				    throw new Exception("Invalid Ident");
