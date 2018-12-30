@@ -137,7 +137,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableFloat("Zone_2_Volume", "Zone 2 Volume", "IPS2Pioneer.dBZone", 420);
 		$this->EnableAction("Zone_2_Volume");
 		
-		$this->RegisterVariableInteger("SelectedHDMIOut", "Selected HDMI Out", "~IPS2Pioneer.SelectedHDMIOut", 430);
+		$this->RegisterVariableInteger("SelectedHDMIOut", "Selected HDMI Out", "IPS2Pioneer.SelectedHDMIOut", 430);
 		$this->EnableAction("SelectedHDMIOut");
 	}
 	
