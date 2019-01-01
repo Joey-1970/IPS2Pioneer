@@ -615,6 +615,16 @@ class IPS2PioneerVSX923 extends IPSModule
 		}	
 	}
 	
+	public function SelectInput(Int $InputNumber)
+	{
+		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
+			$Input = str_pad($Value, 2, '0', STR_PAD_LEFT);
+			$this->SetData($Input."FN");
+		}	
+	}
+	
+	
+	
 	private function GetListeningMode(String $ListeningMode)
 	{
 		$Mode = array("0101" => "[)(]PLIIx MOVIE", "0102" => "[)(]PLII MOVIE", "0103" => "[)(]PLIIx MUSIC", 
