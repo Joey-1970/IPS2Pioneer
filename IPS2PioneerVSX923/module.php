@@ -69,7 +69,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect_".$this->InstanceID, "Repeat", "", "", 0, 45, 0);
 		
-		$this->RegisterProfileFloat("IPS2Pioneer.TunerFrequency", "Melody", "", " MHz", 85, 108, 0.1, 2);
+		$this->RegisterProfileFloat("IPS2Pioneer.TunerFrequency", "Melody", "", " MHz", 87.5, 108, 0.1, 2);
 		
 		$MetadataArray = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
 		$this->SetBuffer("Metadata", serialize($MetadataArray));
@@ -142,6 +142,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->EnableAction("SelectedHDMIOut");
 		
 		$this->RegisterVariableFloat("TunerFrequency", "Tuner Frequency", "IPS2Pioneer.TunerFrequency", 440);
+		$this->EnableAction("TunerFrequency");
 	}
 	
 	public function GetConfigurationForm() { 
@@ -543,6 +544,17 @@ class IPS2PioneerVSX923 extends IPSModule
 					$SelectedHDMIOut = intval($Value);
 					$this->SetData($SelectedHDMIOut."SVZ");
 					break;
+				case "TunerFrequency":
+					$Message = "TAC".chr(13);
+					$Frequency = $Value * 100;
+					$FrequencyArray = preg_split('//u', $Frequency, -1, PREG_SPLIT_NO_EMPTY);
+					foreach ($FrequencyArray as $Sign) {
+					  	$Message = $Message.$Sign."TP".chr(13);
+					}
+					$Message = substr($Message, 0, -1);
+					$this->SetData($Message);
+					break;
+					
 				default:
 				    throw new Exception("Invalid Ident");
 			}
