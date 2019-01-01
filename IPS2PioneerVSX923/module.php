@@ -69,6 +69,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.InputSelect_".$this->InstanceID, "Repeat", "", "", 0, 45, 0);
 		
+		$this->RegisterProfileFloat("IPS2Pioneer.TunerFrequency", "Melody", "", " MHz", 85, 108, 0.1, 2);
 		
 		$MetadataArray = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
 		$this->SetBuffer("Metadata", serialize($MetadataArray));
@@ -140,7 +141,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableInteger("SelectedHDMIOut", "Selected HDMI Out", "IPS2Pioneer.SelectedHDMIOut", 430);
 		$this->EnableAction("SelectedHDMIOut");
 		
-		$this->RegisterVariableFloat("TunerFrequency", "Tuner Frequency", "", 440);
+		$this->RegisterVariableFloat("TunerFrequency", "Tuner Frequency", "IPS2Pioneer.TunerFrequency", 440);
 	}
 	
 	public function GetConfigurationForm() { 
@@ -553,7 +554,8 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
-			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC", "?AP", "?HO", "?ZS", "?ZV", "?SSF", "?PKL", "?RML", "?SVZ");
+			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC",
+					      "?AP", "?HO", "?ZS", "?ZV", "?SSF", "?PKL", "?RML", "?SVZ", "?FR");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
 				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
