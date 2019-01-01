@@ -139,6 +139,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterVariableInteger("SelectedHDMIOut", "Selected HDMI Out", "IPS2Pioneer.SelectedHDMIOut", 430);
 		$this->EnableAction("SelectedHDMIOut");
+		
+		$this->RegisterVariableFloat("TunerFrequency", "Tuner Frequency", "", 440);
 	}
 	
 	public function GetConfigurationForm() { 
@@ -424,6 +426,11 @@ class IPS2PioneerVSX923 extends IPSModule
 						$Result = @IPS_SetVariableProfileAssociation("IPS2Pioneer.InputSelect_".$this->InstanceID, $Device, "", "", -1);
 					}
 					break;
+				case preg_match('/FR.*/', $Message) ? $Message : !$Message:
+					$TunerFrequency = floatval(substr($Message, -5));
+					$TunerFrequency = $TunerFrequency / 100;
+					SetValueFloat($this->GetIDForIdent("TunerFrequency"), $TunerFrequency);
+					break;	
 				
 			}
 		}
