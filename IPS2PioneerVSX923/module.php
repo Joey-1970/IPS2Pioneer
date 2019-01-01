@@ -623,7 +623,20 @@ class IPS2PioneerVSX923 extends IPSModule
 		}	
 	}
 	
-	
+	public function TunerDirectAccess(float $Frequency)
+	{
+		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
+			$Message = "TAC".chr(13);
+			$Frequency = $Frequency * 100;
+			$FrequencyArray = preg_split('//u', $Frequency, -1, PREG_SPLIT_NO_EMPTY);
+
+			foreach ($FrequencyArray as $Sign) {
+			  $Message = $Message.$Sign."TP".chr(13);
+			}
+			$Message = substr($Message, 0, -1);
+			$this->SetData($Message);
+		}	
+	}
 	
 	private function GetListeningMode(String $ListeningMode)
 	{
