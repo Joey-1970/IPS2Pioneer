@@ -143,6 +143,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterVariableFloat("TunerFrequency", "Tuner Frequency", "IPS2Pioneer.TunerFrequency", 440);
 		$this->EnableAction("TunerFrequency");
+		
+		$this->RegisterVariableString("HTMLDisplay", "Display", "~HTMLBox", 500);
 	}
 	
 	public function GetConfigurationForm() { 
@@ -657,6 +659,12 @@ class IPS2PioneerVSX923 extends IPSModule
 			$Message = substr($Message, 0, -1);
 			$this->SetData($Message);
 		}	
+	}
+	
+	public function SetHTMLDisplay(string $Text)
+	{
+		$HTMLContent = $Text;
+		SetValueString($this->GetIDForIdent("HTMLDisplay"), $HTMLContent);
 	}
 	
 	private function GetListeningMode(String $ListeningMode)
