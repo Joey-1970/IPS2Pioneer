@@ -261,7 +261,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				$this->SetTimerInterval("DataUpdate", 1000);
 				$this->SetStatus(102);
 				// Erste Abfrage der Daten
-				$this->ClientSocket("?P".chr(13));
+				$this->CommandClientSocket("?P".chr(13), 3);
 				$this->ResponseWait();
 			}
 			else {
@@ -765,7 +765,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					return;
 				}
 				//Now receive reply from server
-				if(socket_recv ($this->Socket, $buf, $ResponseLen, MSG_WAITALL ) === FALSE) {
+				if(socket_recv ($this->Socket, $Response, $ResponseLen, MSG_WAITALL ) === FALSE) {
 					$errorcode = socket_last_error();
 					$errormsg = socket_strerror($errorcode);
 					IPS_LogMessage("PioneerBDP450 Socket", "Fehler beim Empfangen ".$errorcode." ".$errormsg);
@@ -777,7 +777,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				// Anfragen mit variabler Rückgabelänge
 				
 				// Standardantworten
-				
+				$this->SendDebug("CommandClientSocket", "Rueckgabe: ".$Response, 0);
 				// hier Aufruf der Auswertung
 				
 				IPS_SemaphoreLeave("ClientSocket");
