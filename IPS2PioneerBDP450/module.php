@@ -699,14 +699,12 @@ class IPS2PioneerBDP450 extends IPSModule
 			$this->SetBuffer("TriggerCounter", $this->GetBuffer("TriggerCounter") + 1); 
 			If ( ($this->GetBuffer("TimeTrigger") == "true") AND ($this->GetBuffer("TriggerCounter") <> $this->ReadPropertyInteger("DataUpdate") ) ) {
 				// Spielt das Gerät ein Medium wird jede Sekunde die aktuelle Spielzeit abgefragt
-				$this->ClientSocket("?T".chr(13));
-				$this->ResponseWait();
+				$this->CommandClientSocket("?T");
 			}
 			elseif ($this->GetBuffer("TriggerCounter") == $this->ReadPropertyInteger("DataUpdate")) {	
 				$this->SetBuffer("TriggerCounter", 0); 
 				// Power-Status abfragen
-				$this->ClientSocket("?P".chr(13));
-				$this->ResponseWait();
+				$this->CommandClientSocket("?P");
 			}
 		}
 	}
