@@ -20,47 +20,6 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->RegisterPropertyInteger("DataUpdate", 15);
 		$this->RegisterTimer("DataUpdate", 0, 'I2BDP_Get_DataUpdate($_IPS["TARGET"]);');
 		$this->RegisterPropertyBoolean("RC_Data", false);
-	}
-	
-	public function GetConfigurationForm() { 
-		$arrayStatus = array(); 
-		$arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
-		$arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
-		$arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
-		$arrayStatus[] = array("code" => 200, "icon" => "error", "caption" => "Instanz ist fehlerhaft"); 
-		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
-		
-		$arrayElements = array(); 
-		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
-		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
- 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-				
-		$arrayElements[] = array("type" => "Label", "label" => "Zyklus Daten-Update in Sekunden (0 -> aus, 1 sek -> Minimum)");
-		$arrayElements[] = array("type" => "IntervalBox", "name" => "DataUpdate", "caption" => "s");
-		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-		$arrayElements[] = array("name" => "RC_Data", "type" => "CheckBox",  "caption" => "Virtuelle Fernbedienung erstellen"); 
-		
-		/*
-		{ "type": "Label", "label": "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!" },
-       		{ "type": "Button", "label": "On", "onClick": "I2BDP_PowerOn($id);"},
-        	{ "type": "Button", "label": "Off", "onClick": "I2BDP_PowerOff($id);"},
-        	{ "type": "Button", "label": "Open", "onClick": "I2BDP_Open($id);"},
-		{ "type": "Button", "label": "Close", "onClick": "I2BDP_Close($id);"} 
-		*/
-		
-		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
- 	} 
-	
-	public function ApplyChanges()
-	{
-		//Never delete this line!
-		parent::ApplyChanges();
-		
-		$this->SetBuffer("LastCommand", "");
-		$this->SetBuffer("LastCommandTimestamp", 0);
-		$this->SetBuffer("LastResponseTimestamp", 0);
-		$this->SetBuffer("TimeTrigger", "false");
-		$this->SetBuffer("TriggerCounter", 0);
 		
 		// Profile anlegen
 		$this->RegisterProfileInteger("IPS2PioneerBDP450.Modus", "Information", "", "", 0, 11, 1);
@@ -114,7 +73,51 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->RegisterVariableInteger("Application", "Application", "IPS2PioneerBDP450.Application", 80);
 		$this->RegisterVariableInteger("Information", "Information", "IPS2PioneerBDP450.Information", 90);
 		
-		If ($this->ReadPropertyBoolean("RC_Data") == true) {
+
+		
+	}
+	
+	public function GetConfigurationForm() { 
+		$arrayStatus = array(); 
+		$arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
+		$arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
+		$arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
+		$arrayStatus[] = array("code" => 200, "icon" => "error", "caption" => "Instanz ist fehlerhaft"); 
+		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
+		
+		$arrayElements = array(); 
+		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
+ 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+				
+		$arrayElements[] = array("type" => "Label", "label" => "Zyklus Daten-Update in Sekunden (0 -> aus, 1 sek -> Minimum)");
+		$arrayElements[] = array("type" => "IntervalBox", "name" => "DataUpdate", "caption" => "s");
+		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+		$arrayElements[] = array("name" => "RC_Data", "type" => "CheckBox",  "caption" => "Virtuelle Fernbedienung erstellen"); 
+		
+		/*
+		{ "type": "Label", "label": "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!" },
+       		{ "type": "Button", "label": "On", "onClick": "I2BDP_PowerOn($id);"},
+        	{ "type": "Button", "label": "Off", "onClick": "I2BDP_PowerOff($id);"},
+        	{ "type": "Button", "label": "Open", "onClick": "I2BDP_Open($id);"},
+		{ "type": "Button", "label": "Close", "onClick": "I2BDP_Close($id);"} 
+		*/
+		
+		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
+ 	} 
+	
+	public function ApplyChanges()
+	{
+		//Never delete this line!
+		parent::ApplyChanges();
+		
+		$this->SetBuffer("LastCommand", "");
+		$this->SetBuffer("LastCommandTimestamp", 0);
+		$this->SetBuffer("LastResponseTimestamp", 0);
+		$this->SetBuffer("TimeTrigger", "false");
+		$this->SetBuffer("TriggerCounter", 0);
+		
+				If ($this->ReadPropertyBoolean("RC_Data") == true) {
 			$this->RegisterVariableBoolean("rc_POWER", "POWER", "~Switch", 500);
 			$this->EnableAction("rc_POWER");
 			$this->RegisterVariableBoolean("rc_CONTINUED", "CONTINUED", "~Switch", 505);
@@ -261,7 +264,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				$this->SetTimerInterval("DataUpdate", 1000);
 				$this->SetStatus(102);
 				// Erste Abfrage der Daten
-				$this->CommandClientSocket("?P".chr(13), 3);
+				$this->CommandClientSocket("?P", 3);
 				$this->ResponseWait();
 			}
 			else {
@@ -755,7 +758,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					}
 				}
 				// Message senden
-				if(!socket_send ($this->Socket, $Message, strlen($Message), 0))
+				if(!socket_send ($this->Socket, $Message.chr(13), strlen($Message.chr(13)), 0))
 				{
 					$errorcode = socket_last_error();
 					$errormsg = socket_strerror($errorcode);
@@ -774,16 +777,154 @@ class IPS2PioneerBDP450 extends IPSModule
 					IPS_SemaphoreLeave("ClientSocket");
 					return;
 				}
-				// Anfragen mit variabler Rückgabelänge
 				
-				// Standardantworten
 				$this->SendDebug("CommandClientSocket", "Rueckgabe: ".$Response, 0);
-				// hier Aufruf der Auswertung
+				$this->ClientResponse($Message, $Response);
 				
 				IPS_SemaphoreLeave("ClientSocket");
 			}
 		}	
 	return $Result;
+	}
+	
+	private function ClientResponse($Message, $Response) 
+	{
+		
+		// Entfernen der Steuerzeichen
+		$Response = trim($Response, "\x00..\x1F");
+		
+		switch($Message) {
+			case "?P":
+				If ($Message == "E04") { 
+					If(GetValueBoolean($this->GetIDForIdent("Power")) == true) {
+						// Gerät ist ausgeschaltet
+						$this->SetBuffer("TimeTrigger", "false");
+						SetValueBoolean($this->GetIDForIdent("Power"), false);
+						SetValueInteger($this->GetIDForIdent("Modus"), 10);
+						SetValueInteger($this->GetIDForIdent("Chapter"), 0);
+						//$Time = date('H:i:s', mktime(0, 0, 0, 0, 0, 0));
+						$Time = mktime(0, 0, 0, 0, 0, 0);
+						SetValueInteger($this->GetIDForIdent("Time"), $Time);
+						//SetValueString($this->GetIDForIdent("StatusRequest"), "");
+						SetValueInteger($this->GetIDForIdent("Track"), 0);
+						SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
+						SetValueInteger($this->GetIDForIdent("Application"), 6);
+						SetValueInteger($this->GetIDForIdent("Information"), 11);
+					}
+				}
+				else {
+					// Gerät ist eingeschaltet
+					SetValueBoolean($this->GetIDForIdent("Power"), true);
+					If (GetValueString($this->GetIDForIdent("PlayerModel")) == "") {
+						// PlayerModel ermitteln
+						$this->ClientSocket("?L".chr(13));
+						$this->ResponseWait();
+					}
+					else {
+						SetValueInteger($this->GetIDForIdent("Modus"), intval(substr($Message, 1, 2)));
+						// Prüfen ob eine Disk im Laufwerk ist
+						$this->ClientSocket("?D".chr(13));
+						$this->ResponseWait();
+					}
+				}
+				break;
+			case "?D":
+				If (substr($Message, 0, 1) == "x") {
+					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
+					$this->SetBuffer("TimeTrigger", "false");
+				}
+				elseif (substr($Message, 0, 1) == "0") {
+					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 0);
+					$this->SetBuffer("TimeTrigger", "false");
+				}
+				elseif (substr($Message, 0, 1) == "1") {
+					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 1);
+					// Abfrage des Mediums
+					If (substr($Message, 1, 1) == "x") {
+						SetValueString($this->GetIDForIdent("Information"),"No Disc");
+						$this->SetBuffer("Information", 3);
+						$this->SetBuffer("TimeTrigger", "false");
+					}
+					else {
+						SetValueInteger($this->GetIDForIdent("Information"), intval(substr($Message, 1, 1)));
+						$this->SetBuffer("Information", (int)substr($Message, 1, 1));
+					}
+					// Abfrage der Anwendung
+					If (substr($Message, 2, 1) == "x") {
+						SetValueInteger($this->GetIDForIdent("Application"), 6);
+					}
+					else {
+						SetValueInteger($this->GetIDForIdent("Application"), intval(substr($Message, 2, 1)));
+					}
+					//IPS_LogMessage("IPS2PioneerBDP450","Information: ".$this->GetBuffer("Information"));
+					
+					If ( intval($this->GetBuffer("Information")) <> 3) {
+						// Abfrage des Chapters
+						$this->ClientSocket("?C".chr(13));
+						$this->ResponseWait();
+					}
+				}
+				break;
+			case "?C":
+				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Message));
+				// Titel/Track Nummer
+				$this->ClientSocket("?R".chr(13));
+				$this->ResponseWait();
+				break;
+			
+			case "?R":
+				SetValueInteger($this->GetIDForIdent("Track"), intval($Message));
+					// Abfrage der Zeit
+					$this->SetBuffer("TimeTrigger", "true");
+					//$this->ClientSocket("?T".chr(13));
+					//$this->ResponseWait();
+					/*
+					If ((int)$this->GetBuffer("Information") == 0) {
+						// Bei Bluray
+						$this->ClientSocket("?I".chr(13));
+						$this->ResponseWait();
+					}
+					elseif ((int)$this->GetBuffer("Information") == 1) {
+						// Bei DVD
+						$this->ClientSocket("?V".chr(13));
+						$this->ResponseWait();
+					}
+					elseif ((int)$this->GetBuffer("Information") == 2) {
+						// Bei CD
+						$this->ClientSocket("?K".chr(13));
+						$this->ResponseWait();
+					}
+					*/
+				break;
+			case "?T":
+				$Message = str_pad((string)$Message, 6 ,'0', STR_PAD_LEFT);
+				//$this->SetBuffer("TimeTrigger", "true");
+				$Hour = intval(substr($Message, 0, 2));
+				$Minute = intval(substr($Message, 2, 2));
+				$Second = intval(substr($Message, 4, 2));
+				//$Time = date('H:i:s', mktime($Hour, $Minute, $Second, 0, 0, 0));
+				$Time = mktime($Hour, $Minute, $Second, 0, 0, 0);
+				SetValueInteger($this->GetIDForIdent("Time"), $Time);
+				break;
+			case "?V":
+				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
+				break;
+			case "?I":
+				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
+				break;
+			case "?K":
+				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
+				break;
+			case "?L":
+				SetValueString($this->GetIDForIdent("PlayerModel"), (string)$Message);
+				// Firmware abfragen
+				$this->ClientSocket("?Z".chr(13));
+				$this->ResponseWait();
+				break;
+			case "?Z":
+				SetValueString($this->GetIDForIdent("PlayerFirmware"), (string)$Message);
+				break;
+		}
 	}
 	
 	public function PowerOn()
