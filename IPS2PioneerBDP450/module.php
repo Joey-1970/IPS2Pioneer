@@ -117,7 +117,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->SetBuffer("TimeTrigger", "false");
 		$this->SetBuffer("TriggerCounter", 0);
 		
-				If ($this->ReadPropertyBoolean("RC_Data") == true) {
+		If ($this->ReadPropertyBoolean("RC_Data") == true) {
 			$this->RegisterVariableBoolean("rc_POWER", "POWER", "~Switch", 500);
 			$this->EnableAction("rc_POWER");
 			$this->RegisterVariableBoolean("rc_CONTINUED", "CONTINUED", "~Switch", 505);
@@ -817,13 +817,13 @@ class IPS2PioneerBDP450 extends IPSModule
 					SetValueBoolean($this->GetIDForIdent("Power"), true);
 					If (GetValueString($this->GetIDForIdent("PlayerModel")) == "") {
 						// PlayerModel ermitteln
-						$this->ClientSocket("?L".chr(13));
+						$this->CommandClientSocket("?L");
 						$this->ResponseWait();
 					}
 					else {
 						SetValueInteger($this->GetIDForIdent("Modus"), intval(substr($Message, 1, 2)));
 						// Prüfen ob eine Disk im Laufwerk ist
-						$this->ClientSocket("?D".chr(13));
+						$this->CommandClientSocket("?D");
 						$this->ResponseWait();
 					}
 				}
@@ -860,16 +860,14 @@ class IPS2PioneerBDP450 extends IPSModule
 					
 					If ( intval($this->GetBuffer("Information")) <> 3) {
 						// Abfrage des Chapters
-						$this->ClientSocket("?C".chr(13));
-						$this->ResponseWait();
+						$this->CommandClientSocket("?C");
 					}
 				}
 				break;
 			case "?C":
 				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Message));
 				// Titel/Track Nummer
-				$this->ClientSocket("?R".chr(13));
-				$this->ResponseWait();
+				$this->CommandClientSocket("?R");
 				break;
 			
 			case "?R":
@@ -918,8 +916,7 @@ class IPS2PioneerBDP450 extends IPSModule
 			case "?L":
 				SetValueString($this->GetIDForIdent("PlayerModel"), (string)$Message);
 				// Firmware abfragen
-				$this->ClientSocket("?Z".chr(13));
-				$this->ResponseWait();
+				$this->CommandClientSocket("?Z");
 				break;
 			case "?Z":
 				SetValueString($this->GetIDForIdent("PlayerFirmware"), (string)$Message);
