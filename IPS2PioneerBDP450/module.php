@@ -699,12 +699,12 @@ class IPS2PioneerBDP450 extends IPSModule
 			$this->SetBuffer("TriggerCounter", $this->GetBuffer("TriggerCounter") + 1); 
 			If ( ($this->GetBuffer("TimeTrigger") == "true") AND ($this->GetBuffer("TriggerCounter") <> $this->ReadPropertyInteger("DataUpdate") ) ) {
 				// Spielt das Gerät ein Medium wird jede Sekunde die aktuelle Spielzeit abgefragt
-				$this->CommandClientSocket("?T");
+				$this->CommandClientSocket("?T", 6);
 			}
 			elseif ($this->GetBuffer("TriggerCounter") == $this->ReadPropertyInteger("DataUpdate")) {	
 				$this->SetBuffer("TriggerCounter", 0); 
 				// Power-Status abfragen
-				$this->CommandClientSocket("?P");
+				$this->CommandClientSocket("?P", 3);
 			}
 		}
 	}
@@ -815,14 +815,12 @@ class IPS2PioneerBDP450 extends IPSModule
 					SetValueBoolean($this->GetIDForIdent("Power"), true);
 					If (GetValueString($this->GetIDForIdent("PlayerModel")) == "") {
 						// PlayerModel ermitteln
-						$this->CommandClientSocket("?L");
-						$this->ResponseWait();
+						$this->CommandClientSocket("?L", 7);
 					}
 					else {
 						SetValueInteger($this->GetIDForIdent("Modus"), intval(substr($Message, 1, 2)));
 						// Prüfen ob eine Disk im Laufwerk ist
-						$this->CommandClientSocket("?D");
-						$this->ResponseWait();
+						$this->CommandClientSocket("?D", 3);
 					}
 				}
 				break;
@@ -858,14 +856,14 @@ class IPS2PioneerBDP450 extends IPSModule
 					
 					If ( intval($this->GetBuffer("Information")) <> 3) {
 						// Abfrage des Chapters
-						$this->CommandClientSocket("?C");
+						$this->CommandClientSocket("?C", 3);
 					}
 				}
 				break;
 			case "?C":
 				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Message));
 				// Titel/Track Nummer
-				$this->CommandClientSocket("?R");
+				$this->CommandClientSocket("?R", 3);
 				break;
 			
 			case "?R":
@@ -914,7 +912,7 @@ class IPS2PioneerBDP450 extends IPSModule
 			case "?L":
 				SetValueString($this->GetIDForIdent("PlayerModel"), (string)$Message);
 				// Firmware abfragen
-				$this->CommandClientSocket("?Z");
+				$this->CommandClientSocket("?Z", 6);
 				break;
 			case "?Z":
 				SetValueString($this->GetIDForIdent("PlayerFirmware"), (string)$Message);
