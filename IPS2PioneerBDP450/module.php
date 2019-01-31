@@ -820,7 +820,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					else {
 						SetValueInteger($this->GetIDForIdent("Modus"), intval(substr($Message, 1, 2)));
 						// Prüfen ob eine Disk im Laufwerk ist
-						$this->CommandClientSocket("?D", 3);
+						$this->CommandClientSocket("?D", 5);
 					}
 				}
 				break;
