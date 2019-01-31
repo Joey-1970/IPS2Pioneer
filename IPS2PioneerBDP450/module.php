@@ -726,8 +726,8 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		$Result = -999;
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			if (IPS_SemaphoreEnter("ClientSocket", 300))
-				{
+			//if (IPS_SemaphoreEnter("ClientSocket", 300))
+				//{
 				if (!$this->Socket)
 				{
 					// Socket erstellen
@@ -779,8 +779,8 @@ class IPS2PioneerBDP450 extends IPSModule
 				$this->SendDebug("CommandClientSocket", "Rueckgabe: ".$Response, 0);
 				$this->ClientResponse($Message, $Response);
 				
-				IPS_SemaphoreLeave("ClientSocket");
-			}
+				//IPS_SemaphoreLeave("ClientSocket");
+			//}
 		}	
 	return $Result;
 	}
