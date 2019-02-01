@@ -428,25 +428,12 @@ class IPS2PioneerBDP450 extends IPSModule
 			elseif ($this->GetBuffer("TriggerCounter") == $this->ReadPropertyInteger("DataUpdate")) {	
 				$this->SetBuffer("TriggerCounter", 0); 
 				// Power-Status abfragen
-				$this->CommandClientSocket("?P", 3);
+				$this->CommandClientSocket("?P", 5);
 			}
 		}
 	}
 	
-	private function ClientSocket(String $message)
-	{
-		If ($this->ReadPropertyBoolean("Open") == true) {
-			if (IPS_SemaphoreEnter("ClientSocket", 500))
-			{
-				$this->SetBuffer("LastCommand", $message);
-				$this->SetBuffer("LastCommandTimestamp", time());
-				$res = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($message))));
-				IPS_SemaphoreLeave("ClientSocket");
-			}
-		}
-	}
-	
-	private function CommandClientSocket(String $Message, $ResponseLen = 2)
+	private function CommandClientSocket(String $Message, $ResponseLen = 3)
 	{
 		$Result = -999;
 		If ($this->ReadPropertyBoolean("Open") == true) {
@@ -678,16 +665,16 @@ class IPS2PioneerBDP450 extends IPSModule
 	
 	public function Stop()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("99RJ".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("99RJ", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
 	
 	public function Play()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("PL".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("PL", 5);
 			$this->Get_DataUpdate();
 		}
 	}
