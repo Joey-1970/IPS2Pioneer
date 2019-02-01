@@ -266,7 +266,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				$this->SetStatus(102);
 				// Erste Abfrage der Daten
 				$this->CommandClientSocket("?P", 3);
-				$this->ResponseWait();
+				//$this->ResponseWait();
 			}
 			else {
 				$this->SetStatus(104);
