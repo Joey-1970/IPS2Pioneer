@@ -923,32 +923,32 @@ class IPS2PioneerBDP450 extends IPSModule
 	
 	public function PowerOn()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("PN".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("PN", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
 	
 	public function PowerOff()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("PF".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("PF", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
 	
 	public function Open()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("OP".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("OP", 5);
 			$this->Get_DataUpdate();
 		}
 	}
 	
 	public function Close()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("CO".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("CO", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
