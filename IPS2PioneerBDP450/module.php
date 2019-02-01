@@ -236,187 +236,15 @@ class IPS2PioneerBDP450 extends IPSModule
 		SetValueInteger($this->GetIDForIdent("Information"), 11);
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
-			/*
-			$ParentID = $this->GetParentID();
-			If ($ParentID > 0) {
-				If (IPS_GetProperty($ParentID, 'Host') <> $this->ReadPropertyString('IPAddress')) {
-		                	IPS_SetProperty($ParentID, 'Host', $this->ReadPropertyString('IPAddress'));
-				}
-				If (IPS_GetProperty($ParentID, 'Port') <> 8102) {
-		                	IPS_SetProperty($ParentID, 'Port', 8102);
-				}
-				If (IPS_GetName($ParentID) == "Client Socket") {
-		                	IPS_SetName($ParentID, "IPS2PioneerBDP450");
-				}
-				if(IPS_HasChanges($ParentID))
-				{
-				    	$Result = @IPS_ApplyChanges($ParentID);
-					If ($Result) {
-						$this->SendDebug("ApplyChanges", "Einrichtung des Client Socket erfolgreich", 0);
-					}
-					else {
-						$this->SendDebug("ApplyChanges", "Einrichtung des Client Socket nicht erfolgreich!", 0);
-					}
-				}
-			}
-			*/
 			If (($this->ReadPropertyBoolean("Open") == true) AND ($this->ConnectionTest() == true)) {
-				//$this->SetTimerInterval("DataUpdate", ($this->ReadPropertyInteger("DataUpdate") * 1000));
 				$this->SetTimerInterval("DataUpdate", 1000);
 				$this->SetStatus(102);
 				// Erste Abfrage der Daten
 				$this->CommandClientSocket("?P", 3);
-				//$this->ResponseWait();
 			}
 			else {
 				$this->SetStatus(104);
 			}	   
-		}
-	}
-	
-	public function ReceiveData($JSONString) {
- 	    	//IPS_SemaphoreLeave("Communication");
-		// Empfangene Daten vom I/O
-	    	$this->SetBuffer("LastResponseTimestamp", time());
-		$Data = json_decode($JSONString);
-		$Message = utf8_decode($Data->Buffer);
-		// Entfernen der Steuerzeichen
-		$Message = trim($Message, "\x00..\x1F");
-		$LastCommand = trim($this->GetBuffer("LastCommand"), "\x00..\x1F");
-		//IPS_LogMessage("IPS2PioneerBDP450","LastCommand: ".$this->GetBuffer("LastCommand")."Client Response: ".$Message);
-		$this->SendDebug("ReceiveData", "LastCommand: ".$this->GetBuffer("LastCommand")."Client Response: ".$Message, 0);
-		
-		switch($LastCommand) {
-			case "?P":
-				If ($Message == "E04") { 
-					If(GetValueBoolean($this->GetIDForIdent("Power")) == true) {
-						// Gerät ist ausgeschaltet
-						$this->SetBuffer("TimeTrigger", "false");
-						SetValueBoolean($this->GetIDForIdent("Power"), false);
-						SetValueInteger($this->GetIDForIdent("Modus"), 10);
-						SetValueInteger($this->GetIDForIdent("Chapter"), 0);
-						//$Time = date('H:i:s', mktime(0, 0, 0, 0, 0, 0));
-						$Time = mktime(0, 0, 0, 0, 0, 0);
-						SetValueInteger($this->GetIDForIdent("Time"), $Time);
-						//SetValueString($this->GetIDForIdent("StatusRequest"), "");
-						SetValueInteger($this->GetIDForIdent("Track"), 0);
-						SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
-						SetValueInteger($this->GetIDForIdent("Application"), 6);
-						SetValueInteger($this->GetIDForIdent("Information"), 11);
-					}
-				}
-				else {
-					// Gerät ist eingeschaltet
-					SetValueBoolean($this->GetIDForIdent("Power"), true);
-					If (GetValueString($this->GetIDForIdent("PlayerModel")) == "") {
-						// PlayerModel ermitteln
-						$this->ClientSocket("?L".chr(13));
-						$this->ResponseWait();
-					}
-					else {
-						SetValueInteger($this->GetIDForIdent("Modus"), intval(substr($Message, 1, 2)));
-						// Prüfen ob eine Disk im Laufwerk ist
-						$this->ClientSocket("?D".chr(13));
-						$this->ResponseWait();
-					}
-				}
-				break;
-			case "?D":
-				If (substr($Message, 0, 1) == "x") {
-					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
-					$this->SetBuffer("TimeTrigger", "false");
-				}
-				elseif (substr($Message, 0, 1) == "0") {
-					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 0);
-					$this->SetBuffer("TimeTrigger", "false");
-				}
-				elseif (substr($Message, 0, 1) == "1") {
-					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 1);
-					// Abfrage des Mediums
-					If (substr($Message, 1, 1) == "x") {
-						SetValueString($this->GetIDForIdent("Information"),"No Disc");
-						$this->SetBuffer("Information", 3);
-						$this->SetBuffer("TimeTrigger", "false");
-					}
-					else {
-						SetValueInteger($this->GetIDForIdent("Information"), intval(substr($Message, 1, 1)));
-						$this->SetBuffer("Information", (int)substr($Message, 1, 1));
-					}
-					// Abfrage der Anwendung
-					If (substr($Message, 2, 1) == "x") {
-						SetValueInteger($this->GetIDForIdent("Application"), 6);
-					}
-					else {
-						SetValueInteger($this->GetIDForIdent("Application"), intval(substr($Message, 2, 1)));
-					}
-					//IPS_LogMessage("IPS2PioneerBDP450","Information: ".$this->GetBuffer("Information"));
-					
-					If ( intval($this->GetBuffer("Information")) <> 3) {
-						// Abfrage des Chapters
-						$this->ClientSocket("?C".chr(13));
-						$this->ResponseWait();
-					}
-				}
-				break;
-			case "?C":
-				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Message));
-				// Titel/Track Nummer
-				$this->ClientSocket("?R".chr(13));
-				$this->ResponseWait();
-				break;
-			
-			case "?R":
-				SetValueInteger($this->GetIDForIdent("Track"), intval($Message));
-					// Abfrage der Zeit
-					$this->SetBuffer("TimeTrigger", "true");
-					//$this->ClientSocket("?T".chr(13));
-					//$this->ResponseWait();
-					/*
-					If ((int)$this->GetBuffer("Information") == 0) {
-						// Bei Bluray
-						$this->ClientSocket("?I".chr(13));
-						$this->ResponseWait();
-					}
-					elseif ((int)$this->GetBuffer("Information") == 1) {
-						// Bei DVD
-						$this->ClientSocket("?V".chr(13));
-						$this->ResponseWait();
-					}
-					elseif ((int)$this->GetBuffer("Information") == 2) {
-						// Bei CD
-						$this->ClientSocket("?K".chr(13));
-						$this->ResponseWait();
-					}
-					*/
-				break;
-			case "?T":
-				$Message = str_pad((string)$Message, 6 ,'0', STR_PAD_LEFT);
-				//$this->SetBuffer("TimeTrigger", "true");
-				$Hour = intval(substr($Message, 0, 2));
-				$Minute = intval(substr($Message, 2, 2));
-				$Second = intval(substr($Message, 4, 2));
-				//$Time = date('H:i:s', mktime($Hour, $Minute, $Second, 0, 0, 0));
-				$Time = mktime($Hour, $Minute, $Second, 0, 0, 0);
-				SetValueInteger($this->GetIDForIdent("Time"), $Time);
-				break;
-			case "?V":
-				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
-				break;
-			case "?I":
-				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
-				break;
-			case "?K":
-				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
-				break;
-			case "?L":
-				SetValueString($this->GetIDForIdent("PlayerModel"), (string)$Message);
-				// Firmware abfragen
-				$this->ClientSocket("?Z".chr(13));
-				$this->ResponseWait();
-				break;
-			case "?Z":
-				SetValueString($this->GetIDForIdent("PlayerFirmware"), (string)$Message);
-				break;
 		}
 	}
 	
@@ -425,267 +253,267 @@ class IPS2PioneerBDP450 extends IPSModule
   		switch($Ident) {
 			case "Power":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFBC/RU".chr(13));			
+					$this->CommandClientSocket("/A181AFBC/RU", 3);			
 				}
 				break;
 			case "rc_POWER":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFBC/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFBC/RU".chr(13));				
 				}
 				break;
 			case "rc_CONTINUED":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFAA/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFAA/RU".chr(13));				
 				}
 				break;
 			case "rc_OPEN_CLOSE":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFB6/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFB6/RU".chr(13));				
 				}
 				break;
 			case "rc_AUDIO":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFBE/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFBE/RU".chr(13));				
 				}
 				break;
 			case "rc_SUBTITLE":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF36/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF36/RU".chr(13));				
 				}
 				break;
 			case "rc_ANGLE":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFB5/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFB5/RU".chr(13));				
 				}
 				break;
 			case "rc_FL_DIMMER":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFF9/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFF9/RU".chr(13));				
 				}
 				break;
 			case "rc_CD_SACD":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF2A/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF2A/RU".chr(13));				
 				}
 				break;
 			case "rc_HDMI":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFF8/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFF8/RU".chr(13));				
 				}
 				break;
 			case "rc_TOP_MENU":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFB4/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFB4/RU".chr(13));				
 				}
 				break;
 			case "rc_FUNCTION":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFB3/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFB3/RU".chr(13));				
 				}
 				break;
 			case "rc_EXIT":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF20/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF20/RU".chr(13));				
 				}
 				break;
 			case "rc_HOME_MEDIA_GALLERY":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFF7/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFF7/RU".chr(13));				
 				}
 				break;
 			case "rc_POPUP_MENU":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFB9/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFB9/RU".chr(13));				
 				}
 				break;
 			case "rc_UP":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A184FFFF/RU".chr(13));				
+					$this->CommandClientSocket("/A184FFFF/RU".chr(13));				
 				}
 				break;
 			case "rc_LEFT":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A187FFFF/RU".chr(13));				
+					$this->CommandClientSocket("/A187FFFF/RU".chr(13));				
 				}
 				break;	
 			case "rc_ENTER":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFEF/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFEF/RU".chr(13));				
 				}
 				break;
 			case "rc_RIGHT":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A186FFFF/RU".chr(13));				
+					$this->CommandClientSocket("/A186FFFF/RU".chr(13));				
 				}
 				break;		
 			case "rc_DOWN":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A185FFFF/RU".chr(13));				
+					$this->CommandClientSocket("/A185FFFF/RU".chr(13));				
 				}
 				break;
 			case "rc_HOME_MENU":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFB0/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFB0/RU".chr(13));				
 				}
 				break;	
 			case "rc_RETURN":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFF4/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFF4/RU".chr(13));				
 				}
 				break;
 			case "rc_COLOR_1":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF60/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF60/RU".chr(13));				
 				}
 				break;	
 			case "rc_COLOR_2":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF61/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF61/RU".chr(13));				
 				}
 				break;
 			case "rc_COLOR_3":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF62/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF62/RU".chr(13));				
 				}
 				break;		
 			case "rc_COLOR_4":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF63/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF63/RU".chr(13));				
 				}
 				break;
 			case "rc_REV_SCAN":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFEA/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFEA/RU".chr(13));				
 				}
 				break;	
 			case "rc_PLAY":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF39/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF39/RU".chr(13));				
 				}
 				break;
 			case "rc_FWD_SCAN":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFE9/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFE9/RU".chr(13));				
 				}
 				break;	
 			case "rc_PREV_STEP_SLOW":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF3E/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF3E/RU".chr(13));				
 				}
 				break;
 			case "rc_PAUSE":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF3A/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF3A/RU".chr(13));				
 				}
 				break;
 			case "rc_STOP":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF38/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF38/RU".chr(13));				
 				}
 				break;
 			case "rc_NEXT_STEP_SLOW":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF3D/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF3D/RU".chr(13));				
 				}
 				break;	
 			case "rc_1":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA1/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA1/RU".chr(13));				
 				}
 				break;
 			case "rc_2":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA2/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA2/RU".chr(13));				
 				}
 				break;
 			case "rc_3":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA3/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA3/RU".chr(13));				
 				}
 				break;
 			case "rc_4":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA4/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA4/RU".chr(13));				
 				}
 				break;
 			case "rc_5":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA5/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA5/RU".chr(13));				
 				}
 				break;
 			case "rc_6":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA6/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA6/RU".chr(13));				
 				}
 				break;
 			case "rc_7":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA7/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA7/RU".chr(13));				
 				}
 				break;
 			case "rc_8":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA8/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA8/RU".chr(13));				
 				}
 				break;
 			case "rc_9":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA9/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA9/RU".chr(13));				
 				}
 				break;
 			case "rc_0":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFA0/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFA0/RU".chr(13));				
 				}
 				break;
 			case "rc_2nd_VIDEO":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFBF/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFBF/RU".chr(13));				
 				}
 				break;
 			case "rc_2nd_AUDIO":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFBD/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFBD/RU".chr(13));				
 				}
 				break;
 			case "rc_A_B":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFE4/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFE4/RU".chr(13));				
 				}
 				break;
 			case "rc_CLEAR":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFE5/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFE5/RU".chr(13));				
 				}
 				break;	
 			case "rc_REPEAT":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFE8/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFE8/RU".chr(13));				
 				}
 				break;
 			case "rc_DISPLAY":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AFE3/RU".chr(13));				
+					$this->CommandClientSocket("/A181AFE3/RU".chr(13));				
 				}
 				break;
 			case "rc_KEYLOCK":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF22/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF22/RU".chr(13));				
 				}
 				break;
 			case "rc_REPLAY":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF24/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF24/RU".chr(13));				
 				}
 				break;	
 			case "rc_SKIP_SEACH":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF25/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF25/RU".chr(13));				
 				}
 				break;
 			case "rc_NET_FLIX":
 			    	If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-					$this->ClientSocket("/A181AF6A/RU".chr(13));				
+					$this->CommandClientSocket("/A181AF6A/RU".chr(13));				
 				}
 				break;	
 			default:
