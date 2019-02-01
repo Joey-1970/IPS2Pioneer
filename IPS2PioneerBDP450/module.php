@@ -14,7 +14,7 @@ class IPS2PioneerBDP450 extends IPSModule
         {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-           	$this->RequireParent("{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}");
+           	//$this->RequireParent("{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}");
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
 		$this->RegisterPropertyInteger("DataUpdate", 15);
@@ -236,6 +236,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		SetValueInteger($this->GetIDForIdent("Information"), 11);
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
+			/*
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
 				If (IPS_GetProperty($ParentID, 'Host') <> $this->ReadPropertyString('IPAddress')) {
@@ -258,7 +259,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					}
 				}
 			}
-			
+			*/
 			If (($this->ReadPropertyBoolean("Open") == true) AND ($this->ConnectionTest() == true)) {
 				//$this->SetTimerInterval("DataUpdate", ($this->ReadPropertyInteger("DataUpdate") * 1000));
 				$this->SetTimerInterval("DataUpdate", 1000);
@@ -1055,7 +1056,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
 	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);    
 	}    
-	
+	/*
 	private function GetParentID()
 	{
 		$ParentID = (IPS_GetInstance($this->InstanceID)['ConnectionID']);  
@@ -1081,5 +1082,6 @@ class IPS2PioneerBDP450 extends IPSModule
 		} while ($this->GetBuffer("LastResponseTimestamp") <= $this->GetBuffer("LastCommandTimestamp"));
 	      IPS_Sleep(25);
 	}
+	*/
 }
 ?>
