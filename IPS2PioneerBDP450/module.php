@@ -239,7 +239,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				$this->SetTimerInterval("DataUpdate", 1000);
 				$this->SetStatus(102);
 				// Erste Abfrage der Daten
-				$this->CommandClientSocket("?P", 3);
+				$this->CommandClientSocket("?P", 5);
 			}
 			else {
 				$this->SetStatus(104);
