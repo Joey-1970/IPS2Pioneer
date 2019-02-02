@@ -681,48 +681,48 @@ class IPS2PioneerBDP450 extends IPSModule
 	
 	public function Still()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("ST".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("ST", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
 	
 	public function StepForward()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("SF".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("SF", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
 	
 	public function StepReverse()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("SR".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("SR", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
 	
 	public function StopScan()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("NS".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("NS", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
 	
 	public function ScanForward()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("NF".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("NF", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
 	
 	public function ScanReverse()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$this->ClientSocket("NR".chr(13));
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->CommandClientSocket("NR", 5);
 			$this->Get_DataUpdate();
 		}	
 	}
