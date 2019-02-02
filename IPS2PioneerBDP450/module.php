@@ -419,7 +419,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	
 	public function Get_DataUpdate()
 	{
-		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
+		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SetBuffer("TriggerCounter", $this->GetBuffer("TriggerCounter") + 1); 
 			If ( ($this->GetBuffer("TimeTrigger") == "true") AND ($this->GetBuffer("TriggerCounter") <> $this->ReadPropertyInteger("DataUpdate") ) ) {
 				// Spielt das Gerät ein Medium wird jede Sekunde die aktuelle Spielzeit abgefragt
