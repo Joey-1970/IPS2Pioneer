@@ -760,32 +760,6 @@ class IPS2PioneerBDP450 extends IPSModule
 	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
 	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);    
 	}    
-	/*
-	private function GetParentID()
-	{
-		$ParentID = (IPS_GetInstance($this->InstanceID)['ConnectionID']);  
-	return $ParentID;
-	}
 	
-	private function GetParentStatus()
-	{
-		$Status = (IPS_GetInstance($this->GetParentID())['InstanceStatus']);  
-	return $Status;
-	}
-	
-	private function ResponseWait()
-	{
-		$i = 0;
-		do {
-			IPS_Sleep(5);
-			if ($i > 100)
-			    {
-				break;
-			    }
-			 $i++;
-		} while ($this->GetBuffer("LastResponseTimestamp") <= $this->GetBuffer("LastCommandTimestamp"));
-	      IPS_Sleep(25);
-	}
-	*/
 }
 ?>
