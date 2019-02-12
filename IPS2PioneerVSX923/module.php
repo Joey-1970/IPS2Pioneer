@@ -805,6 +805,22 @@ class IPS2PioneerVSX923 extends IPSModule
 		}
 	}
 	
+	public function GetID3Tag()
+	{
+		$url = "http://www.ndr.de/resources/metadaten/audio/m3u/ndr2_hh.m3u";
+		set_include_path(__DIR__.'/../libs');
+		require_once (__DIR__ . '/../libs/getid3.php');
+		
+		$mp3  = $url;  // Array mit Audiodateien
+		$getID3 = new getid3;
+		$array = $getID3->analyze($mp3);
+		//echo $array['fileformat']."\n";
+		//echo $array['audio']['sample_rate']."\n";
+		//echo $array['audio']['streams'][0]['encoder_options']."\n\n";
+		$this->SendDebug("GetID3Tag", serialize($array) , 0);
+		
+	}
+	
 	private function ConnectionTest()
 	{
 	      $result = false;
