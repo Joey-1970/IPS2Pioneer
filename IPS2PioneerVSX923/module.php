@@ -808,10 +808,11 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function GetID3Tag()
 	{
 		$url = "http://www.ndr.de/resources/metadaten/audio/m3u/ndr2_hh.m3u";
+		$file =  file_get_contents($url);
 		set_include_path(__DIR__.'/../libs');
 		require_once (__DIR__ . '/../libs/getid3.php');
 		
-		$mp3  = $url;  // Array mit Audiodateien
+		$mp3  = $file;  // Array mit Audiodateien
 		$getID3 = new getid3;
 		$array = $getID3->analyze($mp3);
 		//echo $array['fileformat']."\n";
