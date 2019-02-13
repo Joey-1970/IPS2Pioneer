@@ -811,8 +811,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		require_once (__DIR__ . '/../libs/getid3.php');
 		
 		$url = "http://www.ndr.de/resources/metadaten/audio/m3u/ndr2_hh.m3u";
-		$remotefilename =  file_get_contents($url);
-		
+		//$remotefilename =  file_get_contents($url);
+		$remotefilename =  $url;
 		if ($fp_remote = fopen($remotefilename, 'rb')) {
 		    	$localtempfilename = tempnam('/tmp', 'getID3');
 		    	if ($fp_local = fopen($localtempfilename, 'wb')) {
