@@ -807,18 +807,34 @@ class IPS2PioneerVSX923 extends IPSModule
 	
 	public function GetID3Tag()
 	{
-		$url = "http://www.ndr.de/resources/metadaten/audio/m3u/ndr2_hh.m3u";
-		$file =  file_get_contents($url);
 		set_include_path(__DIR__.'/../libs');
 		require_once (__DIR__ . '/../libs/getid3.php');
 		
-		$mp3  = $file;  // Array mit Audiodateien
-		$getID3 = new getid3;
-		$array = $getID3->analyze($mp3);
-		//echo $array['fileformat']."\n";
-		//echo $array['audio']['sample_rate']."\n";
-		//echo $array['audio']['streams'][0]['encoder_options']."\n\n";
-		$this->SendDebug("GetID3Tag", serialize($array) , 0);
+		$url = "http://www.ndr.de/resources/metadaten/audio/m3u/ndr2_hh.m3u";
+		$remotefilename =  file_get_contents($url);
+		
+		if ($fp_remote = fopen($remotefilename, 'rb')) {
+		    	$localtempfilename = tempnam('/tmp', 'getID3');
+		    	if ($fp_local = fopen($localtempfilename, 'wb')) {
+				while ($buffer = fread($fp_remote, 8192)) {
+			    		fwrite($fp_local, $buffer);
+				}
+			fclose($fp_local);
+			}
+			// Initialize getID3 engine
+			$getID3 = new getID3;
+
+			$ThisFileInfo = $getID3->analyze($localtempfilename);
+
+        		// Delete temporary file
+        		unlink($localtempfilename);
+    		}
+    		fclose($fp_remote);
+		
+		
+		
+		
+		$this->SendDebug("GetID3Tag", serialize($ThisFileInfo) , 0);
 		
 	}
 	
