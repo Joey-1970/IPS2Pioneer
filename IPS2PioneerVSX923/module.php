@@ -638,6 +638,18 @@ class IPS2PioneerVSX923 extends IPSModule
 		}	
 	}
 	
+	public function Power(Bool $State)
+	{
+		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
+			If ($State == true) {
+				$this->SetData("PO");
+			}
+			elseIf ($State == false) {
+				$this->SetData("PF");
+			}
+		}	
+	}
+	
 	public function SelectInput(Int $InputNumber)
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
