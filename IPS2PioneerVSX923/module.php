@@ -653,7 +653,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function SelectInput(Int $InputNumber)
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
-			$Input = str_pad($Value, 2, '0', STR_PAD_LEFT);
+			$Input = str_pad($InputNumber, 2, '0', STR_PAD_LEFT);
 			$this->SetData($Input."FN");
 		}	
 	}
