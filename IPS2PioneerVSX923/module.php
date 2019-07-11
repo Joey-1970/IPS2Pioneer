@@ -595,6 +595,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("KeepAlive", "Ausfuehrung", 0);
 			$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode("?P".chr(13)))));
+			$this->GetData();
 		}
 	}
 	
