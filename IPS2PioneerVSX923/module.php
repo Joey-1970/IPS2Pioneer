@@ -159,7 +159,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
  		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-		
+		$arrayElements[] = array("type" => "Label", "label" => "Test Center"); 
+		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
+		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		
 		
 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
@@ -858,7 +860,7 @@ class IPS2PioneerVSX923 extends IPSModule
 			//IPS_LogMessage("IPS2PioneerBDP450","Angegebene IP ".$this->ReadPropertyString("IPAddress")." reagiert");
 			$status = @fsockopen($this->ReadPropertyString("IPAddress"), 8102, $errno, $errstr, 10);
 				if (!$status) {
-					IPS_LogMessage("IPS2PioneerBDP450","Port ist geschlossen!");				
+					IPS_LogMessage("IPS2PioneerVCX923","Port ist geschlossen!");				
 	   			}
 	   			else {
 	   				fclose($status);
@@ -868,7 +870,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	   			}
 		}
 		else {
-			IPS_LogMessage("IPS2PioneerBDP450","IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!");
+			IPS_LogMessage("IPS2PioneerVSX923","IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!");
 			$this->SetStatus(104);
 		}
 	return $result;
