@@ -171,7 +171,10 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		//Never delete this line!
 		parent::ApplyChanges();
+		
 		$this->RegisterMediaObject("Cover", "Cover_".$this->InstanceID, 1, $this->InstanceID, 1000, true, "Cover.jpg");
+		
+		$this->RegisterMessage($this->InstanceID, 10103);
 
 		If (IPS_GetKernelRunlevel() == 10103) {
 			$ParentID = $this->GetParentID();
@@ -216,6 +219,16 @@ class IPS2PioneerVSX923 extends IPSModule
 			}	   
 		}
 	}
+	
+	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
+    	{
+ 		switch ($Message) {
+			case 10103:
+				$this->ApplyChanges();
+				break;
+			
+		}
+    	}      
 	
 	public function ReceiveData($JSONString) {
  	    	//IPS_SemaphoreLeave("Communication");
