@@ -211,7 +211,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				$this->GetInputDevices();
 				$this->GetInputName();
 				$this->GetData();
-				$this->SetTimerInterval("KeepAlive", 5 * 60 * 1000);
+				$this->SetTimerInterval("KeepAlive", 30 * 1000);
 			}
 			else {
 				$this->SetStatus(104);
@@ -233,7 +233,9 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function ReceiveData($JSONString) {
  	    	//IPS_SemaphoreLeave("Communication");
 		// Empfangene Daten vom I/O
-	    	SetValueInteger($this->GetIDForIdent("LastKeepAlive"), time() );
+		SetValueInteger($this->GetIDForIdent("LastKeepAlive"), time() );
+		$this->SetTimerInterval("KeepAlive", 30 * 1000);
+		
 		$Data = json_decode($JSONString);
 		$Message = utf8_decode($Data->Buffer);
 		
@@ -246,7 +248,7 @@ class IPS2PioneerVSX923 extends IPSModule
 			// Entfernen der Steuerzeichen
 			$Message = trim($Message, "\x00..\x1F");
 			$this->SendDebug("ReceiveData", $Message, 0);
-		
+			
 			switch($Message) {
 				case "E02":
 					$this->SendDebug("ReceiveData", "E02: NOT AVAILABLE NOW", 0);
@@ -609,6 +611,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SendDebug("KeepAlive", "Ausfuehrung", 0);
+			$this->ConnectionTest();
 			$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode("?P".chr(13)))));
 			$this->GetData();
 		}
@@ -869,20 +872,20 @@ class IPS2PioneerVSX923 extends IPSModule
 	private function ConnectionTest()
 	{
 	      $result = false;
-	      If (Sys_Ping($this->ReadPropertyString("IPAddress"), 2000)) {
-			//IPS_LogMessage("IPS2PioneerBDP450","Angegebene IP ".$this->ReadPropertyString("IPAddress")." reagiert");
+	      If (Sys_Ping($this->ReadPropertyString("IPAddress"), 300)) {
 			$status = @fsockopen($this->ReadPropertyString("IPAddress"), 8102, $errno, $errstr, 10);
 				if (!$status) {
+					$this->SendDebug("ConnectionTest", "Port ist geschlossen!", 0);
 					IPS_LogMessage("IPS2PioneerVCX923","Port ist geschlossen!");				
 	   			}
 	   			else {
 	   				fclose($status);
-					//IPS_LogMessage("IPS2PioneerBDP450","Port ist geöffnet");
 					$result = true;
 					$this->SetStatus(102);
 	   			}
 		}
 		else {
+			$this->SendDebug("ConnectionTest", "IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!", 0);
 			IPS_LogMessage("IPS2PioneerVSX923","IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!");
 			$this->SetStatus(104);
 		}
