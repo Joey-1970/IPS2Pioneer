@@ -401,8 +401,14 @@ class IPS2PioneerVSX923 extends IPSModule
 						IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 2, "Speaker B on", "Speaker", -1);
 					}
 					else {
-						@IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 1, "", "", -1);
-						@IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 2, "", "", -1);
+						$ProfilArray = Array();
+						$ProfilArray = IPS_GetVariableProfile("IPS2Pioneer.SpeakerSystem_".$this->InstanceID);
+						foreach ($ProfilArray["Associations"] as $Association)
+						{
+							If ((intval($Association["Value"]) = 1) OR (intval($Association["Value"]) = 2)) {
+								IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, intval($Association["Value"]), "", "", -1);
+							}
+						}
 					}
 					If ($SpeakerSystem == 4) {
 						$this->EnableAction("Zone_2");
