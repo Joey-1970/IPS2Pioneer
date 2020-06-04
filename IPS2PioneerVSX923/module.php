@@ -405,7 +405,7 @@ class IPS2PioneerVSX923 extends IPSModule
 						$ProfilArray = IPS_GetVariableProfile("IPS2Pioneer.SpeakerSystem_".$this->InstanceID);
 						foreach ($ProfilArray["Associations"] as $Association)
 						{
-							If ((intval($Association["Value"]) = 1) OR (intval($Association["Value"]) = 2)) {
+							If ((intval($Association["Value"]) == 1) OR (intval($Association["Value"]) == 2)) {
 								IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, intval($Association["Value"]), "", "", -1);
 							}
 						}
