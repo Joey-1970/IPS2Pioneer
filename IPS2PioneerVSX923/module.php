@@ -6,6 +6,8 @@ class IPS2PioneerVSX923 extends IPSModule
         {
             	// Diese Zeile nicht löschen.
             	parent::Create();
+		$this->RegisterMessage(0, IPS_KERNELSTARTED);
+		
            	$this->RequireParent("{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}");
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
@@ -167,9 +169,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterMediaObject("Cover", "Cover_".$this->InstanceID, 1, $this->InstanceID, 1000, true, "Cover.jpg");
 		
-		$this->RegisterMessage($this->InstanceID, 10103);
 
-		If (IPS_GetKernelRunlevel() == 10103) {
+		If (IPS_GetKernelRunlevel() == KR_READY) {
 			$ParentID = $this->GetParentID();
 			If ($ParentID > 0) {
 				If (IPS_GetProperty($ParentID, 'Host') <> $this->ReadPropertyString('IPAddress')) {
@@ -216,7 +217,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
  		switch ($Message) {
-			case 10103:
+			case 10001:
 				$this->ApplyChanges();
 				break;
 			
