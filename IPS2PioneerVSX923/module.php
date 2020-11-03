@@ -279,6 +279,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case preg_match('/FN.*/', $Message) ? $Message : !$Message:
 					SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
+					$this->SetHTMLDisplay();
 					break;
 				case preg_match('/Z2F.*/', $Message) ? $Message : !$Message:
 					SetValueInteger($this->GetIDForIdent("Zone_2_Source"), intval(substr($Message, -2)));
@@ -287,6 +288,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Volume = intval(substr($Message, -3));
 					$Volume = ($Volume - 161) / 2;
 					SetValueFloat($this->GetIDForIdent("Volume"), $Volume);
+					$this->SetHTMLDisplay();
 					break;
 				case preg_match('/ZV.*/', $Message) ? $Message : !$Message:
 					$VolumeZone2 = intval(substr($Message, -2));
@@ -305,6 +307,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					}
 					$Result = trim($Result, " \t\n\r\0\x0B");
 					SetValueString($this->GetIDForIdent("Display"), $Result);
+					$this->SetHTMLDisplay();
 					break;	
 				case preg_match('/LM.*/', $Message) ? $Message : !$Message:
 					$Mode = substr($Message, -4);
@@ -696,13 +699,13 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function SetHTMLDisplay()
 	{
 		$Displaytext = $this->GetValue("Display");
-$Volume = GetValueFloat(53323);
-$Volume = number_format ($Volume , 1, ".", "");
-$PioneerDevices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 19 => "HDMI 1", 20 => "HDMI 2", 
+		$Volume = $this->GetValue("Volume");
+		$Volume = number_format ($Volume , 1, ".", "");
+		$PioneerDevices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 19 => "HDMI 1", 20 => "HDMI 2", 
 			      21 => "HDMI 3", 22 => "HDMI 4", 23 => "HDMI 5", 24 => "HDMI 6", 34 => "HDMI 7", 38 => "INTERNET RADIO", 
 			      44 => "MEDIA SERVER", 45 => "FAVORITES", 17 => "iPod/USB", 5 => "TV", 1 => "CD", 
 			      2 => "TUNER", 33 => "ADAPTER PORT");
-$Source = GetValueInteger(54865);
+		$Source = GetValueInteger("Input");
 
 		
 		$HTMLText = '<head>';
