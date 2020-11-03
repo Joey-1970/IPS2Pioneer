@@ -705,7 +705,7 @@ class IPS2PioneerVSX923 extends IPSModule
 			      21 => "HDMI 3", 22 => "HDMI 4", 23 => "HDMI 5", 24 => "HDMI 6", 34 => "HDMI 7", 38 => "INTERNET RADIO", 
 			      44 => "MEDIA SERVER", 45 => "FAVORITES", 17 => "iPod/USB", 5 => "TV", 1 => "CD", 
 			      2 => "TUNER", 33 => "ADAPTER PORT");
-		$Source = GetValueInteger("Input");
+		$Source = $this->GetValue("Input");
 
 		
 		$HTMLText = '<head>';
