@@ -693,10 +693,119 @@ class IPS2PioneerVSX923 extends IPSModule
 		}	
 	}
 	
-	public function SetHTMLDisplay(string $Text)
+	public function SetHTMLDisplay()
 	{
-		$HTMLContent = $Text;
-		SetValueString($this->GetIDForIdent("HTMLDisplay"), $HTMLContent);
+		$Displaytext = $this->GetValue("Display");
+$Volume = GetValueFloat(53323);
+$Volume = number_format ($Volume , 1, ".", "");
+$PioneerDevices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 19 => "HDMI 1", 20 => "HDMI 2", 
+			      21 => "HDMI 3", 22 => "HDMI 4", 23 => "HDMI 5", 24 => "HDMI 6", 34 => "HDMI 7", 38 => "INTERNET RADIO", 
+			      44 => "MEDIA SERVER", 45 => "FAVORITES", 17 => "iPod/USB", 5 => "TV", 1 => "CD", 
+			      2 => "TUNER", 33 => "ADAPTER PORT");
+$Source = GetValueInteger(54865);
+
+		
+		$HTMLText = '<head>';
+		$HTMLText .= '<meta charset="utf-8">';
+		$HTMLText .= '</head>';
+		$HTMLText .= '<style type="text/css">';
+		$HTMLText .= '.tg  {border-collapse:collapse;border-spacing:15;}';
+		$HTMLText .= '.tg td{font-family:Arial, sans-serif;font-size:30px;padding:10px 5px;border-style:none;border-width:5px;overflow:hidden;word-break:normal;}';
+		$HTMLText .= '.tg th{font-family:Arial, sans-serif;font-size:30px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}';
+		$HTMLText .= '</style>';
+		$HTMLText .= '<table class="tg" align="right">';
+		$HTMLText .= '<tr>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<th class="tg-031e" colspan="5" rowspan="2"';
+		$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
+		$HTMLText .= '<font face="Codystar">';
+		$HTMLText .= '<font size=7>';
+		$HTMLText .= '<font color=#00FFFF>';
+		$HTMLText .= ''.$Volume.'';
+		$HTMLText .= '<font face="Arial">';
+		$HTMLText .= '<font size=5>';
+		$HTMLText .= '<font color=#04B4AE>';
+		$HTMLText .= ' dB';
+		$HTMLText .= '</font>';
+		$HTMLText .= '</th>';
+		$HTMLText .= '</tr>';
+		$HTMLText .= '<tr>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '</tr>';
+		$HTMLText .= '<tr>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e" colspan="10"';
+		$HTMLText .= '<font face="Arial">';
+		$HTMLText .= '<font size=4>';
+		$HTMLText .= '<font color=#04B4AE>';
+		$HTMLText .= ''.$PioneerDevices[$Source].'';
+		$HTMLText .= '</font>';
+		$HTMLText .= '</tr>';
+		$HTMLText .= '<tr>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '</tr>';
+		$HTMLText .= '<tr>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e" colspan="15" rowspan="2" align="right">';
+		$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
+		$HTMLText .= '<font size=7>';
+		$HTMLText .= '<font color=#00FFFF>';
+		$HTMLText .= '<font face="Codystar">';
+		$HTMLText .= ''.$Displaytext.'';
+		$HTMLText .= '</font>';
+		$HTMLText .= '</td>';
+		$HTMLText .= '</tr>';
+		$HTMLText .= '<tr>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '</tr>';
+		$HTMLText .= '</table>';
+		$HTMLText .= '<body>'; 
+		$HTMLText .= '</body>';
+		SetValueString($this->GetIDForIdent("HTMLDisplay"), $HTMLText);
 	}
 	
 	private function GetListeningMode(String $ListeningMode)
