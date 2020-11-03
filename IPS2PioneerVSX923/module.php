@@ -828,6 +828,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				  "020a" => "CLASSICAL", "020b" => "ROCK/POP", "020c" => "UNPLUGGED", "020d" => "EXT.STEREO", 
 				  "020e" => "PHONES SURR.", "020f" => "FRONT STAGE SURROUND ADVANCE FOCUS", 
 				  "0210" => "FRONT STAGE SURROUND ADVANCE WIDE", "0211" => "SOUND RETRIEVER AIR", 
+			      	  "0212" => "ECO MODE 1", "0213" => "ECO MODE 2",
 				  "0301" => "[)(]PLIIx MOVIE +THX", "0302" => "[)(]PLII MOVIE +THX", "0303" => "[)(]PL +THX CINEMA", 
 				  "0304" => "Neo", "0305" => "THX CINEMA", "0306" => "[)(]PLIIx MUSIC +THX", 
 				  "0307" => "[)(]PLII MUSIC +THX", "0308" => "[)(]PL +THX MUSIC", "0309" => "Neo", 
