@@ -586,7 +586,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	
 	private function GetData()
 	{
-		If ($this->ReadPropertyBoolean("Open") == true) {
+		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->ConnectionTest() == true)) {
 			$this->SendDebug("GetData", "Ausfuehrung", 0);
 			$MessageArray = array("?P", "?F", "?V", "?FL", "?M", "?L", "?S", "?SPK", "?TO", "?BA", "?TR", "?GIC",
 					      "?AP", "?HO", "?ZS", "?ZV", "?SSF", "?PKL", "?RML", "?SVZ", "?FR");
