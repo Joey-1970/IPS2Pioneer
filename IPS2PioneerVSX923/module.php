@@ -197,15 +197,16 @@ class IPS2PioneerVSX923 extends IPSModule
 				}
 			}
 			
-			If (($this->ReadPropertyBoolean("Open") == true) AND ($this->ConnectionTest() == true)) {
-				
-				$this->SetStatus(102);
-				// Erste Abfrage der Daten
-				$this->SetMetadata();
-				$this->GetInputDevices();
-				$this->GetInputName();
-				$this->GetData();
-				$this->SetTimerInterval("KeepAlive", 30 * 1000);
+			If ($this->ReadPropertyBoolean("Open") == true) {
+				If ($this->ConnectionTest() == true) {
+					$this->SetStatus(102);
+					// Erste Abfrage der Daten
+					$this->SetMetadata();
+					$this->GetInputDevices();
+					$this->GetInputName();
+					$this->GetData();
+					$this->SetTimerInterval("KeepAlive", 30 * 1000);
+				}
 			}
 			else {
 				$this->SetStatus(104);
@@ -990,7 +991,8 @@ class IPS2PioneerVSX923 extends IPSModule
 			$status = @fsockopen($this->ReadPropertyString("IPAddress"), 8102, $errno, $errstr, 10);
 				if (!$status) {
 					$this->SendDebug("ConnectionTest", "Port ist geschlossen!", 0);
-					IPS_LogMessage("IPS2PioneerVCX923","Port ist geschlossen!");				
+					IPS_LogMessage("IPS2PioneerVCX923","Port ist geschlossen!");
+					$this->SetStatus(202);
 	   			}
 	   			else {
 	   				fclose($status);
@@ -1001,7 +1003,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		else {
 			$this->SendDebug("ConnectionTest", "IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!", 0);
 			IPS_LogMessage("IPS2PioneerVSX923","IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!");
-			$this->SetStatus(104);
+			$this->SetStatus(202);
 		}
 	return $result;
 	}
