@@ -12,6 +12,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
 		$this->RegisterPropertyInteger("Port", 8102);
+		$this->RegisterPropertyString("RadioStations", "");
 		$this->RegisterTimer("KeepAlive", 0, 'I2VSX923_KeepAlive($_IPS["TARGET"]);');
 		
 		// Profile anlegen
@@ -155,11 +156,30 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
 		$arrayElements[] = array("type" => "NumberSpinner", "name" => "Port", "caption" => "Port (1 - 65535)", "minimum" => 1, "maximum" => 65535);
- 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-		$arrayElements[] = array("type" => "Label", "label" => "Test Center"); 
-		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
-		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+ 		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
 		
+		$arrayElements[] = array("type" => "Label", "caption" => "Radio-Sender");
+		$arraySort = array();
+		$arraySort = array("column" => "RadioStationName", "direction" => "ascending");
+		$arrayColumns = array();
+		$arrayColumns[] = array("label" => "Name", "name" => "RadioStationName", "width" => "200px", "add" => "true");
+		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "auto", "add" => "true");
+		
+		//$ServiceArray = array();
+		//$ServiceArray = unserialize($this->CheckConfig());
+		//$arrayValues[] = array("ServiceTyp" => "I²C", "ServiceStatus" => $ServiceArray["I2C"]["Status"], "rowColor" => $ServiceArray["I2C"]["Color"]);
+		//$arrayValues[] = array("ServiceTyp" => "Serielle Schnittstelle (RS232)", "ServiceStatus" => $ServiceArray["Serielle Schnittstelle"]["Status"], "rowColor" => $ServiceArray["Serielle Schnittstelle"]["Color"]);
+		//$arrayValues[] = array("ServiceTyp" => "Shell Zugriff", "ServiceStatus" => $ServiceArray["Shell Zugriff"]["Status"], "rowColor" => $ServiceArray["Shell Zugriff"]["Color"]);
+		//$arrayValues[] = array("ServiceTyp" => "PIGPIO Server", "ServiceStatus" => $ServiceArray["PIGPIO Server"]["Status"], "rowColor" => $ServiceArray["PIGPIO Server"]["Color"]);
+		//$arrayValues[] = array("ServiceTyp" => "1-Wire-Server", "ServiceStatus" => $ServiceArray["1-Wire-Server"]["Status"], "rowColor" => $ServiceArray["1-Wire-Server"]["Color"]);
+		$arrayElements[] = array("type" => "List", "name" => "RadioStations", "caption" => "Radio-Sender", "rowCount" => 10, "add" => true, "delete" => true, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
+		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");		
+		
+		
+		
+		$arrayElements[] = array("type" => "Label", "caption" => "Test Center"); 
+		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
+			
 		
 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
  	} 
