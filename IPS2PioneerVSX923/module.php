@@ -161,9 +161,14 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayElements[] = array("type" => "Label", "caption" => "Radio-Sender");
 		$arraySort = array();
 		$arraySort = array("column" => "RadioStationName", "direction" => "ascending");
+		
+		$arrayEdit = array();
+		$arrayEdit = array("type" => "ValidationTextBox");
+		
 		$arrayColumns = array();
-		$arrayColumns[] = array("label" => "Name", "name" => "RadioStationName", "width" => "200px", "add" => "Name");
-		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "auto", "add" => "Frequenz");
+		$arrayColumns[] = array("label" => "Name", "name" => "RadioStationName", "width" => "200px", "add" => "Name", "edit" => $arrayEdit);
+		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "auto", "add" => "Frequenz", "edit" => $arrayEdit);
+		
 		
 		//$ServiceArray = array();
 		//$ServiceArray = unserialize($this->CheckConfig());
