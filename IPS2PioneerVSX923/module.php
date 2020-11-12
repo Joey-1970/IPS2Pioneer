@@ -172,7 +172,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		//$arrayValues[] = array("ServiceTyp" => "Shell Zugriff", "ServiceStatus" => $ServiceArray["Shell Zugriff"]["Status"], "rowColor" => $ServiceArray["Shell Zugriff"]["Color"]);
 		//$arrayValues[] = array("ServiceTyp" => "PIGPIO Server", "ServiceStatus" => $ServiceArray["PIGPIO Server"]["Status"], "rowColor" => $ServiceArray["PIGPIO Server"]["Color"]);
 		//$arrayValues[] = array("ServiceTyp" => "1-Wire-Server", "ServiceStatus" => $ServiceArray["1-Wire-Server"]["Status"], "rowColor" => $ServiceArray["1-Wire-Server"]["Color"]);
-		$arrayElements[] = array("type" => "List", "name" => "RadioStations", "caption" => "Radio-Sender", "rowCount" => 10, "add" => true, "delete" => true, "sort" => $arraySort, "columns" => $arrayColumns);
+		$arrayElements[] = array("type" => "List", "name" => "RadioStations", "rowCount" => 10, "add" => true, "delete" => true, "sort" => $arraySort, "columns" => $arrayColumns);
 		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");		
 		
 		
