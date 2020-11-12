@@ -990,17 +990,23 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 	      $result = false;
 	      If (Sys_Ping($this->ReadPropertyString("IPAddress"), 300)) {
-			$status = @fsockopen($this->ReadPropertyString("IPAddress"), $this->ReadPropertyInteger("Port"), $errno, $errstr, 10);
-				if (!$status) {
-					$this->SendDebug("ConnectionTest", "Port ".$this->ReadPropertyInteger("Port")." ist geschlossen!", 0);
-					IPS_LogMessage("IPS2PioneerVCX923","Port ".$this->ReadPropertyInteger("Port")." ist geschlossen!");
-					$this->SetStatus(202);
-	   			}
-	   			else {
-	   				fclose($status);
-					$result = true;
-					$this->SetStatus(102);
-	   			}
+			If ($this->ReadPropertyInteger("Port") == 8102) {
+				$status = @fsockopen($this->ReadPropertyString("IPAddress"), $this->ReadPropertyInteger("Port"), $errno, $errstr, 10);
+					if (!$status) {
+						$this->SendDebug("ConnectionTest", "Port ".$this->ReadPropertyInteger("Port")." ist geschlossen!", 0);
+						IPS_LogMessage("IPS2PioneerVCX923","Port ".$this->ReadPropertyInteger("Port")." ist geschlossen!");
+						$this->SetStatus(202);
+					}
+					else {
+						fclose($status);
+						$result = true;
+						$this->SetStatus(102);
+					}
+			}
+		      	else {
+				$result = true;
+				$this->SetStatus(102);
+			}
 		}
 		else {
 			$this->SendDebug("ConnectionTest", "IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!", 0);
