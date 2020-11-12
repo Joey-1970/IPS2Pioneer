@@ -11,6 +11,7 @@ class IPS2PioneerVSX923 extends IPSModule
            	$this->RequireParent("{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}");
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
+		$this->RegisterPropertyInteger("Port", 8102);
 		$this->RegisterTimer("KeepAlive", 0, 'I2VSX923_KeepAlive($_IPS["TARGET"]);');
 		
 		// Profile anlegen
@@ -153,6 +154,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayElements = array(); 
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
+		$arrayElements[] = array("type" => "NumberSpinner", "name" => "Port", "caption" => "Port (1 - 65535)", "minimum" => 1, "maximum" => 65535);
  		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "Label", "label" => "Test Center"); 
 		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
@@ -176,8 +178,8 @@ class IPS2PioneerVSX923 extends IPSModule
 				If (IPS_GetProperty($ParentID, 'Host') <> $this->ReadPropertyString('IPAddress')) {
 		                	IPS_SetProperty($ParentID, 'Host', $this->ReadPropertyString('IPAddress'));
 				}
-				If (IPS_GetProperty($ParentID, 'Port') <> 8102) {
-		                	IPS_SetProperty($ParentID, 'Port', 8102);
+				If (IPS_GetProperty($ParentID, 'Port') <> $this->ReadPropertyInteger('Port')) {
+		                	IPS_SetProperty($ParentID, 'Port', $this->ReadPropertyInteger('Port'));
 				}
 				If (IPS_GetProperty($ParentID, 'Open') <> $this->ReadPropertyBoolean("Open")) {
 		                	IPS_SetProperty($ParentID, 'Open', $this->ReadPropertyBoolean("Open"));
@@ -988,10 +990,10 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 	      $result = false;
 	      If (Sys_Ping($this->ReadPropertyString("IPAddress"), 300)) {
-			$status = @fsockopen($this->ReadPropertyString("IPAddress"), 8102, $errno, $errstr, 10);
+			$status = @fsockopen($this->ReadPropertyString("IPAddress"), $this->ReadPropertyInteger("Port"), $errno, $errstr, 10);
 				if (!$status) {
-					$this->SendDebug("ConnectionTest", "Port ist geschlossen!", 0);
-					IPS_LogMessage("IPS2PioneerVCX923","Port ist geschlossen!");
+					$this->SendDebug("ConnectionTest", "Port ".$this->ReadPropertyInteger("Port")." ist geschlossen!", 0);
+					IPS_LogMessage("IPS2PioneerVCX923","Port ".$this->ReadPropertyInteger("Port")." ist geschlossen!");
 					$this->SetStatus(202);
 	   			}
 	   			else {
