@@ -730,8 +730,9 @@ class IPS2PioneerVSX923 extends IPSModule
 			      2 => "TUNER", 33 => "ADAPTER PORT");
 		$Source = $this->GetValue("Input");
 
+		$HTMLText = '<table style="background-color:#2E2E2E;">';
 		
-		$HTMLText = '<head>';
+		$HTMLText .= '<head>';
 		$HTMLText .= '<meta charset="utf-8">';
 		$HTMLText .= '</head>';
 		$HTMLText .= '<style type="text/css">';
