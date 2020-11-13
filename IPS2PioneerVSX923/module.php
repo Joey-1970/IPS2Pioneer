@@ -166,7 +166,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayEditName = array("type" => "ValidationTextBox");
 		
 		$arrayEditFrequency = array();
-		$arrayEditFrequency = array("type" => "NumberSpinner", "minimum" => 87.0, "maximum" => 108.0);
+		$arrayEditFrequency = array("type" => "NumberSpinner", "minimum" => 87.0, "maximum" => 108.0, "digits" => 1);
 		
 		$arrayColumns = array();
 		$arrayColumns[] = array("label" => "Stationsname", "name" => "RadioStationName", "width" => "300px", "add" => "Radio GaGa", "edit" => $arrayEditName);
