@@ -1046,10 +1046,12 @@ class IPS2PioneerVSX923 extends IPSModule
 		$RadioStationsString = $this->ReadPropertyString("RadioStations");
 		$RadioStations = json_decode($RadioStationsString);
 		$this->SendDebug("SetRadioStationsAssociations", serialize($RadioStations), 0);
+		/*
 		foreach ($RadioStations as $Key => $Value) {
 			//$this->SendDebug("SetRadioStationsAssociations", "Key: ".$Key." - Value: ".$Value, 0);
 			IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, $Key, $Value, "Speaker", -1);
 		}
+		*/
 	}
 	
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
