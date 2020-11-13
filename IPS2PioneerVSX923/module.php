@@ -220,6 +220,12 @@ class IPS2PioneerVSX923 extends IPSModule
 			}
 			
 			If ($this->ReadPropertyBoolean("Open") == true) {
+				$this->RegisterProfileInteger("IPS2Pioneer.RadioStations_".$this->InstanceID, "Speaker", "", "", 0, 128, 0);
+				$this->SetRadioStationsAssociations();
+				
+				$this->RegisterVariableInteger("RadioStations", "Radiosender", "IPS2Pioneer.RadioStations_".$this->InstanceID, 450);
+				$this->EnableAction("RadioStations");
+				
 				If ($this->ConnectionTest() == true) {
 					$this->SetStatus(102);
 					// Erste Abfrage der Daten
@@ -1033,6 +1039,15 @@ class IPS2PioneerVSX923 extends IPSModule
 			$this->SetStatus(202);
 		}
 	return $result;
+	}
+	
+	private function SetRadioStationsAssociations()
+	{
+		$RadioStationsString = $this->ReadPropertyString("RadioStations");
+		$RadioStations = json_decode($RadioStationsString);
+		foreach ($RadioStations as $Key => $Value) {
+			IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, $Key, $Value, "Speaker", -1);
+		}
 	}
 	
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
