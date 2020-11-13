@@ -730,9 +730,9 @@ class IPS2PioneerVSX923 extends IPSModule
 			      2 => "TUNER", 33 => "ADAPTER PORT");
 		$Source = $this->GetValue("Input");
 
-		$HTMLText = '<table style="background-color:#2E2E2E;">';
+		//$HTMLText = '<table style="background-color:#2E2E2E;">';
 		
-		$HTMLText .= '<head>';
+		$HTMLText = '<head>';
 		$HTMLText .= '<meta charset="utf-8">';
 		$HTMLText .= '</head>';
 		$HTMLText .= '<style type="text/css">';
@@ -740,6 +740,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$HTMLText .= '.tg td{font-family:Arial, sans-serif;font-size:30px;padding:10px 5px;border-style:none;border-width:5px;overflow:hidden;word-break:normal;}';
 		$HTMLText .= '.tg th{font-family:Arial, sans-serif;font-size:30px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}';
 		$HTMLText .= '</style>';
+		$HTMLText .= '<table style="background-color:#2E2E2E;">';
 		$HTMLText .= '<table class="tg" align="right">';
 		$HTMLText .= '<tr>';
 		$HTMLText .= '<th class="tg-031e"></th>';
