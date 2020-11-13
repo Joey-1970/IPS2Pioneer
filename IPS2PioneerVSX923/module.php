@@ -1049,7 +1049,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		foreach ($RadioStations as $Key => $Value) {
 			//$this->SendDebug("SetRadioStationsAssociations", "Key: ".$Key." - Value: ".$Value, 0);
-			IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, $Value->RadioStationName, round($Value->RadioStationFrequency, 1), "Melody", -1);
+			IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, round($Value->RadioStationFrequency,1), $Value->RadioStationName, "Melody", -1);
 		}
 		
 	}
