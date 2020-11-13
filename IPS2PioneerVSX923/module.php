@@ -605,7 +605,9 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Message = substr($Message, 0, -1);
 					$this->SetData($Message);
 					break;
-					
+				case "RadioStations":
+					$this->TunerDirectAccess($Value);
+					break;	
 				default:
 				    throw new Exception("Invalid Ident");
 			}
