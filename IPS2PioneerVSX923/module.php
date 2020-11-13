@@ -170,7 +170,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$arrayColumns = array();
 		$arrayColumns[] = array("label" => "Stationsname", "name" => "RadioStationName", "width" => "300px", "add" => "Radio GaGa", "edit" => $arrayEditName);
-		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "auto", "add" => "87.0", "edit" => $arrayEditFrequency);
+		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "auto", "add" => "87.0", "edit" => $arrayEditFrequency, "align" => "right");
 		
 		$arrayElements[] = array("type" => "List", "name" => "RadioStations", "rowCount" => 10, "add" => true, "delete" => true, "sort" => $arraySort, "columns" => $arrayColumns);
 		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");		
