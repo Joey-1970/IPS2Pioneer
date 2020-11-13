@@ -170,7 +170,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$arrayColumns = array();
 		$arrayColumns[] = array("label" => "Stationsname", "name" => "RadioStationName", "width" => "300px", "add" => "Radio GaGa", "edit" => $arrayEditName);
-		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "auto", "add" => "87.0", "edit" => $arrayEditFrequency, "align" => "right");
+		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "200px", "add" => "87.0", "edit" => $arrayEditFrequency, "align" => "right");
 		
 		$arrayElements[] = array("type" => "List", "name" => "RadioStations", "rowCount" => 10, "add" => true, "delete" => true, "sort" => $arraySort, "columns" => $arrayColumns);
 		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");		
@@ -1046,6 +1046,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$RadioStationsString = $this->ReadPropertyString("RadioStations");
 		$RadioStations = json_decode($RadioStationsString);
 		foreach ($RadioStations as $Key => $Value) {
+			$this->SendDebug("SetRadioStationsAssociations", "Key: ".$Key." - $Value: ".$Value, 0);
 			IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, $Key, $Value, "Speaker", -1);
 		}
 	}
