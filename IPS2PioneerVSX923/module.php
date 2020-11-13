@@ -162,21 +162,16 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arraySort = array();
 		$arraySort = array("column" => "RadioStationName", "direction" => "ascending");
 		
-		$arrayEdit = array();
-		$arrayEdit = array("type" => "ValidationTextBox");
+		$arrayEditName = array();
+		$arrayEditName = array("type" => "ValidationTextBox");
+		
+		$arrayEditFrequency = array();
+		$arrayEditFrequency = array("type" => "NumberSpinner", "minimum" => 87.0, "maximum" => 108.0);
 		
 		$arrayColumns = array();
-		$arrayColumns[] = array("label" => "Name", "name" => "RadioStationName", "width" => "200px", "add" => "Name", "edit" => $arrayEdit);
-		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "auto", "add" => "Frequenz", "edit" => $arrayEdit);
+		$arrayColumns[] = array("label" => "Stationsname", "name" => "RadioStationName", "width" => "300px", "add" => "Radio GaGa", "edit" => $arrayEditName);
+		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "auto", "add" => "87.0", "edit" => $arrayEditFrequency);
 		
-		
-		//$ServiceArray = array();
-		//$ServiceArray = unserialize($this->CheckConfig());
-		//$arrayValues[] = array("ServiceTyp" => "I²C", "ServiceStatus" => $ServiceArray["I2C"]["Status"], "rowColor" => $ServiceArray["I2C"]["Color"]);
-		//$arrayValues[] = array("ServiceTyp" => "Serielle Schnittstelle (RS232)", "ServiceStatus" => $ServiceArray["Serielle Schnittstelle"]["Status"], "rowColor" => $ServiceArray["Serielle Schnittstelle"]["Color"]);
-		//$arrayValues[] = array("ServiceTyp" => "Shell Zugriff", "ServiceStatus" => $ServiceArray["Shell Zugriff"]["Status"], "rowColor" => $ServiceArray["Shell Zugriff"]["Color"]);
-		//$arrayValues[] = array("ServiceTyp" => "PIGPIO Server", "ServiceStatus" => $ServiceArray["PIGPIO Server"]["Status"], "rowColor" => $ServiceArray["PIGPIO Server"]["Color"]);
-		//$arrayValues[] = array("ServiceTyp" => "1-Wire-Server", "ServiceStatus" => $ServiceArray["1-Wire-Server"]["Status"], "rowColor" => $ServiceArray["1-Wire-Server"]["Color"]);
 		$arrayElements[] = array("type" => "List", "name" => "RadioStations", "rowCount" => 10, "add" => true, "delete" => true, "sort" => $arraySort, "columns" => $arrayColumns);
 		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");		
 		
