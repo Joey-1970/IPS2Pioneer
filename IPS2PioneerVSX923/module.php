@@ -166,11 +166,11 @@ class IPS2PioneerVSX923 extends IPSModule
 		$arrayEditName = array("type" => "ValidationTextBox");
 		
 		$arrayEditFrequency = array();
-		$arrayEditFrequency = array("type" => "NumberSpinner", "minimum" => 87.0, "maximum" => 108.0, "digits" => 1);
+		$arrayEditFrequency = array("type" => "NumberSpinner", "minimum" => 87.5, "maximum" => 108.0, "digits" => 1);
 		
 		$arrayColumns = array();
 		$arrayColumns[] = array("label" => "Stationsname", "name" => "RadioStationName", "width" => "300px", "add" => "Radio GaGa", "edit" => $arrayEditName);
-		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "200px", "add" => "87.0", "edit" => $arrayEditFrequency, "align" => "right");
+		$arrayColumns[] = array("label" => "Frequenz", "name" => "RadioStationFrequency", "width" => "200px", "add" => "87.5", "edit" => $arrayEditFrequency, "align" => "right");
 		
 		$arrayElements[] = array("type" => "List", "name" => "RadioStations", "rowCount" => 10, "add" => true, "delete" => true, "sort" => $arraySort, "columns" => $arrayColumns);
 		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");		
@@ -220,7 +220,7 @@ class IPS2PioneerVSX923 extends IPSModule
 			}
 			
 			If ($this->ReadPropertyBoolean("Open") == true) {
-				$this->RegisterProfileInteger("IPS2Pioneer.RadioStations_".$this->InstanceID, "Speaker", "", "", 0, 128, 0);
+				$this->RegisterProfileInteger("IPS2Pioneer.RadioStations_".$this->InstanceID, "Melody", "", "", 0, 128, 0);
 				$this->SetRadioStationsAssociations();
 				
 				$this->RegisterVariableInteger("RadioStations", "Radiosender", "IPS2Pioneer.RadioStations_".$this->InstanceID, 450);
