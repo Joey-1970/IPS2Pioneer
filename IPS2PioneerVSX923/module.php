@@ -68,6 +68,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterProfileFloat("IPS2Pioneer.TunerFrequency", "Melody", "", " MHz", 87.5, 108, 0.1, 2);
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.RadioStations_".$this->InstanceID, "Melody", "", "", 0, 128, 0);
+		
 		$MetadataArray = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
 		$this->SetBuffer("Metadata", serialize($MetadataArray));
 		
@@ -140,6 +142,9 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterVariableFloat("TunerFrequency", "Tuner Frequency", "IPS2Pioneer.TunerFrequency", 440);
 		$this->EnableAction("TunerFrequency");
+		
+		$this->RegisterVariableInteger("RadioStations", "Radiosender", "IPS2Pioneer.RadioStations_".$this->InstanceID, 450);
+		$this->EnableAction("RadioStations");
 		
 		$this->RegisterVariableString("HTMLDisplay", "Display", "~HTMLBox", 500);
 	}
@@ -220,15 +225,11 @@ class IPS2PioneerVSX923 extends IPSModule
 			}
 			
 			If ($this->ReadPropertyBoolean("Open") == true) {
-				$this->RegisterProfileInteger("IPS2Pioneer.RadioStations_".$this->InstanceID, "Melody", "", "", 0, 128, 0);
-				$this->SetRadioStationsAssociations();
-				
-				$this->RegisterVariableInteger("RadioStations", "Radiosender", "IPS2Pioneer.RadioStations_".$this->InstanceID, 450);
-				$this->EnableAction("RadioStations");
 				
 				If ($this->ConnectionTest() == true) {
 					$this->SetStatus(102);
 					// Erste Abfrage der Daten
+					$this->SetRadioStationsAssociations();
 					$this->SetMetadata();
 					$this->GetInputDevices();
 					$this->GetInputName();
@@ -1058,8 +1059,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->SendDebug("SetRadioStationsAssociations", serialize($RadioStations), 0);
 		
 		foreach ($RadioStations as $Key => $Value) {
-			$this->SendDebug("SetRadioStationsAssociations", $Value->RadioStationName." hinzugefuegt", 0);
-			IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, round($Value->RadioStationFrequency,1), $Value->RadioStationName, "Melody", -1);
+			$this->SendDebug("SetRadioStationsAssociations", $Value->RadioStationName." mit Frequenz ".round($Value->RadioStationFrequency, 1)." MhZ hinzugefuegt", 0);
+			IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, round($Value->RadioStationFrequency, 1), $Value->RadioStationName, "Melody", -1);
 		}
 		
 	}
