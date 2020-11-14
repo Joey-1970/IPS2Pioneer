@@ -1059,7 +1059,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->SendDebug("SetRadioStationsAssociations", serialize($RadioStations), 0);
 		
 		foreach ($RadioStations as $Key => $Value) {
-			$this->SendDebug("SetRadioStationsAssociations", $Value->RadioStationName." mit Frequenz ".round($Value->RadioStationFrequency, 1)." MhZ hinzugefuegt", 0);
+			$this->SendDebug("SetRadioStationsAssociations", $Value->RadioStationName." mit Frequenz ".round($Value->RadioStationFrequency, 1)." MHz hinzugefuegt", 0);
 			IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, round($Value->RadioStationFrequency, 1), $Value->RadioStationName, "Melody", -1);
 		}
 		
