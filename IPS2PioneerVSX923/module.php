@@ -1051,7 +1051,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$ProfilArray = IPS_GetVariableProfile("IPS2Pioneer.RadioStations_".$this->InstanceID);
 		foreach ($ProfilArray["Associations"] as $Association)
 		{
-			@IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, intval($Association["Value"]), "", "", -1);
+			@IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, $Association["Value"], "", "", -1);
 		}
 		
 		$RadioStationsString = $this->ReadPropertyString("RadioStations");
