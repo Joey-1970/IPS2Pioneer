@@ -68,7 +68,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterProfileFloat("IPS2Pioneer.TunerFrequency", "Melody", "", " MHz", 87.5, 108, 0.1, 2);
 		
-		$this->RegisterProfileFloat("IPS2Pioneer.RadioStations_".$this->InstanceID, "Melody", "", "", 87.5, 108, 0.1, 2);
+		$this->RegisterProfileFloat("IPS2Pioneer.RadioStations_".$this->InstanceID, "Melody", "", "", 87.5, 108, 0, 2);
 		
 		$MetadataArray = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
 		$this->SetBuffer("Metadata", serialize($MetadataArray));
