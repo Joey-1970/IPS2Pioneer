@@ -146,7 +146,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableFloat("RadioStations", "Radiosender", "IPS2Pioneer.RadioStations_".$this->InstanceID, 450);
 		$this->EnableAction("RadioStations");
 		
-		$this->RegisterVariableInteger("SpeakerSystem", "Speaker System", "IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 700;
+		$this->RegisterVariableInteger("SpeakerSystem", "Speaker System", "IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 700);
 		$this->EnableAction("SpeakerSystem");
 		
 		$this->RegisterVariableString("HTMLDisplay", "Display", "~HTMLBox", 500);
