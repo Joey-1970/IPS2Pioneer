@@ -229,7 +229,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				If ($this->ConnectionTest() == true) {
 					$this->SetStatus(102);
 					// Erste Abfrage der Daten
-					$this->SetRadioStationsAssociations();
+					//$this->SetRadioStationsAssociations();
 					$this->SetMetadata();
 					$this->GetInputDevices();
 					$this->GetInputName();
