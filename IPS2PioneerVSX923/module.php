@@ -746,6 +746,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function SetHTMLDisplay()
 	{
 		$Displaytext = $this->GetValue("Display");
+		$Displaytext = str_pad($Displaytext, 12, " ", STR_PAD_LEFT);
 		$Volume = $this->GetValue("Volume");
 		$Volume = number_format ($Volume , 1, ".", "");
 		$PioneerDevices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 19 => "HDMI 1", 20 => "HDMI 2", 
