@@ -314,6 +314,16 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case preg_match('/FN.*/', $Message) ? $Message : !$Message:
 					SetValueInteger($this->GetIDForIdent("Input"), intval(substr($Message, -2)));
+					If (intval(substr($Message, -2)) == 2) { // Tuner
+						// Einige Statusvariablen Freischalten
+						$this->EnableAction("TunerFrequency");
+						$this->EnableAction("RadioStations");
+					}
+					else {
+						// Einige Statusvariablen sperren
+						$this->DisableAction("TunerFrequency");
+						$this->DisableAction("RadioStations");
+					}
 					$this->SetHTMLDisplay();
 					break;
 				case preg_match('/Z2F.*/', $Message) ? $Message : !$Message:
