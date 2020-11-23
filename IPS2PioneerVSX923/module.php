@@ -39,11 +39,11 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.RemoteLock", 0, "LOCK OFF", "LockOpen", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.RemoteLock", 1, "LOCK ON", "LockClosed", -1);
 		
-		$this->RegisterProfileInteger("IPS2Pioneer.Speaker", "Speaker", "", "", 0, 3, 0);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 0, "Speaker off", "Speaker", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 1, "Speaker A on", "Speaker", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 2, "Speaker B on", "Speaker", -1);
-		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker", 3, "Speaker A+B on", "Speaker", -1);
+		$this->RegisterProfileInteger("IPS2Pioneer.Speaker_".$this->InstanceID, "Speaker", "", "", 0, 3, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 0, "Speaker off", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 1, "Speaker A on", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 2, "Speaker B on", "Speaker", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 3, "Speaker A+B on", "Speaker", -1);
 		
 		$this->RegisterProfileInteger("IPS2Pioneer.Tone", "Music", "", "", 0, 1, 0);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.Tone", 0, "ByPass", "Music", -1);
@@ -105,7 +105,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->RegisterVariableBoolean("Mute", "Mute", "~Switch", 100);
 		$this->EnableAction("Mute");
 		
-		$this->RegisterVariableInteger("Speakers", "Speakers", "IPS2Pioneer.Speaker", 110);
+		$this->RegisterVariableInteger("Speakers", "Speakers", "IPS2Pioneer.Speaker_".$this->InstanceID, 110);
 		$this->EnableAction("Speakers");
 		
 		$this->RegisterVariableInteger("HDMIOut", "HDMI Out", "IPS2Pioneer.HDMIOut", 120);
@@ -439,8 +439,8 @@ class IPS2PioneerVSX923 extends IPSModule
 				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
 					$SpeakerSystem = intval(substr($Message, -2));
 					If ($SpeakerSystem < 3) {
-						IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 1, "Speaker A on", "Speaker", -1);
-						IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, 2, "Speaker B on", "Speaker", -1);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 1, "Speaker A on", "Speaker", -1);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID 2, "Speaker B on", "Speaker", -1);
 					}
 					else {
 						$ProfilArray = Array();
@@ -448,7 +448,7 @@ class IPS2PioneerVSX923 extends IPSModule
 						foreach ($ProfilArray["Associations"] as $Association)
 						{
 							If ((intval($Association["Value"]) == 1) OR (intval($Association["Value"]) == 2)) {
-								IPS_SetVariableProfileAssociation("IPS2Pioneer.SpeakerSystem_".$this->InstanceID, intval($Association["Value"]), "", "", -1);
+								IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, intval($Association["Value"]), "", "", -1);
 							}
 						}
 					}
