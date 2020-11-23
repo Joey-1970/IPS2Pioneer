@@ -58,6 +58,10 @@ class IPS2PioneerVSX923 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.SelectedHDMIOut", 0, "Main Zone", "Music", -1);
 		IPS_SetVariableProfileAssociation("IPS2Pioneer.SelectedHDMIOut", 1, "HD Zone", "Music", -1);
 		
+		$this->RegisterProfileInteger("IPS2Pioneer.TunerBand", "Title", "", "", 0, 1, 0);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.TunerBand", 0, "FM", "Title", -1);
+		IPS_SetVariableProfileAssociation("IPS2Pioneer.TunerBand", 1, "AM", "Title", -1);
+		
 		$this->RegisterProfileInteger("IPS2Pioneer.ListeningModeSet", "Melody", "", "", 0, 128, 0);
 		$this->SetListeningMode();
 		
@@ -139,6 +143,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$this->RegisterVariableInteger("SelectedHDMIOut", "Selected HDMI Out", "IPS2Pioneer.SelectedHDMIOut", 430);
 		$this->EnableAction("SelectedHDMIOut");
+		
+		$this->RegisterVariableInteger("TunerBand", "Tuner Band", "IPS2Pioneer.TunerBand", 435);
 		
 		$this->RegisterVariableFloat("TunerFrequency", "Tuner Frequency", "IPS2Pioneer.TunerFrequency", 440);
 		$this->EnableAction("TunerFrequency");
@@ -499,6 +505,13 @@ class IPS2PioneerVSX923 extends IPSModule
 					$TunerFrequency = floatval(substr($Message, -5));
 					$TunerFrequency = $TunerFrequency / 100;
 					SetValueFloat($this->GetIDForIdent("TunerFrequency"), $TunerFrequency);
+					$TunerBand = substr($Message, -6, 1);
+					If ($TunerBand == "F") {
+						$this->SetValue("TunerBand", 0);
+					}
+					elseif ($TunerBand == "A") {
+						$this->SetValue("TunerBand", 1);
+					}					
 					break;	
 				
 			}
