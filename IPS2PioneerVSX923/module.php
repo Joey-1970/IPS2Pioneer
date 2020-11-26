@@ -445,15 +445,15 @@ class IPS2PioneerVSX923 extends IPSModule
 				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
 					$SpeakerSystem = intval(substr($Message, -2));
 					If ($SpeakerSystem < 3) {
-						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 1, "Speaker A on", "Speaker", -1);
 						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 2, "Speaker B on", "Speaker", -1);
+						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 3, "Speaker A+B on", "Speaker", -1);						
 					}
 					else {
 						$ProfilArray = Array();
 						$ProfilArray = IPS_GetVariableProfile("IPS2Pioneer.SpeakerSystem_".$this->InstanceID);
 						foreach ($ProfilArray["Associations"] as $Association)
 						{
-							If ((intval($Association["Value"]) == 1) OR (intval($Association["Value"]) == 2)) {
+							If ((intval($Association["Value"]) == 2) OR (intval($Association["Value"]) == 3)) {
 								IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, intval($Association["Value"]), "", "", -1);
 							}
 						}
