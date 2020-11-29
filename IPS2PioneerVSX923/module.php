@@ -754,7 +754,6 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function SetHTMLDisplay()
 	{
 		$Displaytext = $this->GetValue("Display");
-		$Displaytext = str_pad($Displaytext, 12, chr(32), STR_PAD_LEFT);
 		$Volume = $this->GetValue("Volume");
 		$Volume = number_format ($Volume , 1, ".", "");
 		$PioneerDevices = array(25 => "BD", 4 => "DVD", 6 => "SAT/CBL", 15 => "DVR/BDR", 19 => "HDMI 1", 20 => "HDMI 2", 
@@ -844,7 +843,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$HTMLText .= '<td class="tg-031e"></td>';
 		$HTMLText .= '<td class="tg-031e"></td>';
 		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e" colspan="15" rowspan="2" align="right" width=600>';
+		$HTMLText .= '<td class="tg-031e" colspan="15" rowspan="2" align="right" width=500>';
 		$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
 		$HTMLText .= '<font size=7>';
 		$HTMLText .= '<font color=#00FFFF>';
