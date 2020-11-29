@@ -508,6 +508,7 @@ class IPS2PioneerVSX923 extends IPSModule
 				case preg_match('/FR.*/', $Message) ? $Message : !$Message:
 					$TunerFrequency = floatval(substr($Message, -5));
 					$TunerFrequency = $TunerFrequency / 100;
+					$this->SendDebug("ReceiveData", "TunerFrequency: ".$TunerFrequency, 0);
 					If ($this->GetValue("TunerFrequency") <> $TunerFrequency) {
 						$this->SetValue("TunerFrequency", $TunerFrequency);
 					}
