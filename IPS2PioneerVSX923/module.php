@@ -445,8 +445,12 @@ class IPS2PioneerVSX923 extends IPSModule
 				case preg_match('/SSF.*/', $Message) ? $Message : !$Message:
 					$SpeakerSystem = intval(substr($Message, -2));
 					If ($SpeakerSystem < 3) {
-						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 2, "Speaker B on", "Speaker", -1);
-						IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 3, "Speaker A+B on", "Speaker", -1);						
+						If ($this->AssociationsExists("IPS2Pioneer.Speaker_".$this->InstanceID, 2) == false) {
+							IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 2, "Speaker B on", "Speaker", -1);
+						}
+						If ($this->AssociationsExists("IPS2Pioneer.Speaker_".$this->InstanceID, 3) == false) {
+							IPS_SetVariableProfileAssociation("IPS2Pioneer.Speaker_".$this->InstanceID, 3, "Speaker A+B on", "Speaker", -1);
+						}
 					}
 					else {
 						$ProfilArray = Array();
@@ -1087,6 +1091,21 @@ class IPS2PioneerVSX923 extends IPSModule
 			IPS_SetVariableProfileAssociation("IPS2Pioneer.RadioStations_".$this->InstanceID, round($Value->RadioStationFrequency, 1), $Value->RadioStationName, "Melody", -1);
 		}
 		
+	}
+	
+	private function AssociationsExists($VariableProfil, $SerachAssociation)
+	{
+    		$Result = false;
+    		If (IPS_VariableProfileExists($VariableProfil)) {
+        		$ProfilArray = IPS_GetVariableProfile($VariableProfil);
+        		$AssociationsArray = $ProfilArray["Associations"];
+        		foreach ($AssociationsArray as $Association) {
+            			If ($Association["Value"] == $SerachAssociation) {
+                			$Result = true;
+            			}
+        		}
+        	}
+    	return $Result;
 	}
 	
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
