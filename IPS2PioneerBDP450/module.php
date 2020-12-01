@@ -3,12 +3,6 @@ class IPS2PioneerBDP450 extends IPSModule
 {
 	private $Socket = false;
 	
-	public function __destruct()
-	{
-		if ($this->Socket)
-		    	socket_close($this->Socket);
-	} 
-	
 	// Überschreibt die interne IPS_Create($id) Funktion
         public function Create() 
         {
@@ -87,20 +81,15 @@ class IPS2PioneerBDP450 extends IPSModule
 		$arrayElements = array(); 
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
- 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+ 		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
 				
-		$arrayElements[] = array("type" => "Label", "label" => "Zyklus Daten-Update in Sekunden (0 -> aus, 1 sek -> Minimum)");
+		$arrayElements[] = array("type" => "Label", "caption" => "Zyklus Daten-Update in Sekunden (0 -> aus, 1 sek -> Minimum)");
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "DataUpdate", "caption" => "s");
-		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-		$arrayElements[] = array("name" => "RC_Data", "type" => "CheckBox",  "caption" => "Virtuelle Fernbedienung erstellen"); 
-		
-		/*
-		{ "type": "Label", "label": "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!" },
-       		{ "type": "Button", "label": "On", "onClick": "I2BDP_PowerOn($id);"},
-        	{ "type": "Button", "label": "Off", "onClick": "I2BDP_PowerOff($id);"},
-        	{ "type": "Button", "label": "Open", "onClick": "I2BDP_Open($id);"},
-		{ "type": "Button", "label": "Close", "onClick": "I2BDP_Close($id);"} 
-		*/
+		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
+		$arrayElements[] = array("type" => "CheckBox", "name" => "RC_Data", "caption" => "Virtuelle Fernbedienung erstellen"); 
+		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
+		$arrayElements[] = array("type" => "Label", "caption" => "Test Center"); 
+		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
 		
 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
  	} 
