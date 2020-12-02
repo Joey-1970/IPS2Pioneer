@@ -663,7 +663,13 @@ class IPS2PioneerVSX923 extends IPSModule
 					      "?AP", "?HO", "?ZS", "?ZV", "?SSF", "?PKL", "?RML", "?SVZ", "?FR");
 			foreach ($MessageArray as $Value) {
 				$Message = $Value.chr(13);
-				$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
+				if ($this->HasActiveParent()) {
+					$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
+				}
+				else {
+					$this->SetStatus(202);
+					break;
+				}
 				IPS_Sleep(100);
 			}
 			$Content = file_get_contents(__DIR__ . '/../imgs/Pioneer.jpg');
