@@ -496,7 +496,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		
 		switch($Message) {
 			case "?P":
-				If ($Message == "E04") { 
+				If ($Response == "E04") { 
 					If(GetValueBoolean($this->GetIDForIdent("Power")) == true) {
 						// Gerät ist ausgeschaltet
 						$this->SetBuffer("TimeTrigger", "false");
@@ -528,18 +528,18 @@ class IPS2PioneerBDP450 extends IPSModule
 				}
 				break;
 			case "?D":
-				If (substr($Message, 0, 1) == "x") {
+				If (substr($Response, 0, 1) == "x") {
 					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
 					$this->SetBuffer("TimeTrigger", "false");
 				}
-				elseif (substr($Message, 0, 1) == "0") {
+				elseif (substr($Response, 0, 1) == "0") {
 					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 0);
 					$this->SetBuffer("TimeTrigger", "false");
 				}
-				elseif (substr($Message, 0, 1) == "1") {
+				elseif (substr($Response, 0, 1) == "1") {
 					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 1);
 					// Abfrage des Mediums
-					If (substr($Message, 1, 1) == "x") {
+					If (substr($Response, 1, 1) == "x") {
 						SetValueString($this->GetIDForIdent("Information"),"No Disc");
 						$this->SetBuffer("Information", 3);
 						$this->SetBuffer("TimeTrigger", "false");
@@ -549,7 +549,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						$this->SetBuffer("Information", (int)substr($Message, 1, 1));
 					}
 					// Abfrage der Anwendung
-					If (substr($Message, 2, 1) == "x") {
+					If (substr($Response, 2, 1) == "x") {
 						SetValueInteger($this->GetIDForIdent("Application"), 6);
 					}
 					else {
@@ -564,13 +564,13 @@ class IPS2PioneerBDP450 extends IPSModule
 				}
 				break;
 			case "?C":
-				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Message));
+				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Response));
 				// Titel/Track Nummer
 				$this->CommandClientSocket("?R", 3);
 				break;
 			
 			case "?R":
-				SetValueInteger($this->GetIDForIdent("Track"), intval($Message));
+				SetValueInteger($this->GetIDForIdent("Track"), intval($Response));
 					// Abfrage der Zeit
 					$this->SetBuffer("TimeTrigger", "true");
 					//$this->ClientSocket("?T".chr(13));
@@ -594,7 +594,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					*/
 				break;
 			case "?T":
-				$Message = str_pad((string)$Message, 6 ,'0', STR_PAD_LEFT);
+				$Message = str_pad((string)$Response, 6 ,'0', STR_PAD_LEFT);
 				//$this->SetBuffer("TimeTrigger", "true");
 				$Hour = intval(substr($Message, 0, 2));
 				$Minute = intval(substr($Message, 2, 2));
