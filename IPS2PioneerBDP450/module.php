@@ -614,12 +614,12 @@ class IPS2PioneerBDP450 extends IPSModule
 				break;
 			case "?L":
 				If ((string)$Message <> "?L") {
-					$this->SetValue("PlayerModel", (string)$Message);
+					$this->SetValue("PlayerModel", (string)$Response);
 				}
 				break;
 			case "?Z":
 				If ((string)$Message <> "?Z") {
-					$this->SetValue("PlayerFirmware", (string)$Message);
+					$this->SetValue("PlayerFirmware", (string)$Response);
 				}
 				break;
 		}
