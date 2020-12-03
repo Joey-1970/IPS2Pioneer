@@ -518,7 +518,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					SetValueBoolean($this->GetIDForIdent("Power"), true);
 					If (GetValueString($this->GetIDForIdent("PlayerModel")) == "") {
 						// PlayerModel und Firmware ermitteln
-						$this-BasicData();
+						$this->BasicData();
 					}
 					else {
 						SetValueInteger($this->GetIDForIdent("Modus"), intval(substr($Message, 1, 2)));
