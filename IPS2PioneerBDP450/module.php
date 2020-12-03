@@ -65,6 +65,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->RegisterVariableInteger("DiscLoaded", "DiscLoaded", "IPS2PioneerBDP450.DiscLoaded", 70);
 		$this->RegisterVariableInteger("Application", "Application", "IPS2PioneerBDP450.Application", 80);
 		$this->RegisterVariableInteger("Information", "Information", "IPS2PioneerBDP450.Information", 90);
+		$this->RegisterVariableString("HTMLDisplay", "Display", "~HTMLBox", 100);
 		
 
 		
@@ -633,6 +634,45 @@ class IPS2PioneerBDP450 extends IPSModule
 			// Firmware abfragen
 			$this->CommandClientSocket("?Z", 8);
 		}	
+	}
+	
+	private function SetHTMLDisplay($Displaytext)
+	{
+		$HTMLText = '<head>';
+		$HTMLText .= '<meta charset="utf-8">';
+		$HTMLText .= '</head>';
+		$HTMLText .= '<style type="text/css">';
+		$HTMLText .= '.tg  {border-collapse:collapse;border-spacing:15;background-color:#000000}';
+		$HTMLText .= '.tg td{font-family:Arial, sans-serif;font-size:30px;padding:10px 5px;border-style:none;border-width:5px;overflow:hidden;word-break:normal;}';
+		$HTMLText .= '.tg th{font-family:Arial, sans-serif;font-size:30px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}';
+		$HTMLText .= '</style>';
+		$HTMLText .= '<table class="tg" align="right">';
+		$HTMLText .= '<tr>';
+		$HTMLText .= '<th class="tg-031e"></th>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e" colspan="15" rowspan="2" align="right" width=500 height=100>';
+		$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
+		$HTMLText .= '<font size=7>';
+		$HTMLText .= '<font color=#00FFFF>';
+		$HTMLText .= '<font face="Codystar">';
+		$HTMLText .= ''.$Displaytext.'';
+		$HTMLText .= '</font>';
+		$HTMLText .= '</td>';
+		$HTMLText .= '</tr>';
+		$HTMLText .= '<tr>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '</tr>';
+		$HTMLText .= '</table>';
+		$HTMLText .= '<body>'; 
+		$HTMLText .= '</body>';
+		$this->SetValue("HTMLDisplay", $HTMLText);
 	}
 	
 	public function PowerOn()
