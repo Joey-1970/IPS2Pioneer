@@ -516,18 +516,19 @@ class IPS2PioneerBDP450 extends IPSModule
 				}
 				else {
 					// Gerät ist eingeschaltet
-					SetValueBoolean($this->GetIDForIdent("Power"), true);
+					$this->SetValue("Power", true);
 					If (GetValueString($this->GetIDForIdent("PlayerModel")) == "") {
 						// PlayerModel und Firmware ermitteln
 						$this->BasicData();
 					}
 					else {
 						$Modus = intval(substr($Message, 1, 2));
-						SetValueInteger($this->GetIDForIdent("Modus"), $Modus);
-						$ModusArray = array(1 => "Close", 3 => "Open", 4 => "Play", 5 => "Still", 6 => "Pause", 7 => "Searching", 8 => "Scanning", 9 => "Slow Play");
-						
-						if (array_key_exists($Modus, $ModusArray)) {
-    							$this->SetHTMLDisplay($ModusArray[$Modus]);
+						If ($Modus <> $this->GetValue("Modus")) {
+							$this->SetValue("Modus", $Modus);
+							$ModusArray = array(1 => "Close", 3 => "Open", 4 => "Play", 5 => "Still", 6 => "Pause", 7 => "Searching", 8 => "Scanning", 9 => "Slow Play");
+							if (array_key_exists($Modus, $ModusArray)) {
+								$this->SetHTMLDisplay($ModusArray[$Modus]);
+							}
 						}
 						// Prüfen ob eine Disk im Laufwerk ist
 						$this->CommandClientSocket("?D", 5);
