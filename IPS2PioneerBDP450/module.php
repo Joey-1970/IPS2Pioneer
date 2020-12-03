@@ -439,9 +439,10 @@ class IPS2PioneerBDP450 extends IPSModule
 				// Timeout setzen
 				socket_set_option($this->Socket, SOL_SOCKET, SO_RCVTIMEO, array("sec"=>2, "usec"=>0));
 				// Verbindung aufbauen
-				if(!(socket_connect($this->Socket, $this->ReadPropertyString("IPAddress"), 8102))) {
+				if(!(@socket_connect($this->Socket, $this->ReadPropertyString("IPAddress"), 8102))) {
 					$errorcode = socket_last_error();
 					$errormsg = socket_strerror($errorcode);
+					$this->SetValue("Power", false);
 					$this->SendDebug("CommandClientSocket", "Fehler beim Verbindungsaufbaus ".$errorcode." ".$errormsg, 0);
 					IPS_SemaphoreLeave("ClientSocket");
 					return;
