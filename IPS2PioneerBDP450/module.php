@@ -508,8 +508,8 @@ class IPS2PioneerBDP450 extends IPSModule
 					// Gerät ist eingeschaltet
 					SetValueBoolean($this->GetIDForIdent("Power"), true);
 					If (GetValueString($this->GetIDForIdent("PlayerModel")) == "") {
-						// PlayerModel ermitteln
-						$this->CommandClientSocket("?L", 7);
+						// PlayerModel und Firmware ermitteln
+						$this-BasicData();
 					}
 					else {
 						SetValueInteger($this->GetIDForIdent("Modus"), intval(substr($Message, 1, 2)));
@@ -604,14 +604,26 @@ class IPS2PioneerBDP450 extends IPSModule
 				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
 				break;
 			case "?L":
-				SetValueString($this->GetIDForIdent("PlayerModel"), (string)$Message);
-				// Firmware abfragen
-				$this->CommandClientSocket("?Z", 6);
+				If ((string)$Message <> "?L") {
+					$this->SetValue("PlayerModel", (string)$Message);
+				}
 				break;
 			case "?Z":
-				SetValueString($this->GetIDForIdent("PlayerFirmware"), (string)$Message);
+				If ((string)$Message <> "?Z") {
+					$this->SetValue("PlayerFirmware", (string)$Message);
+				}
 				break;
 		}
+	}
+	
+	private function BasicData()
+	{
+		If ($this->ReadPropertyBoolean("Open") == true) {
+			// Playermodell abfragen
+			$this->CommandClientSocket("?L", 7);
+			// Firmware abfragen
+			$this->CommandClientSocket("?Z", 6);
+		}	
 	}
 	
 	public function PowerOn()
