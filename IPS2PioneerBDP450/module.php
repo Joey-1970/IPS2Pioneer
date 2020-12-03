@@ -631,7 +631,7 @@ class IPS2PioneerBDP450 extends IPSModule
 			// Playermodell abfragen
 			$this->CommandClientSocket("?L", 7);
 			// Firmware abfragen
-			$this->CommandClientSocket("?Z", 6);
+			$this->CommandClientSocket("?Z", 8);
 		}	
 	}
 	
