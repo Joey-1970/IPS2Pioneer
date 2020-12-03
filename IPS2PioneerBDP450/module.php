@@ -609,7 +609,8 @@ class IPS2PioneerBDP450 extends IPSModule
 				$Second = intval(substr($Message, 4, 2));
 				//$Time = date('H:i:s', mktime($Hour, $Minute, $Second, 0, 0, 0));
 				$Time = mktime($Hour, $Minute, $Second, 0, 0, 0);
-				SetValueInteger($this->GetIDForIdent("Time"), $Time);
+				$this->SetValue("Time", $Time);
+				$this->SetHTMLDisplay($Hour.":".$Minute.":".$Second);
 				break;
 			case "?V":
 				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
