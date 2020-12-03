@@ -426,57 +426,65 @@ class IPS2PioneerBDP450 extends IPSModule
 	{
 		$Result = -999;
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			if (!$this->Socket)
-			{
-				// Socket erstellen
-				if(!($this->Socket = socket_create(AF_INET, SOCK_STREAM, 0))) {
+			if (IPS_SemaphoreEnter("ClientSocket", 1000)) {		
+				if (!$this->Socket)
+				{
+					// Socket erstellen
+					if(!($this->Socket = socket_create(AF_INET, SOCK_STREAM, 0))) {
+						$errorcode = socket_last_error();
+						$errormsg = socket_strerror($errorcode);
+						$this->SendDebug("CommandClientSocket", "Fehler beim Erstellen ".$errorcode." ".$errormsg, 0);
+						IPS_SemaphoreLeave("ClientSocket");
+						return;
+					}
+					// Timeout setzen
+					socket_set_option($this->Socket, SOL_SOCKET, SO_RCVTIMEO, array("sec"=>2, "usec"=>0));
+					// Verbindung aufbauen
+					if(!(@socket_connect($this->Socket, $this->ReadPropertyString("IPAddress"), 8102))) {
+						$errorcode = socket_last_error();
+						$errormsg = socket_strerror($errorcode);
+						$this->SetValue("Power", false);
+						$this->SendDebug("CommandClientSocket", "Fehler beim Verbindungsaufbaus ".$errorcode." ".$errormsg, 0);
+						IPS_SemaphoreLeave("ClientSocket");
+						return;
+					}
+					if (!$this->Socket) {
+						IPS_LogMessage("PioneerBDP450 Socket", "Fehler beim Verbindungsaufbau ".$errno." ".$errstr);
+						$this->SendDebug("CommandClientSocket", "Fehler beim Verbindungsaufbau ".$errno." ".$errstr, 0);
+						IPS_SemaphoreLeave("ClientSocket");
+						return $Result;
+					}
+				}
+				// Message senden
+				if(!socket_send ($this->Socket, $Message.chr(13), strlen($Message.chr(13)), 0))
+				{
 					$errorcode = socket_last_error();
 					$errormsg = socket_strerror($errorcode);
-					$this->SendDebug("CommandClientSocket", "Fehler beim Erstellen ".$errorcode." ".$errormsg, 0);
+					IPS_LogMessage("PioneerBDP450 Socket", "Fehler beim Senden ".$errorcode." ".$errormsg);
+					$this->SendDebug("CommandClientSocket", "Fehler beim Senden ".$errorcode." ".$errormsg, 0);
 					IPS_SemaphoreLeave("ClientSocket");
 					return;
 				}
-				// Timeout setzen
-				socket_set_option($this->Socket, SOL_SOCKET, SO_RCVTIMEO, array("sec"=>2, "usec"=>0));
-				// Verbindung aufbauen
-				if(!(@socket_connect($this->Socket, $this->ReadPropertyString("IPAddress"), 8102))) {
+				//Now receive reply from server
+				if(socket_recv ($this->Socket, $Response, $ResponseLen, MSG_WAITALL ) === FALSE) {
 					$errorcode = socket_last_error();
 					$errormsg = socket_strerror($errorcode);
-					$this->SetValue("Power", false);
-					$this->SendDebug("CommandClientSocket", "Fehler beim Verbindungsaufbaus ".$errorcode." ".$errormsg, 0);
+					IPS_LogMessage("PioneerBDP450 Socket", "Fehler beim Empfangen ".$errorcode." ".$errormsg);
+					$this->SendDebug("CommandClientSocket", "Fehler beim Empfangen ".$errorcode." ".$errormsg, 0);
+					$this->SendDebug("CommandClientSocket", "Gesendeter Befehl: ".$Message, 0);
 					IPS_SemaphoreLeave("ClientSocket");
 					return;
 				}
-				if (!$this->Socket) {
-					IPS_LogMessage("PioneerBDP450 Socket", "Fehler beim Verbindungsaufbau ".$errno." ".$errstr);
-					$this->SendDebug("CommandClientSocket", "Fehler beim Verbindungsaufbau ".$errno." ".$errstr, 0);
-					IPS_SemaphoreLeave("ClientSocket");
-					return $Result;
-				}
-			}
-			// Message senden
-			if(!socket_send ($this->Socket, $Message.chr(13), strlen($Message.chr(13)), 0))
-			{
-				$errorcode = socket_last_error();
-				$errormsg = socket_strerror($errorcode);
-				IPS_LogMessage("PioneerBDP450 Socket", "Fehler beim Senden ".$errorcode." ".$errormsg);
-				$this->SendDebug("CommandClientSocket", "Fehler beim Senden ".$errorcode." ".$errormsg, 0);
 				IPS_SemaphoreLeave("ClientSocket");
-				return;
-			}
-			//Now receive reply from server
-			if(socket_recv ($this->Socket, $Response, $ResponseLen, MSG_WAITALL ) === FALSE) {
-				$errorcode = socket_last_error();
-				$errormsg = socket_strerror($errorcode);
-				IPS_LogMessage("PioneerBDP450 Socket", "Fehler beim Empfangen ".$errorcode." ".$errormsg);
-				$this->SendDebug("CommandClientSocket", "Fehler beim Empfangen ".$errorcode." ".$errormsg, 0);
-				$this->SendDebug("CommandClientSocket", "Gesendeter Befehl: ".$Message, 0);
-				IPS_SemaphoreLeave("ClientSocket");
-				return;
-			}
 
-			$this->SendDebug("CommandClientSocket", "Message: ".$Message." Rueckgabe: ".$Response, 0);
-			$this->ClientResponse($Message, $Response);
+				$this->SendDebug("CommandClientSocket", "Message: ".$Message." Rueckgabe: ".$Response, 0);
+				$this->ClientResponse($Message, $Response);
+			}
+			else {
+				$Result = false;
+			    // ...Keine ausführung Möglich. Ein anderes Skript nutzt den "KritischenPunkt" 
+			    // für länger als 1 Sekunde, sodass unsere Wartezeit überschritten wird.
+			}
 		}	
 	return $Result;
 	}
