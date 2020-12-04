@@ -522,7 +522,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						$this->BasicData();
 					}
 					else {
-						$Modus = intval(substr($Message, 1, 2));
+						$Modus = intval(substr($Response, 1, 2));
 						If ($Modus <> $this->GetValue("Modus")) {
 							$this->SetValue("Modus", $Modus);
 							$ModusArray = array(1 => "Close", 3 => "Open", 4 => "Play", 5 => "Still", 6 => "Pause", 7 => "Searching", 8 => "Scanning", 9 => "Slow Play");
