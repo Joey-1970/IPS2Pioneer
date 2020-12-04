@@ -209,17 +209,7 @@ class IPS2PioneerBDP450 extends IPSModule
 			$this->EnableAction("rc_NET_FLIX");
 		}
 		
-		SetValueBoolean($this->GetIDForIdent("Power"), false);
-		SetValueInteger($this->GetIDForIdent("Modus"), 10);
-		SetValueInteger($this->GetIDForIdent("Chapter"), 0);
-		//$Time = date('H:i:s', mktime(0, 0, 0, 0, 0, 0));
-		$Time = mktime(0, 0, 0, 0, 0, 0);
-		SetValueInteger($this->GetIDForIdent("Time"), $Time);
-		SetValueInteger($this->GetIDForIdent("Track"), 0);
-		SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
-		SetValueInteger($this->GetIDForIdent("Information"), 4);
-		SetValueInteger($this->GetIDForIdent("Application"), 6);
-		
+		$this->ResetValues();
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			If (($this->ReadPropertyBoolean("Open") == true) AND ($this->ConnectionTest() == true)) {
@@ -404,6 +394,19 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->Get_DataUpdate();
 	}
 	
+	private function ResetValues()
+	{
+		$this->SetValue("Power", false);
+		$this->SetValue("Modus", 10);
+		$this->SetValue("Chapter", 0);
+		$Time = mktime(0, 0, 0, 0, 0, 0);
+		$this->SetValue("Time", $Time);
+		$this->SetValue("Track", 0);
+		$this->SetValue("DiscLoaded", 2);
+		$this->SetValue("Information", 4);
+		$this->SetValue("Application", 6);	
+	}
+	
 	public function Get_DataUpdate()
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
@@ -486,16 +489,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				If ($Response == "E04") { 
 					If(GetValueBoolean($this->GetIDForIdent("Power")) == true) {
 						// Gerät ist ausgeschaltet
-						$this->SetBuffer("TimeTrigger", "false");
-						SetValueBoolean($this->GetIDForIdent("Power"), false);
-						SetValueInteger($this->GetIDForIdent("Modus"), 10);
-						SetValueInteger($this->GetIDForIdent("Chapter"), 0);
-						$Time = mktime(0, 0, 0, 0, 0, 0);
-						SetValueInteger($this->GetIDForIdent("Time"), $Time);
-						SetValueInteger($this->GetIDForIdent("Track"), 0);
-						SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
-						SetValueInteger($this->GetIDForIdent("Application"), 6);
-						SetValueInteger($this->GetIDForIdent("Information"), 11);
+						$this->ResetValues();
 					}
 				}
 				else {
