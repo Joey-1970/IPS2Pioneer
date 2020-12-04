@@ -31,7 +31,8 @@ class IPS2PioneerBDP450 extends IPSModule
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 0, "Bluray", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 1, "DVD", "Information", -1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 2, "CD", "Information", -1);
-		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 3, "unbekannt", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 3, "No Disc", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Information", 4, "unbekannt", "Information", -1);
 		
 		$this->RegisterProfileInteger("IPS2PioneerBDP450.Application", "Information", "", "", 0, 4, 1);
 		IPS_SetVariableProfileAssociation("IPS2PioneerBDP450.Application", 0, "BDMV", "Information", -1);
@@ -216,8 +217,9 @@ class IPS2PioneerBDP450 extends IPSModule
 		SetValueInteger($this->GetIDForIdent("Time"), $Time);
 		SetValueInteger($this->GetIDForIdent("Track"), 0);
 		SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
+		SetValueInteger($this->GetIDForIdent("Information"), 4);
 		SetValueInteger($this->GetIDForIdent("Application"), 6);
-		SetValueInteger($this->GetIDForIdent("Information"), 11);
+		
 		
 		If (IPS_GetKernelRunlevel() == 10103) {
 			If (($this->ReadPropertyBoolean("Open") == true) AND ($this->ConnectionTest() == true)) {
