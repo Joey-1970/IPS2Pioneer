@@ -578,23 +578,22 @@ class IPS2PioneerBDP450 extends IPSModule
 				break;
 			
 			case "?R":
-				SetValueInteger($this->GetIDForIdent("Track"), intval($Response));
-					// Abfrage der Zeit
-					$this->SetBuffer("TimeTrigger", "true");
-					
-					
-					If ((int)$this->GetBuffer("Information") == 0) {
-						// Bei Bluray
-						$this->CommandClientSocket("?J", 3);
-					}
-					elseif ((int)$this->GetBuffer("Information") == 1) {
-						// Bei DVD
-						$this->CommandClientSocket("?J", 3);
-					}
-					elseif ((int)$this->GetBuffer("Information") == 2) {
-						// Bei CD
-						$this->CommandClientSocket("?J", 3);
-					}
+				If ($this->GetValue("Track") <> ntval($Response)) {
+					$this->SetValue("Track", intval($Response));	
+				}
+
+				If ((int)$this->GetBuffer("Information") == 0) {
+					// Bei Bluray
+					$this->CommandClientSocket("?J", 3);
+				}
+				elseif ((int)$this->GetBuffer("Information") == 1) {
+					// Bei DVD
+					$this->CommandClientSocket("?J", 3);
+				}
+				elseif ((int)$this->GetBuffer("Information") == 2) {
+					// Bei CD
+					$this->CommandClientSocket("?J", 3);
+				}
 				break;
 			case "?T":
 				$Message = str_pad((string)$Response, 6 ,'0', STR_PAD_LEFT);
@@ -610,7 +609,9 @@ class IPS2PioneerBDP450 extends IPSModule
 				} 
 				break;
 			case "?J":
-				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
+				If ($this->GetValue("Track") <> ntval($Response)) {
+					$this->SetValue("Track", intval($Response));	
+				}
 				break;
 			case "?V":
 				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
@@ -675,7 +676,7 @@ class IPS2PioneerBDP450 extends IPSModule
 			$HTMLText .= '<font size=7>';
 			$HTMLText .= '<font color=#00FFFF>';
 			$HTMLText .= '<font face="Codystar">';
-			$HTMLText .= ''.$Chapter.'';
+			$HTMLText .= ''.$Track.'';
 			$HTMLText .= '</font>';
 		$HTMLText .= '</th>';
 
@@ -684,7 +685,7 @@ class IPS2PioneerBDP450 extends IPSModule
 			$HTMLText .= '<font size=7>';
 			$HTMLText .= '<font color=#00FFFF>';
 			$HTMLText .= '<font face="Codystar">';
-			$HTMLText .= ''.$Track.'';
+			$HTMLText .= ''.$Chapter.'';
 			$HTMLText .= '</font>';
 		$HTMLText .= '</th>';
 
