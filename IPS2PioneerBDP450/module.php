@@ -574,9 +574,11 @@ class IPS2PioneerBDP450 extends IPSModule
 			case "?C":
 				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Response));
 				
+				$this->CommandClientSocket("?R", 3);
+				
 				If ($this->GetValue("Information") == 0) {
 					// Bei Bluray
-					$this->CommandClientSocket("?J", 3);
+					$this->CommandClientSocket("?J", 8);
 				}
 				elseif ($this->GetValue("Information") == 1) {
 					// Bei DVD
@@ -593,22 +595,11 @@ class IPS2PioneerBDP450 extends IPSModule
 				break;
 			
 			case "?R":
-				//If ($this->GetValue("Track") <> ntval($Response)) {
-				//	$this->SetValue("Track", intval($Response));	
-				//}
+				If ($this->GetValue("Track") <> ntval($Response)) {
+					$this->SetValue("Track", intval($Response));	
+				}
 
-				If ($this->GetValue("Information") == 0) {
-					// Bei Bluray
-					$this->CommandClientSocket("?J", 3);
-				}
-				elseif ($this->GetValue("Information") == 1) {
-					// Bei DVD
-					$this->CommandClientSocket("?J", 3);
-				}
-				elseif ($this->GetValue("Information") == 2) {
-					// Bei CD
-					$this->CommandClientSocket("?J", 3);
-				}
+				
 				break;
 			case "?T":
 				$Message = str_pad((string)$Response, 6 ,'0', STR_PAD_LEFT);
