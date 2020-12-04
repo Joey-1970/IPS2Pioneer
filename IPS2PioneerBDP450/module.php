@@ -573,24 +573,39 @@ class IPS2PioneerBDP450 extends IPSModule
 				break;
 			case "?C":
 				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Response));
-				// Titel/Track Nummer
-				$this->CommandClientSocket("?R", 3);
-				break;
-			
-			case "?R":
-				If ($this->GetValue("Track") <> ntval($Response)) {
-					$this->SetValue("Track", intval($Response));	
-				}
-
-				If ((int)$this->GetBuffer("Information") == 0) {
+				
+				If ($this->GetValue("Information") == 0) {
 					// Bei Bluray
 					$this->CommandClientSocket("?J", 3);
 				}
-				elseif ((int)$this->GetBuffer("Information") == 1) {
+				elseif ($this->GetValue("Information") == 1) {
 					// Bei DVD
 					$this->CommandClientSocket("?J", 3);
 				}
-				elseif ((int)$this->GetBuffer("Information") == 2) {
+				elseif ($this->GetValue("Information") == 2) {
+					// Bei CD
+					$this->CommandClientSocket("?J", 3);
+				}
+				
+				
+				// Titel/Track Nummer
+				//$this->CommandClientSocket("?R", 3);
+				break;
+			
+			case "?R":
+				//If ($this->GetValue("Track") <> ntval($Response)) {
+				//	$this->SetValue("Track", intval($Response));	
+				//}
+
+				If ($this->GetValue("Information") == 0) {
+					// Bei Bluray
+					$this->CommandClientSocket("?J", 3);
+				}
+				elseif ($this->GetValue("Information") == 1) {
+					// Bei DVD
+					$this->CommandClientSocket("?J", 3);
+				}
+				elseif ($this->GetValue("Information") == 2) {
 					// Bei CD
 					$this->CommandClientSocket("?J", 3);
 				}
