@@ -484,7 +484,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					If(GetValueBoolean($this->GetIDForIdent("Power")) == true) {
 						// Gerät ist ausgeschaltet
 						$this->ResetValues();
-						$this->SetHTMLDisplay("off");
+						$this->SetHTMLDisplay("off", "", "");
 					}
 				}
 				else {
@@ -500,7 +500,7 @@ class IPS2PioneerBDP450 extends IPSModule
 							$this->SetValue("Modus", $Modus);
 							$ModusArray = array(1 => "Close", 3 => "Open", 4 => "Play", 5 => "Still", 6 => "Pause", 7 => "Searching", 8 => "Scanning", 9 => "Slow Play");
 							if (array_key_exists($Modus, $ModusArray)) {
-								$this->SetHTMLDisplay($ModusArray[$Modus]);
+								$this->SetHTMLDisplay($ModusArray[$Modus], "", "");
 							}
 						}
 						// Prüfen ob eine Disk im Laufwerk ist
@@ -528,7 +528,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						// No Disc
 						If ($this->GetValue("Information") <> 3) {
 							$this->SetValue("Information", 3);
-							$this->SetHTMLDisplay("No Disc");
+							$this->SetHTMLDisplay("No Disc", "", "");
 						}
 					}
 					else {
@@ -582,7 +582,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				If ($this->GetValue("Time") <> $Time) {
 					$this->SetValue("Time", $Time);
 				}
-				$this->SetHTMLDisplay($Hour.":".str_pad($Minute, 2, "0", STR_PAD_LEFT).":".str_pad($Second, 2, "0", STR_PAD_LEFT));
+				$this->SetHTMLDisplay($Hour.":".str_pad($Minute, 2, "0", STR_PAD_LEFT).":".str_pad($Second, 2, "0", STR_PAD_LEFT), $this->GetValue("Chapter"), $this->GetValue("Track"));
 				break;
 			case "?J":
 				
@@ -619,13 +619,9 @@ class IPS2PioneerBDP450 extends IPSModule
 		}	
 	}
 	
-	private function SetHTMLDisplay($Displaytext)
+	private function SetHTMLDisplay($Displaytext, $Chapter, $Track)
 	{
-		If (($this->GetValue("Chapter") > 0) OR ($this->GetValue("Track") > 0)) {
-			$Chapter = $this->GetValue("Chapter");
-			$Track = $this->GetValue("Track");
-		}
-		else {
+		If ((intval($Chapter) == 0) AND (intval($Track) == 0)) {
 			$Chapter = "";
 			$Track = "";
 		}
