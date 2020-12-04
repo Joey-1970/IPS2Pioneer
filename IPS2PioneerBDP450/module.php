@@ -616,7 +616,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				break;
 			case "?J":
 				If ($this->GetValue("Track") <> intval($Response)) {
-					$this->SetValue("Track", intval($Response));	
+					//$this->SetValue("Track", intval($Response));	
 				}
 				break;
 			case "?V":
