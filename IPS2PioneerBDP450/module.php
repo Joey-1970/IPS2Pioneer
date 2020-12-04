@@ -10,7 +10,6 @@ class IPS2PioneerBDP450 extends IPSModule
             	parent::Create();
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
-		$this->RegisterPropertyInteger("DataUpdate", 15);
 		$this->RegisterTimer("DataUpdate", 0, 'I2BDP_Get_DataUpdate($_IPS["TARGET"]);');
 		$this->RegisterPropertyBoolean("RC_Data", false);
 		
@@ -83,10 +82,6 @@ class IPS2PioneerBDP450 extends IPSModule
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IPAddress", "caption" => "IP");
  		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
-				
-		$arrayElements[] = array("type" => "Label", "caption" => "Zyklus Daten-Update in Sekunden (0 -> aus, 1 sek -> Minimum)");
-		$arrayElements[] = array("type" => "IntervalBox", "name" => "DataUpdate", "caption" => "s");
-		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "CheckBox", "name" => "RC_Data", "caption" => "Virtuelle Fernbedienung erstellen"); 
 		$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "Label", "caption" => "Test Center"); 
@@ -410,16 +405,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	public function Get_DataUpdate()
 	{
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			$this->SetBuffer("TriggerCounter", $this->GetBuffer("TriggerCounter") + 1); 
-			If ( ($this->GetBuffer("TimeTrigger") == "true") AND ($this->GetBuffer("TriggerCounter") <> $this->ReadPropertyInteger("DataUpdate") ) ) {
-				// Spielt das Gerät ein Medium wird jede Sekunde die aktuelle Spielzeit abgefragt
-				$this->CommandClientSocket("?T", 6);
-			}
-			elseif ($this->GetBuffer("TriggerCounter") == $this->ReadPropertyInteger("DataUpdate")) {	
-				$this->SetBuffer("TriggerCounter", 0); 
-				// Power-Status abfragen
-				$this->CommandClientSocket("?P", 5);
-			}
+			$this->CommandClientSocket("?P", 5);			
 		}
 	}
 	
@@ -483,8 +469,6 @@ class IPS2PioneerBDP450 extends IPSModule
 			}
 			else {
 				$Result = false;
-			    // ...Keine ausführung Möglich. Ein anderes Skript nutzt den "KritischenPunkt" 
-			    // für länger als 1 Sekunde, sodass unsere Wartezeit überschritten wird.
 			}
 		}	
 	return $Result;
@@ -504,10 +488,8 @@ class IPS2PioneerBDP450 extends IPSModule
 						SetValueBoolean($this->GetIDForIdent("Power"), false);
 						SetValueInteger($this->GetIDForIdent("Modus"), 10);
 						SetValueInteger($this->GetIDForIdent("Chapter"), 0);
-						//$Time = date('H:i:s', mktime(0, 0, 0, 0, 0, 0));
 						$Time = mktime(0, 0, 0, 0, 0, 0);
 						SetValueInteger($this->GetIDForIdent("Time"), $Time);
-						//SetValueString($this->GetIDForIdent("StatusRequest"), "");
 						SetValueInteger($this->GetIDForIdent("Track"), 0);
 						SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
 						SetValueInteger($this->GetIDForIdent("Application"), 6);
@@ -537,20 +519,25 @@ class IPS2PioneerBDP450 extends IPSModule
 				break;
 			case "?D":
 				If (substr($Response, 0, 1) == "x") {
-					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 2);
-					$this->SetBuffer("TimeTrigger", "false");
+					If ($this->GetValue("DiscLoaded") <> 2) {
+						$this->SetValue("DiscLoaded", 2);
+					}
 				}
 				elseif (substr($Response, 0, 1) == "0") {
-					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 0);
-					$this->SetBuffer("TimeTrigger", "false");
+					If ($this->GetValue("DiscLoaded") <> 0) {					
+						$this->SetValue("DiscLoaded", 0);
+					}
 				}
 				elseif (substr($Response, 0, 1) == "1") {
-					SetValueInteger($this->GetIDForIdent("DiscLoaded"), 1);
+					If ($this->GetValue("DiscLoaded") <> 1) {					
+						$this->SetValue("DiscLoaded", 1);
+					}
 					// Abfrage des Mediums
 					If (substr($Response, 1, 1) == "x") {
+						
 						SetValueString($this->GetIDForIdent("Information"),"No Disc");
 						$this->SetBuffer("Information", 3);
-						$this->SetBuffer("TimeTrigger", "false");
+						//$this->SetBuffer("TimeTrigger", "false");
 					}
 					else {
 						SetValueInteger($this->GetIDForIdent("Information"), intval(substr($Message, 1, 1)));
@@ -568,6 +555,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					If ( intval($this->GetBuffer("Information")) <> 3) {
 						// Abfrage des Chapters
 						$this->CommandClientSocket("?C", 3);
+						$this->CommandClientSocket("?T", 6);
 					}
 				}
 				break;
