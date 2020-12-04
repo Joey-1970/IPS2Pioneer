@@ -579,8 +579,8 @@ class IPS2PioneerBDP450 extends IPSModule
 				$Time = mktime($Hour, $Minute, $Second, 0, 0, 0);
 				If ($this->GetValue("Time") <> $Time) {
 					$this->SetValue("Time", $Time);
-					$this->SetHTMLDisplay($Hour.":".str_pad($Minute, 2, "0", STR_PAD_LEFT).":".str_pad($Second, 2, "0", STR_PAD_LEFT));
-				} 
+				}
+				$this->SetHTMLDisplay($Hour.":".str_pad($Minute, 2, "0", STR_PAD_LEFT).":".str_pad($Second, 2, "0", STR_PAD_LEFT));
 				break;
 			case "?J":
 				
