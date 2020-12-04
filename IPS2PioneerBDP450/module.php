@@ -595,7 +595,6 @@ class IPS2PioneerBDP450 extends IPSModule
 						// Bei CD
 						$this->CommandClientSocket("?J", 3);
 					}
-					*/
 				break;
 			case "?T":
 				$Message = str_pad((string)$Response, 6 ,'0', STR_PAD_LEFT);
