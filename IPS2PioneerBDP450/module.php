@@ -648,6 +648,20 @@ class IPS2PioneerBDP450 extends IPSModule
 	
 	private function SetHTMLDisplay($Displaytext)
 	{
+		If ($this->GetValue("Chapter") > 0) {
+			$Chapter = $this->GetValue("Chapter");
+		}
+		else {
+			$Chapter = "";
+		}
+		
+		If ($this->GetValue("Track") > 0) {
+			$Track = $this->GetValue("Track");
+		}
+		else {
+			$Track = "";
+		}
+		
 		$HTMLText = '<head>';
 		$HTMLText .= '<meta charset="utf-8">';
 		$HTMLText .= '</head>';
@@ -658,26 +672,33 @@ class IPS2PioneerBDP450 extends IPSModule
 		$HTMLText .= '</style>';
 		$HTMLText .= '<table class="tg" align="right">';
 		$HTMLText .= '<tr>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e" colspan="15" rowspan="2" align="right" width=500 height=100>';
-		$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
-		$HTMLText .= '<font size=7>';
-		$HTMLText .= '<font color=#00FFFF>';
-		$HTMLText .= '<font face="Codystar">';
-		$HTMLText .= ''.$Displaytext.'';
-		$HTMLText .= '</font>';
-		$HTMLText .= '</td>';
-		$HTMLText .= '</tr>';
-		$HTMLText .= '<tr>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
+		$HTMLText .= '<th class="tg-031e" align="right" width=80 height=100>';
+			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
+			$HTMLText .= '<font size=7>';
+			$HTMLText .= '<font color=#00FFFF>';
+			$HTMLText .= '<font face="Codystar">';
+			$HTMLText .= ''.$Chapter.'';
+			$HTMLText .= '</font>';
+		$HTMLText .= '</th>';
+
+		$HTMLText .= '<th class="tg-031e" align="right" width=80 height=100>';
+			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
+			$HTMLText .= '<font size=7>';
+			$HTMLText .= '<font color=#00FFFF>';
+			$HTMLText .= '<font face="Codystar">';
+			$HTMLText .= ''.$Track.'';
+			$HTMLText .= '</font>';
+		$HTMLText .= '</th>';
+
+		$HTMLText .= '<th class="tg-031e" align="right" width=300 height=100>';
+			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
+			$HTMLText .= '<font size=7>';
+			$HTMLText .= '<font color=#00FFFF>';
+			$HTMLText .= '<font face="Codystar">';
+			$HTMLText .= ''.$Displaytext.'';
+			$HTMLText .= '</font>';
+		$HTMLText .= '</th>';
+  	
 		$HTMLText .= '</tr>';
 		$HTMLText .= '</table>';
 		$HTMLText .= '<body>'; 
