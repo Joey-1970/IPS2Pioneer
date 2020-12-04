@@ -527,6 +527,7 @@ class IPS2PioneerBDP450 extends IPSModule
 						// No Disc
 						If ($this->GetValue("Information") <> 3) {
 							$this->SetValue("Information", 3);
+							$this->SetHTMLDisplay("No Disc");
 						}
 					}
 					else {
