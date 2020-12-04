@@ -96,12 +96,6 @@ class IPS2PioneerBDP450 extends IPSModule
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-		$this->SetBuffer("LastCommand", "");
-		$this->SetBuffer("LastCommandTimestamp", 0);
-		$this->SetBuffer("LastResponseTimestamp", 0);
-		$this->SetBuffer("TimeTrigger", "false");
-		$this->SetBuffer("TriggerCounter", 0);
-		
 		If ($this->ReadPropertyBoolean("RC_Data") == true) {
 			$this->RegisterVariableBoolean("rc_POWER", "POWER", "~Switch", 500);
 			$this->EnableAction("rc_POWER");
@@ -530,51 +524,42 @@ class IPS2PioneerBDP450 extends IPSModule
 					}
 					// Abfrage des Mediums
 					If (substr($Response, 1, 1) == "x") {
-						
-						SetValueString($this->GetIDForIdent("Information"),"No Disc");
-						$this->SetBuffer("Information", 3);
-						//$this->SetBuffer("TimeTrigger", "false");
+						// No Disc
+						If ($this->GetValue("Information") <> 3) {
+							$this->SetValue("Information", 3);
+						}
 					}
 					else {
-						SetValueInteger($this->GetIDForIdent("Information"), intval(substr($Message, 1, 1)));
-						$this->SetBuffer("Information", (int)substr($Message, 1, 1));
+						If ($this->GetValue("Information") <> intval(substr($Response, 1, 1))) {
+							$this->SetValue("Information", intval(substr($Response, 1, 1)));
+						}						
 					}
 					// Abfrage der Anwendung
 					If (substr($Response, 2, 1) == "x") {
-						SetValueInteger($this->GetIDForIdent("Application"), 6);
+						If ($this->GetValue("Application") <> 6) {
+							$this->SetValue("Application", 6);
+						}
 					}
 					else {
-						SetValueInteger($this->GetIDForIdent("Application"), intval(substr($Message, 2, 1)));
+						If ($this->GetValue("Application") <> intval(substr($Message, 2, 1))) {
+							$this->SetValue("Application", intval(substr($Message, 2, 1)));
+						}
 					}
-					//IPS_LogMessage("IPS2PioneerBDP450","Information: ".$this->GetBuffer("Information"));
 					
-					If ( intval($this->GetBuffer("Information")) <> 3) {
+					If ($this->GetValue("Information") <> 3) {
 						// Abfrage des Chapters
 						$this->CommandClientSocket("?C", 3);
+						// Abfrage der Zeit
 						$this->CommandClientSocket("?T", 6);
 					}
 				}
 				break;
 			case "?C":
-				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Response));
+				If ($this->GetValue("Chapter") <> intval($Response)) {
+					$this->SetValue("Chapter", intval($Response));
+				}
 				
 				$this->CommandClientSocket("?R", 5);
-				
-				If ($this->GetValue("Information") == 0) {
-					// Bei Bluray
-					//$this->CommandClientSocket("?J", 8);
-				}
-				elseif ($this->GetValue("Information") == 1) {
-					// Bei DVD
-					//$this->CommandClientSocket("?J", 3);
-				}
-				elseif ($this->GetValue("Information") == 2) {
-					// Bei CD
-					//$this->CommandClientSocket("?J", 3);
-				}
-				$this->SetBuffer("TimeTrigger", "true");				
-				// Titel/Track Nummer
-				//$this->CommandClientSocket("?R", 3);
 				break;
 			
 			case "?R":
@@ -585,11 +570,11 @@ class IPS2PioneerBDP450 extends IPSModule
 				
 				break;
 			case "?T":
-				$Message = str_pad((string)$Response, 6 ,'0', STR_PAD_LEFT);
+				$Time = str_pad((string)$Response, 6 ,'0', STR_PAD_LEFT);
 				//$this->SetBuffer("TimeTrigger", "true");
-				$Hour = intval(substr($Message, 0, 2));
-				$Minute = intval(substr($Message, 2, 2));
-				$Second = intval(substr($Message, 4, 2));
+				$Hour = intval(substr($Time, 0, 2));
+				$Minute = intval(substr($Time, 2, 2));
+				$Second = intval(substr($Time, 4, 2));
 				//$Time = date('H:i:s', mktime($Hour, $Minute, $Second, 0, 0, 0));
 				$Time = mktime($Hour, $Minute, $Second, 0, 0, 0);
 				If ($this->GetValue("Time") <> $Time) {
@@ -598,9 +583,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				} 
 				break;
 			case "?J":
-				If ($this->GetValue("Track") <> intval($Response)) {
-					//$this->SetValue("Track", intval($Response));	
-				}
+				
 				break;
 			case "?V":
 				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
