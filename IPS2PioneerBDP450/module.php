@@ -478,7 +478,7 @@ class IPS2PioneerBDP450 extends IPSModule
 				}
 				IPS_SemaphoreLeave("ClientSocket");
 
-				$this->SendDebug("CommandClientSocket", "Message: ".$Message." Rueckgabe: ".$Response, 0);
+				$this->SendDebug("CommandClientSocket", "Message: ".$Message." Rueckgabe: ".trim($Response, "\x00..\x1F"), 0);
 				$this->ClientResponse($Message, $Response);
 			}
 			else {
