@@ -484,6 +484,7 @@ class IPS2PioneerBDP450 extends IPSModule
 					If(GetValueBoolean($this->GetIDForIdent("Power")) == true) {
 						// Gerät ist ausgeschaltet
 						$this->ResetValues();
+						$this->SetHTMLDisplay("off");
 					}
 				}
 				else {
