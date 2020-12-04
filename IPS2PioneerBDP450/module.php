@@ -656,7 +656,7 @@ class IPS2PioneerBDP450 extends IPSModule
 			$HTMLText .= '</font>';
 		$HTMLText .= '</th>';
 
-		$HTMLText .= '<th class="tg-031e" align="right" width=300 height=100>';
+		$HTMLText .= '<th class="tg-031e" align="right" width=250 height=100>';
 			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
 			$HTMLText .= '<font size=7>';
 			$HTMLText .= '<font color=#00FFFF>';
