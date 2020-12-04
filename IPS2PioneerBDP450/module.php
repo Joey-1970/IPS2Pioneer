@@ -578,18 +578,17 @@ class IPS2PioneerBDP450 extends IPSModule
 				
 				If ($this->GetValue("Information") == 0) {
 					// Bei Bluray
-					$this->CommandClientSocket("?J", 8);
+					//$this->CommandClientSocket("?J", 8);
 				}
 				elseif ($this->GetValue("Information") == 1) {
 					// Bei DVD
-					$this->CommandClientSocket("?J", 3);
+					//$this->CommandClientSocket("?J", 3);
 				}
 				elseif ($this->GetValue("Information") == 2) {
 					// Bei CD
-					$this->CommandClientSocket("?J", 3);
+					//$this->CommandClientSocket("?J", 3);
 				}
-				
-				
+				$this->SetBuffer("TimeTrigger", "true");				
 				// Titel/Track Nummer
 				//$this->CommandClientSocket("?R", 3);
 				break;
