@@ -619,17 +619,12 @@ class IPS2PioneerBDP450 extends IPSModule
 	
 	private function SetHTMLDisplay($Displaytext)
 	{
-		If ($this->GetValue("Chapter") > 0) {
+		If (($this->GetValue("Chapter") > 0) OR ($this->GetValue("Track") > 0)) {
 			$Chapter = $this->GetValue("Chapter");
-		}
-		else {
-			$Chapter = "";
-		}
-		
-		If ($this->GetValue("Track") > 0) {
 			$Track = $this->GetValue("Track");
 		}
 		else {
+			$Chapter = "";
 			$Track = "";
 		}
 		
