@@ -581,23 +581,19 @@ class IPS2PioneerBDP450 extends IPSModule
 				SetValueInteger($this->GetIDForIdent("Track"), intval($Response));
 					// Abfrage der Zeit
 					$this->SetBuffer("TimeTrigger", "true");
-					//$this->ClientSocket("?T".chr(13));
-					//$this->ResponseWait();
-					/*
+					
+					
 					If ((int)$this->GetBuffer("Information") == 0) {
 						// Bei Bluray
-						$this->ClientSocket("?I".chr(13));
-						$this->ResponseWait();
+						$this->CommandClientSocket("?J", 3);
 					}
 					elseif ((int)$this->GetBuffer("Information") == 1) {
 						// Bei DVD
-						$this->ClientSocket("?V".chr(13));
-						$this->ResponseWait();
+						$this->CommandClientSocket("?J", 3);
 					}
 					elseif ((int)$this->GetBuffer("Information") == 2) {
 						// Bei CD
-						$this->ClientSocket("?K".chr(13));
-						$this->ResponseWait();
+						$this->CommandClientSocket("?J", 3);
 					}
 					*/
 				break;
@@ -613,6 +609,9 @@ class IPS2PioneerBDP450 extends IPSModule
 					$this->SetValue("Time", $Time);
 					$this->SetHTMLDisplay($Hour.":".str_pad($Minute, 2, "0", STR_PAD_LEFT).":".str_pad($Second, 2, "0", STR_PAD_LEFT));
 				} 
+				break;
+			case "?J":
+				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
 				break;
 			case "?V":
 				//SetValueString($this->GetIDForIdent("StatusRequest"), (string)$Message);	
