@@ -574,7 +574,7 @@ class IPS2PioneerBDP450 extends IPSModule
 			case "?C":
 				SetValueInteger($this->GetIDForIdent("Chapter"), intval($Response));
 				
-				$this->CommandClientSocket("?R", 3);
+				$this->CommandClientSocket("?R", 5);
 				
 				If ($this->GetValue("Information") == 0) {
 					// Bei Bluray
