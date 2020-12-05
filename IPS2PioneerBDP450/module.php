@@ -66,7 +66,8 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->RegisterVariableInteger("Application", "Application", "IPS2PioneerBDP450.Application", 80);
 		$this->RegisterVariableInteger("Information", "Information", "IPS2PioneerBDP450.Information", 90);
 		$this->RegisterVariableString("HTMLDisplay", "Display", "~HTMLBox", 100);
-		
+		$this->RegisterVariableInteger("MediaControl", "Control", "~PlaybackPreviousNext", 110);
+		$this->EnableAction("MediaControl");
 
 		
 	}
@@ -225,6 +226,28 @@ class IPS2PioneerBDP450 extends IPSModule
 				case "Power":
 						$this->CommandClientSocket("/A181AFBC/RU", 3);			
 					break;
+				case "MediaControl":
+						If ($Value == 0) { 
+							// Zurück
+							$this->CommandClientSocket("/A181AFEA/RU", 3);
+						}
+						elseif ($Value == 1) { 
+							// Stop
+							$this->CommandClientSocket("/A181AF38/RU", 3);	
+						}
+						elseif ($Value == 2) { 
+							// Play
+							$this->CommandClientSocket("/A181AF39/RU", 3);	
+						}
+						elseif ($Value == 3) { 
+							// Pause
+							$this->CommandClientSocket("/A181AF3A/RU", 3);	
+						}
+						elseif ($Value == 4) { 
+							// Weiter
+							$this->CommandClientSocket("/A181AFE9/RU", 3);		
+						}
+					break;	
 				case "rc_POWER":
 						$this->CommandClientSocket("/A181AFBC/RU", 3);				
 					break;
