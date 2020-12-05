@@ -399,6 +399,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		$this->SetValue("DiscLoaded", 2);
 		$this->SetValue("Information", 4);
 		$this->SetValue("Application", 6);	
+		$this->SetHTMLDisplay("off", "", "");
 	}
 	
 	public function Get_DataUpdate()
