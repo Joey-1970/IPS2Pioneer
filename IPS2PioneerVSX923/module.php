@@ -778,7 +778,9 @@ class IPS2PioneerVSX923 extends IPSModule
 			      44 => "MEDIA SERVER", 45 => "FAVORITES", 17 => "iPod/USB", 5 => "TV", 1 => "CD", 
 			      2 => "TUNER", 33 => "ADAPTER PORT");
 		$Source = $this->GetValue("Input");
-		$Speaker = "SP>AB";
+		
+		$SpeakerArray = array("SP>OFF", "SP>A", "SP>B", "SP>AB");
+		$Speaker = $SpeakerArray[$this->GetValue("Speakers")];
 		
 		$HTMLText = '<head>';
 		$HTMLText .= '<meta charset="utf-8">';
