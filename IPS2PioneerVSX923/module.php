@@ -784,98 +784,73 @@ class IPS2PioneerVSX923 extends IPSModule
 		$HTMLText .= '</head>';
 		$HTMLText .= '<style type="text/css">';
 		$HTMLText .= '.tg  {border-collapse:collapse;border-spacing:15;background-color:#000000}';
-		$HTMLText .= '.tg td{font-family:Arial, sans-serif;font-size:30px;padding:10px 5px;border-style:none;border-width:5px;overflow:hidden;word-break:normal;}';
+		$HTMLText .= '.tg td{font-family:Arial, sans-serif;font-size:30px;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}';
 		$HTMLText .= '.tg th{font-family:Arial, sans-serif;font-size:30px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}';
 		$HTMLText .= '</style>';
 		$HTMLText .= '<table class="tg" align="right">';
+		// Zeile 1
 		$HTMLText .= '<tr>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e"></th>';
-		$HTMLText .= '<th class="tg-031e" colspan="5" rowspan="2" align="right"';
-		$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
-		$HTMLText .= '<font face="Codystar">';
-		$HTMLText .= '<font size=7>';
-		$HTMLText .= '<font color=#00FFFF>';
-		$HTMLText .= ''.$Volume.'';
-		$HTMLText .= '<font face="Arial">';
-		$HTMLText .= '<font size=5>';
-		$HTMLText .= '<font color=#04B4AE>';
-		$HTMLText .= ' dB';
-		$HTMLText .= '</font>';
-		$HTMLText .= '</th>';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=80>';
+			    // Spalte 1
+		    $HTMLText .= '</th>';
+
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=80>';
+			    // Spalte 2
+		    $HTMLText .= '</th>';
+
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=80';
+			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
+			$HTMLText .= '<font face="Codystar">';
+			$HTMLText .= '<font size=7>';
+			$HTMLText .= '<font color=#00FFFF>';
+			$HTMLText .= ''.$Volume.'';
+			$HTMLText .= '<font face="Arial">';
+			$HTMLText .= '<font size=5>';
+			$HTMLText .= '<font color=#04B4AE>';
+			$HTMLText .= ' dB';
+			$HTMLText .= '</font>';
+		    $HTMLText .= '</th>';
+			$HTMLText .= '</tr>';
+
+		// Zeile 2
+		$HTMLText .= '<tr>';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=100 height=40>';
+			    // Spalte 1
+		    $HTMLText .= '</th>';
+
+		    $HTMLText .= '<th td class="tg-031e" align="left" width=100 height=40';
+			$HTMLText .= '<font face="Arial">';
+			$HTMLText .= '<font size=4>';
+			$HTMLText .= '<font color=#04B4AE>';
+			$HTMLText .= ''.$PioneerDevices[4].'';
+			$HTMLText .= '</font>';
+		    $HTMLText .= '</th>';
+
+		    $HTMLText .= '<th class="tg-031e" align="right" width=100 height=40>';
+			    // Spalte 3
+		    $HTMLText .= '</th>';
+			$HTMLText .= '</tr>';
+
+		// Zeile 3
+		$HTMLText .= '<tr>';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=100>';
+				// Spalte 1
+		    $HTMLText .= '</th>';
+
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=100>';
+				// Spalte 2
+		    $HTMLText .= '</th>';
+
+		    $HTMLText .= '<th class="tg-031e" align="right" width=300 height=100>';
+			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
+			$HTMLText .= '<font size=7>';
+			$HTMLText .= '<font color=#00FFFF>';
+			$HTMLText .= '<font face="Codystar">';
+			$HTMLText .= ''.$Displaytext.'';
+			$HTMLText .= '</font>';
+		    $HTMLText .= '</th>';
 		$HTMLText .= '</tr>';
 		$HTMLText .= '<tr>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '</tr>';
-		$HTMLText .= '<tr>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e" colspan="10" align="left"';
-		$HTMLText .= '<font face="Arial">';
-		$HTMLText .= '<font size=4>';
-		$HTMLText .= '<font color=#04B4AE>';
-		$HTMLText .= ''.$PioneerDevices[$Source].'';
-		$HTMLText .= '</font>';
-		$HTMLText .= '</tr>';
-		$HTMLText .= '<tr>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '</tr>';
-		$HTMLText .= '<tr>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e" colspan="15" rowspan="2" align="right" width=500 height=100>';
-		$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
-		$HTMLText .= '<font size=7>';
-		$HTMLText .= '<font color=#00FFFF>';
-		$HTMLText .= '<font face="Codystar">';
-		$HTMLText .= ''.$Displaytext.'';
-		$HTMLText .= '</font>';
-		$HTMLText .= '</td>';
-		$HTMLText .= '</tr>';
-		$HTMLText .= '<tr>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '<td class="tg-031e"></td>';
-		$HTMLText .= '</tr>';
 		$HTMLText .= '</table>';
 		$HTMLText .= '<body>'; 
 		$HTMLText .= '</body>';
