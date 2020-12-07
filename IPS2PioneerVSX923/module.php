@@ -790,15 +790,15 @@ class IPS2PioneerVSX923 extends IPSModule
 		$HTMLText .= '<table class="tg" align="right">';
 		// Zeile 1
 		$HTMLText .= '<tr>';
-		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=80>';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=70>';
 			    // Spalte 1
 		    $HTMLText .= '</th>';
 
-		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=80>';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=70>';
 			    // Spalte 2
 		    $HTMLText .= '</th>';
 
-		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=80';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=70';
 			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
 			$HTMLText .= '<font face="Codystar">';
 			$HTMLText .= '<font size=7>';
@@ -814,19 +814,19 @@ class IPS2PioneerVSX923 extends IPSModule
 
 		// Zeile 2
 		$HTMLText .= '<tr>';
-		    $HTMLText .= '<th class="tg-031e" align="right" width=100 height=40>';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=100 height=30>';
 			    // Spalte 1
 		    $HTMLText .= '</th>';
 
-		    $HTMLText .= '<th td class="tg-031e" align="left" width=100 height=40';
+		    $HTMLText .= '<th td class="tg-031e" align="left" width=100 height=30';
 			$HTMLText .= '<font face="Arial">';
 			$HTMLText .= '<font size=4>';
 			$HTMLText .= '<font color=#04B4AE>';
-			$HTMLText .= ''.$PioneerDevices[4].'';
+			$HTMLText .= ''.$PioneerDevices[$Source].'';
 			$HTMLText .= '</font>';
 		    $HTMLText .= '</th>';
 
-		    $HTMLText .= '<th class="tg-031e" align="right" width=100 height=40>';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=100 height=30>';
 			    // Spalte 3
 		    $HTMLText .= '</th>';
 			$HTMLText .= '</tr>';
