@@ -815,7 +815,7 @@ class IPS2PioneerVSX923 extends IPSModule
 
 		// Zeile 2
 		$HTMLText .= '<tr>';
-		    $HTMLText .= '<th class="tg-031e" align="right" width=100 height=30>';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=30>';
 			    // Spalte 1
 		    $HTMLText .= '</th>';
 
@@ -827,14 +827,14 @@ class IPS2PioneerVSX923 extends IPSModule
 			$HTMLText .= '</font>';
 		    $HTMLText .= '</th>';
 
-		    $HTMLText .= '<th class="tg-031e" align="right" width=100 height=30>';
+		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=30>';
 			    // Spalte 3
 		    $HTMLText .= '</th>';
 			$HTMLText .= '</tr>';
 
 		// Zeile 3
 		$HTMLText .= '<tr>';
-		    $HTMLText .= '<th td class="tg-031e" align="left" width=100 height=30';
+		    $HTMLText .= '<th td class="tg-031e" align="left" width=80 height=100';
 			$HTMLText .= '<font face="Arial">';
 			$HTMLText .= '<font size=4>';
 			$HTMLText .= '<font color=#04B4AE>';
