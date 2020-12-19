@@ -847,7 +847,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		// Spalte 2 + 3 zusammen
 		    $HTMLText .= '<th class="tg-031e" colspan="2" align="right" width=400 height=100>';
 			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
-			$HTMLText .= '<font size=7>';
+			$HTMLText .= '<font size=6>';
 			$HTMLText .= '<font color=#00FFFF>';
 			$HTMLText .= '<font face="Codystar">';
 			$HTMLText .= ''.$Displaytext.'';
