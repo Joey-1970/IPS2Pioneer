@@ -8,6 +8,8 @@ class IPS2PioneerBDP450 extends IPSModule
         {
             	// Diese Zeile nicht löschen.
             	parent::Create();
+		$this->RegisterMessage(0, IPS_KERNELSTARTED);
+		
 		$this->RegisterPropertyBoolean("Open", false);
 	    	$this->RegisterPropertyString("IPAddress", "127.0.0.1");
 		$this->RegisterTimer("DataUpdate", 0, 'I2BDP_Get_DataUpdate($_IPS["TARGET"]);');
@@ -218,6 +220,17 @@ class IPS2PioneerBDP450 extends IPSModule
 			}	   
 		}
 	}
+	
+	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
+    	{
+		switch ($Message) {
+			case 10001:
+				// IPS_KERNELSTARTED
+				$this->ApplyChanges();
+				break;
+			
+		}
+    	}            
 	
 	public function RequestAction($Ident, $Value) 
 	{
@@ -662,7 +675,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		$HTMLText .= '<tr>';
 		$HTMLText .= '<th class="tg-031e" align="right" width=80 height=100>';
 			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
-			$HTMLText .= '<font size=7>';
+			$HTMLText .= '<font size=6>';
 			$HTMLText .= '<font color=#00FFFF>';
 			$HTMLText .= '<font face="Codystar">';
 			$HTMLText .= ''.$Track.'';
@@ -671,7 +684,7 @@ class IPS2PioneerBDP450 extends IPSModule
 
 		$HTMLText .= '<th class="tg-031e" align="right" width=80 height=100>';
 			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
-			$HTMLText .= '<font size=7>';
+			$HTMLText .= '<font size=6>';
 			$HTMLText .= '<font color=#00FFFF>';
 			$HTMLText .= '<font face="Codystar">';
 			$HTMLText .= ''.$Chapter.'';
@@ -680,7 +693,7 @@ class IPS2PioneerBDP450 extends IPSModule
 
 		$HTMLText .= '<th class="tg-031e" align="right" width=250 height=100>';
 			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
-			$HTMLText .= '<font size=7>';
+			$HTMLText .= '<font size=6>';
 			$HTMLText .= '<font color=#00FFFF>';
 			$HTMLText .= '<font face="Codystar">';
 			$HTMLText .= ''.$Displaytext.'';
