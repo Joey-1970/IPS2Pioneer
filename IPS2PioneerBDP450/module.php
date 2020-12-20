@@ -208,7 +208,7 @@ class IPS2PioneerBDP450 extends IPSModule
 		
 		$this->ResetValues();
 		
-		If (IPS_GetKernelRunlevel() == 10103) {
+		If (IPS_GetKernelRunlevel() == KR_READY) {
 			If (($this->ReadPropertyBoolean("Open") == true) AND ($this->ConnectionTest() == true)) {
 				$this->SetTimerInterval("DataUpdate", 1000);
 				$this->SetStatus(102);
