@@ -145,6 +145,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->EnableAction("SelectedHDMIOut");
 		
 		$this->RegisterVariableInteger("TunerBand", "Tuner Band", "IPS2Pioneer.TunerBand", 435);
+		$this->EnableAction("TunerBand");
 		
 		$this->RegisterVariableFloat("TunerFrequency", "Tuner Frequency", "IPS2Pioneer.TunerFrequency", 440);
 		$this->EnableAction("TunerFrequency");
@@ -644,6 +645,9 @@ class IPS2PioneerVSX923 extends IPSModule
 					}
 					$Message = substr($Message, 0, -1);
 					$this->SetData($Message);
+					break;
+				case "TunerBand":
+					$this->SetData("TB");
 					break;
 				case "RadioStations":
 					$this->TunerDirectAccess($Value);
