@@ -783,7 +783,7 @@ class IPS2PioneerVSX923 extends IPSModule
 			      2 => "TUNER", 33 => "ADAPTER PORT");
 		$Source = $this->GetValue("Input");
 		
-		$SpeakerArray = array("SP>OFF", "SP>A", "SP>B", "SP>AB");
+		$SpeakerArray = array("OFF", "A", "B", "AB");
 		$Speaker = $SpeakerArray[$this->GetValue("Speakers")];
 		
 		$HTMLText = '<head>';
