@@ -791,8 +791,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$HTMLText .= '</head>';
 		$HTMLText .= '<style type="text/css">';
 		$HTMLText .= '.tg  {border-collapse:collapse;border-spacing:15;background-color:#000000}';
-		$HTMLText .= '.tg td{font-family:Arial, sans-serif;font-size:30px;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}';
-		$HTMLText .= '.tg th{font-family:Arial, sans-serif;font-size:30px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}';
+		$HTMLText .= '.tg td{font-family:Arial, sans-serif;font-size:30px;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:keep-all;}';
+		$HTMLText .= '.tg th{font-family:Arial, sans-serif;font-size:30px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:keep-all;}';
 		$HTMLText .= '</style>';
 		$HTMLText .= '<table class="tg" align="right">';
 		// Zeile 1
@@ -808,7 +808,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		    $HTMLText .= '<th class="tg-031e" align="right" width=80 height=70';
 			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
 			$HTMLText .= '<font face="Codystar">';
-			$HTMLText .= '<font size=6>';
+			$HTMLText .= '<font size=7>';
 			$HTMLText .= '<font color=#00FFFF>';
 			$HTMLText .= ''.$Volume.'';
 			$HTMLText .= '<font face="Arial">';
@@ -844,6 +844,10 @@ class IPS2PioneerVSX923 extends IPSModule
 			$HTMLText .= '<font face="Arial">';
 			$HTMLText .= '<font size=4>';
 			$HTMLText .= '<font color=#04B4AE>';
+			$HTMLText .= ' SP';
+			$HTMLText .= '<font color=#FF0000>';
+			$HTMLText .= '>';
+			$HTMLText .= '<font color=#04B4AE>';
 			$HTMLText .= ''.$Speaker.'';
 			$HTMLText .= '</font>';
 		    $HTMLText .= '</th>';
@@ -851,7 +855,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		// Spalte 2 + 3 zusammen
 		    $HTMLText .= '<th class="tg-031e" colspan="2" align="right" width=400 height=100>';
 			$HTMLText .= '<link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">';
-			$HTMLText .= '<font size=6>';
+			$HTMLText .= '<font size=7>';
 			$HTMLText .= '<font color=#00FFFF>';
 			$HTMLText .= '<font face="Codystar">';
 			$HTMLText .= ''.$Displaytext.'';
