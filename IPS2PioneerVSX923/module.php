@@ -791,8 +791,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$HTMLText .= '</head>';
 		$HTMLText .= '<style type="text/css">';
 		$HTMLText .= '.tg  {border-collapse:collapse;border-spacing:15;background-color:#000000}';
-		$HTMLText .= '.tg td{font-family:Arial, sans-serif;font-size:30px;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:keep-all;}';
-		$HTMLText .= '.tg th{font-family:Arial, sans-serif;font-size:30px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:keep-all;}';
+		$HTMLText .= '.tg td{font-family:Arial, sans-serif;font-size:30px;padding:5px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:keep-all;}';
+		$HTMLText .= '.tg th{font-family:Arial, sans-serif;font-size:30px;font-weight:normal;padding:5px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:keep-all;}';
 		$HTMLText .= '</style>';
 		$HTMLText .= '<table class="tg" align="right">';
 		// Zeile 1
