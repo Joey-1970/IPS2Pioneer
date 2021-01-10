@@ -797,7 +797,7 @@ class IPS2PioneerVSX923 extends IPSModule
 		
 		$OwnAssociations = $this->GetAssociations("IPS2Pioneer.InputSelect_".$this->InstanceID);
 		
-		If (isset($OwnAssociations[$this->GetValue("Input")] == true)) {
+		If (isset($OwnAssociations[$this->GetValue("Input")])) {
 			$Source = $OwnAssociations[$this->GetValue("Input")];
 		}
 		else {
