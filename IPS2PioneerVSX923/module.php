@@ -772,6 +772,19 @@ class IPS2PioneerVSX923 extends IPSModule
 		}	
 	}
 	
+	private function GetAssociations(string $Profil) 
+	{
+    		$Associations = array();
+    		If (IPS_VariableProfileExists($Profil)) {
+        		$ProfilArray = (IPS_GetVariableProfile($Profil));
+        		$AssociationsArray = $ProfilArray["Associations"];
+        		foreach ($AssociationsArray as $Association) {
+            			$Associations[$Association["Value"]] = $Association["Name"];
+        		}
+    		}
+	return $Associations;
+	}
+	
 	public function SetHTMLDisplay()
 	{
 		$Displaytext = $this->GetValue("Display");
@@ -781,8 +794,16 @@ class IPS2PioneerVSX923 extends IPSModule
 			      21 => "HDMI 3", 22 => "HDMI 4", 23 => "HDMI 5", 24 => "HDMI 6", 34 => "HDMI 7", 38 => "INTERNET RADIO", 
 			      44 => "MEDIA SERVER", 45 => "FAVORITES", 17 => "iPod/USB", 5 => "TV", 1 => "CD", 
 			      2 => "TUNER", 33 => "ADAPTER PORT");
-		$Source = $this->GetValue("Input");
 		
+		$OwnAssociations = $this->GetAssociations("IPS2Pioneer.InputSelect_".$this->InstanceID);
+		
+		If (isset($OwnAssociations[$this->GetValue("Input")] == true) {
+			$Source = $OwnAssociations[$this->GetValue("Input")];
+		}
+		else {
+			$Source = $PioneerDevices[$this->GetValue("Input")];
+		}
+		    
 		$SpeakerArray = array("OFF", "A", "B", "AB");
 		$Speaker = $SpeakerArray[$this->GetValue("Speakers")];
 		
@@ -829,7 +850,7 @@ class IPS2PioneerVSX923 extends IPSModule
 			$HTMLText .= '<font face="Arial">';
 			$HTMLText .= '<font size=4>';
 			$HTMLText .= '<font color=#04B4AE>';
-			$HTMLText .= ''.$PioneerDevices[$Source].'';
+			$HTMLText .= ''.$Source.'';
 			$HTMLText .= '</font>';
 		    $HTMLText .= '</th>';
 
