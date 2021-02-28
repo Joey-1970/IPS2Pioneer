@@ -757,6 +757,14 @@ class IPS2PioneerVSX923 extends IPSModule
 		}	
 	}
 	
+	public function SelectHDMIOutput(Int $HDMIOutput)
+	{
+		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
+			$HDMIOutput = min(2, max(0, $HDMIOutput));
+			$this->SetData($HDMIOutput."SVZ");
+		}	
+	}
+	
 	public function TunerDirectAccess(float $Frequency)
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
