@@ -761,7 +761,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	{
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($this->GetParentStatus() == 102)) {
 			$HDMIOutput = min(2, max(0, $HDMIOutput));
-			$this->SetData($HDMIOutput."SVZ");
+			$this->SetData($HDMIOutput."HO");
 		}	
 	}
 	
