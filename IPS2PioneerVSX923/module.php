@@ -273,6 +273,8 @@ class IPS2PioneerVSX923 extends IPSModule
 		$this->SetTimerInterval("KeepAlive", 30 * 1000);
 		
 		$Data = json_decode($JSONString);
+		$this->SendDebug("ReceiveData Rohdaten", $Data, 0);
+
 		$Message = utf8_decode($Data->Buffer);
 		
 		// Entfernen der Steuerzeichen
