@@ -224,7 +224,7 @@ class IPS2PioneerBDP450 extends IPSModule
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
 		switch ($Message) {
-			case 10001:
+			case IPS_KERNELSTARTED:
 				// IPS_KERNELSTARTED
 				$this->ApplyChanges();
 				break;
