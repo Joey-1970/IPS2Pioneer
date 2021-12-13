@@ -259,7 +259,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
  		switch ($Message) {
-			case 10001:
+			case IPS_KERNELSTARTED:
 				$this->ApplyChanges();
 				break;
 			
