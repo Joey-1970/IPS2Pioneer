@@ -1081,23 +1081,31 @@ class IPS2PioneerVSX923 extends IPSModule
 					if (!$status) {
 						$this->SendDebug("ConnectionTest", "Port ".$this->ReadPropertyInteger("Port")." ist geschlossen!", 0);
 						IPS_LogMessage("IPS2PioneerVCX923","Port ".$this->ReadPropertyInteger("Port")." ist geschlossen!");
-						$this->SetStatus(202);
+						If ($this->GetStatus() <> 202) {
+							$this->SetStatus(202);
+						}
 					}
 					else {
 						fclose($status);
 						$result = true;
-						$this->SetStatus(102);
+						If ($this->GetStatus() <> 102) {
+							$this->SetStatus(102);
+						}
 					}
 			}
 		      	else {
 				$result = true;
-				$this->SetStatus(102);
+				If ($this->GetStatus() <> 102) {
+					$this->SetStatus(102);
+				}
 			}
 		}
 		else {
 			$this->SendDebug("ConnectionTest", "IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!", 0);
 			IPS_LogMessage("IPS2PioneerVSX923","IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!");
-			$this->SetStatus(202);
+			If ($this->GetStatus() <> 202) {
+				$this->SetStatus(202);
+			}
 		}
 	return $result;
 	}
