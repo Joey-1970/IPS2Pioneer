@@ -239,7 +239,9 @@ class IPS2PioneerVSX923 extends IPSModule
 			If ($this->ReadPropertyBoolean("Open") == true) {
 				
 				If ($this->ConnectionTest() == true) {
-					$this->SetStatus(102);
+					If ($this->GetStatus() <> 102) {
+						$this->SetStatus(102);
+					}
 					// Erste Abfrage der Daten
 					$this->SetRadioStationsAssociations();
 					$this->SetMetadata();
@@ -250,7 +252,9 @@ class IPS2PioneerVSX923 extends IPSModule
 				}
 			}
 			else {
-				$this->SetStatus(104);
+				If ($this->GetStatus() <> 104) {
+					$this->SetStatus(104);
+				}
 				$this->SetTimerInterval("KeepAlive", 0);
 			}	   
 		}
@@ -673,7 +677,9 @@ class IPS2PioneerVSX923 extends IPSModule
 					$Result = $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", "Buffer" => utf8_encode($Message))));
 				}
 				else {
-					$this->SetStatus(202);
+					If ($this->GetStatus() <> 202) {
+						$this->SetStatus(202);
+					}
 					break;
 				}
 				IPS_Sleep(100);
