@@ -211,12 +211,16 @@ class IPS2PioneerBDP450 extends IPSModule
 		If (IPS_GetKernelRunlevel() == KR_READY) {
 			If (($this->ReadPropertyBoolean("Open") == true) AND ($this->ConnectionTest() == true)) {
 				$this->SetTimerInterval("DataUpdate", 1000);
-				$this->SetStatus(102);
+				If ($this->GetStatus() <> 102) {
+					$this->SetStatus(102);
+				}
 				// Erste Abfrage der Daten
 				$this->CommandClientSocket("?P", 5);
 			}
 			else {
-				$this->SetStatus(104);
+				If ($this->GetStatus() <> 104) {
+					$this->SetStatus(104);
+				}
 			}	   
 		}
 	}
@@ -816,12 +820,16 @@ class IPS2PioneerBDP450 extends IPSModule
 	   				fclose($status);
 					//IPS_LogMessage("IPS2PioneerBDP450","Port ist geöffnet");
 					$result = true;
-					$this->SetStatus(102);
+					If ($this->GetStatus() <> 102) {
+						$this->SetStatus(102);
+					}
 	   			}
 		}
 		else {
 			IPS_LogMessage("IPS2PioneerBDP450","IP ".$this->ReadPropertyString("IPAddress")." reagiert nicht!");
-			$this->SetStatus(104);
+			If ($this->GetStatus() <> 104) {
+				$this->SetStatus(104);
+			}
 		}
 	return $result;
 	}
