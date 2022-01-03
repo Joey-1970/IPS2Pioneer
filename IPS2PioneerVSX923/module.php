@@ -1119,6 +1119,7 @@ class IPS2PioneerVSX923 extends IPSModule
 	private function SetRadioStationsAssociations()
 	{
 		// Aktuelles Profil aufräumen
+		$this->SendDebug("SetRadioStationsAssociations", "Ausfuehrung", 0);
 		$ProfilArray = Array();
 		$ProfilArray = IPS_GetVariableProfile("IPS2Pioneer.RadioStations_".$this->InstanceID);
 		foreach ($ProfilArray["Associations"] as $Association)
