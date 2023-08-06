@@ -657,6 +657,7 @@ class IPS2PioneerVSX923 extends IPSModule
 					break;
 				case "RadioStations":
 					$this->TunerDirectAccess($Value);
+					$this->SetValue($Ident, $Value);
 					break;	
 				default:
 				    throw new Exception("Invalid Ident");
